@@ -22,7 +22,7 @@ Os requerimentos necessários para rodar o projeto são:
 Para saber o passo a passo de como rodar o projeto leia o arquivo [STARTING](STARTING.md), esse arquivo não apenas contêm como instalar todos os pré-rquisitos como também detalha cada passo e configuração para que projeto possa ser executado com sucesso.
 
 ## Contribuindo
-Contribuições com nosso projeto são bem vindas e encorajadas!
+Contribuições com nosso projeto são bem vindas e encorajadas!<br>
 Por favor leia nosso arquivo [CONTRIB](CONTRIB.md)
 
 Como uma instituição pública desenvolvemos ferramentas abertas e que podem ser úteis para toda a sociedade. Para que possamos realemente ser bem sucedidos em nossas metas de transformar a educação e a sociedade precisamos de pessoas com diferentes vivências e experiências. A diversidade das contribuições em qualquer um de nossos projetos nos ajuda a melhorar cada vez mais e ter melhores ideias, melhores perspectivas e certamente produzir código com mais qualidade. Garantimos que qualquer um independente do seu nível de conhecimento é bem vindo a contribuir.
@@ -36,6 +36,5 @@ Como uma instituição pública desenvolvemos ferramentas abertas e que podem se
 
 ## Licença
 
-LMS Livros Didáticos é licenciado pela licena [AGPL 3](https://github.com/fabsoftwareifrs/ifrs-livros-didaticos/blob/main/LICENSE).
-
+LMS Livros Didáticos é licenciado pela licena [AGPL 3](https://github.com/fabsoftwareifrs/ifrs-livros-didaticos/blob/main/LICENSE).<br>
 Copyleft 🄯 2020, Fábrica de Software IFRS
