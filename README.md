@@ -1,5 +1,5 @@
 <p align="center">
-<img src="src/assets/icons/logo/Assets.xcassets/AppIcon.appiconset/80.png" alt="logo verde com traçado de um livro aberto">
+<img src="src/assets/icons/logo/Assets.xcassets/AppIcon.appiconset/120.png" alt="logo verde com traçado de um livro aberto">
 </p>
 
 # LMS Livros Didáticos
