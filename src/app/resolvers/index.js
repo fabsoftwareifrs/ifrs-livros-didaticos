@@ -1,7 +1,7 @@
 
- /* Este arquivo é parte do programa Foobar
+ /* Este arquivo é parte do programa LMS Livros Didáticos
   *
-  * Foobar é um software livre; você pode redistribuí-lo e/ou
+  * LMS Livros Didáticos é um software livre; você pode redistribuí-lo e/ou
   * modificá-lo dentro dos termos da Licença Pública Geral GNU Affero como
   * publicada pela Free Software Foundation (FSF); na versão 3 da
   * Licença.
