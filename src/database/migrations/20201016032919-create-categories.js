@@ -2,22 +2,18 @@
  *  Copyright (c) 2020 Fábrica de Sotware IFRS. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+'use strict';
 
-'use strict'
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+  up: async (queryInterface, Sequelize) => {
+    return queryInterface.createTable('categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      login: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      password_hash: {
+      nome: {
         allowNull: false,
         type: Sequelize.STRING,
       },
@@ -31,7 +27,8 @@ module.exports = {
       },
     })
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users')
-  },
-}
+
+  down: async (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('categories')
+  }
+};
