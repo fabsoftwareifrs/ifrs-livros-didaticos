@@ -1,1 +1,1 @@
-<p align="center"><h1>LMS Livros Disáticos</h1></p>
+<p align="center"><h1>LMS Livros Didáticos</h1></p>
