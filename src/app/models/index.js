@@ -21,7 +21,11 @@ const sequelize = new Sequelize(config)
 
 const models = {}
 
-const modules = [require('./User'),require('./Category')]
+const modules = [
+  require('./User'),
+  require('./Category'),
+  require('./Course')
+]
 
 modules.forEach((module) => {
   const model = module(sequelize, Sequelize.DataTypes)

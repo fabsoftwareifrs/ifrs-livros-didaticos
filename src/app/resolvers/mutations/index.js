@@ -14,9 +14,11 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category} = require('../../models')
+const {Category, Course} = require('../../models')
 
 let mutations = {
+  
+  //Categories
   createCategory: async (_, {nome}) => {
     const category= await Category.create({nome})
     
@@ -33,6 +35,24 @@ let mutations = {
     category.destroy()
     return(true);
   },
+
+  //Courses
+  createCourse: async (_, {name}) => {
+    const course= await Course.create({name})
+    return(course)
+  },
+  updateCourse: async (_, {id,name}) => {
+    const course= await Course.findByPk(id)
+    course.update({name})
+    return course 
+  },
+  deleteCourse: async (_, {id}) => {
+    const course= await Course.findByPk(id)
+    const {name}=course
+    course.destroy()
+    return(true);
+  },
+
 }
 
 const modules = [require('./auth')]
