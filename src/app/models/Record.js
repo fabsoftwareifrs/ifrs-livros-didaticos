@@ -14,29 +14,31 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
-
-const sequelize = new Sequelize(config)
-
-const models = {}
-
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Record')
-]
-
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
-
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Record extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  };
+  Record.init({
+    student: DataTypes.STRING,
+    book: DataTypes.STRING,
+    user: DataTypes.STRING,
+    bookStatus: DataTypes.STRING,
+    recordType: DataTypes.STRING
+  }, {
+    sequelize,
+    underscored: true,
+    modelName: 'Record',
+  });
+  return Record;
+};

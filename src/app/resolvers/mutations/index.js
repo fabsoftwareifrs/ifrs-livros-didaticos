@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course} = require('../../models')
+const {Category, Course, Record} = require('../../models')
 
 let mutations = {
   
@@ -52,6 +52,23 @@ let mutations = {
     course.destroy()
     return(true);
   },
+
+    //Records
+    createRecord: async (_, {student,book,user,bookStatus,recordType}) => {
+      const record= await Record.create({ student,book,user,bookStatus,recordType })
+      return(record)
+    },
+    updateRecord: async (_, {id,student,book,user,bookStatus,recordType}) => {
+      const record= await Record.findByPk(id)
+      record.update({student,book,user,bookStatus,recordType})
+      return record 
+    },
+    deleteRecord: async (_, {id}) => {
+      const record= await Record.findByPk(id)
+      const {student,book,user,bookStatus,recordType}=record
+      record.destroy()
+      return(true);
+    },
 
 }
 

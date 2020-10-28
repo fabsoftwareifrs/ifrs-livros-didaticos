@@ -28,6 +28,14 @@ module.exports = gql`
     id:ID!
     name:String!
   }
+  type Record {
+    id:ID!
+    student:String!
+    book:String!
+    user:String!
+    bookStatus:String!
+    recordType:String!
+  }
   type Query {
     hello: String
 
@@ -36,6 +44,9 @@ module.exports = gql`
 
     courses: [Course!]
     course(id:ID!): Course!
+
+    records: [Record!]
+    record(id:ID!): Record!
   }
   type Mutation {
     login(login: String!, password: String!): AuthResponse
@@ -44,8 +55,12 @@ module.exports = gql`
     updateCategory(id:ID,nome:String!):Category!
     deleteCategory(id:ID!): Boolean
 
-    createCourse(name:String!):Course!
-    updateCourse(id:ID,name:String!):Course!
+    createCourse(name:String!): Course!
+    updateCourse(id:ID,name:String!): Course!
     deleteCourse(id:ID!): Boolean
+
+    createRecord(student:String!,book:String!,user:String!,bookStatus:String!,recordType:String!): Record!
+    updateRecord(id:ID,student:String!,book:String!,user:String!,bookStatus:String!,recordType:String!): Record!
+    deleteRecord(id:ID!): Boolean
   }
 `

@@ -14,20 +14,27 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict'
-require('dotenv').config()
-
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  const Course = sequelize.define(
-    'Course',
-    {
-      name: DataTypes.STRING,
-    },
-    {
-      underscored: true,
+  class Course extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
     }
-  )
-
-  return Course
-
-}
+  };
+  Course.init({
+    name: DataTypes.STRING
+  }, {
+    sequelize,
+    underscored: true,
+    modelName: 'Course',
+  });
+  return Course;
+};
