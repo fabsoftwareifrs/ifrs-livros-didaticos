@@ -28,6 +28,14 @@ module.exports = gql`
     id:ID!
     name:String!
   }
+  type Book {
+    id:ID!
+    name:String!
+    code:String!
+    author:String!
+    volume:String!
+    quantity:Integer!
+  }
   type Query {
     hello: String
 
