@@ -14,41 +14,56 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course} = require('../../models')
+const {Category, Course, Books} = require('../../models')
 
 let mutations = {
+  //Books
+  createBook: async (_, {name,code,author,volume,quantity}) => {
+    const book = await Books.create({name,code,author,volume,quantity})
+    return(book)
+  },
+  updateBook: async (_, {id,name,code,author,volume,quantity}) => {
+    const book = await Books.findByPk(id)
+    category.update({name,code,author,volume,quantity})
+    return book
+  },
+  deleteCategory: async (_, {id}) => {
+    const book = await Category.findByPk(id)
+    book.destroy()
+    return(true);
+  },
   
   //Categories
   createCategory: async (_, {nome}) => {
-    const category= await Category.create({nome})
+    const category = await Category.create({nome})
     
     return(category)
   },
   updateCategory: async (_, {id,nome}) => {
-    const category= await Category.findByPk(id)
+    const category = await Category.findByPk(id)
     category.update({nome})
     return category 
   },
   deleteCategory: async (_, {id}) => {
-    const category= await Category.findByPk(id)
-    const {nome}=category
+    const category = await Category.findByPk(id)
+    const {nome} = category
     category.destroy()
     return(true);
   },
 
   //Courses
   createCourse: async (_, {name}) => {
-    const course= await Course.create({name})
+    const course = await Course.create({name})
     return(course)
   },
   updateCourse: async (_, {id,name}) => {
-    const course= await Course.findByPk(id)
+    const course = await Course.findByPk(id)
     course.update({name})
     return course 
   },
   deleteCourse: async (_, {id}) => {
-    const course= await Course.findByPk(id)
-    const {name}=course
+    const course = await Course.findByPk(id)
+    const {name} = course
     course.destroy()
     return(true);
   },

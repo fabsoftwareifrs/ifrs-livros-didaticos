@@ -40,6 +40,10 @@ module.exports = gql`
   type Mutation {
     login(login: String!, password: String!): AuthResponse
 
+    createBooks(name:String,code:String,author:String,volume:String,quantity:Integer!):Books!
+    updateBooks(id: ID,name:String,code:String,author:String,volume:String,quantity:Integer!):Books!
+    deleteBooks(id:ID!)
+
     createCategory(nome:String!):Category!
     updateCategory(id:ID,nome:String!):Category!
     deleteCategory(id:ID!): Boolean

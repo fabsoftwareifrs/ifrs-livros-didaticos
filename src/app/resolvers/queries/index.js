@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course} = require("../../models")
+const {Category, Course, Books} = require("../../models")
 
 let queries = {
   categories: ()=> Category.findAll(),
@@ -22,6 +22,9 @@ let queries = {
 
   courses: ()=> Course.findAll(),
   course: (_, {id}) => Course.findByPk(id),
+
+  books: () => Books.findAll(),
+  books: (_, {id}) => Books.findByPk(id),
 }
 
 const modules = []
