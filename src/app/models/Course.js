@@ -14,38 +14,20 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { gql } = require('apollo-server-express')
+'use strict'
+require('dotenv').config()
 
-module.exports = gql`
-  type AuthResponse {
-    token: String!
-  }
-  type Category {
-    id:ID!
-    nome:String!
-  }
-  type Course {
-    id:ID!
-    name:String!
-  }
-  type Query {
-    hello: String
+module.exports = (sequelize, DataTypes) => {
+  const Course = sequelize.define(
+    'Course',
+    {
+      name: DataTypes.STRING,
+    },
+    {
+      underscored: true,
+    }
+  )
 
-    categories: [Category!]
-    category(id:ID!): Category!
+  return Course
 
-    courses: [Course!]
-    course(id:ID!): Course!
-  }
-  type Mutation {
-    login(login: String!, password: String!): AuthResponse
-
-    createCategory(nome:String!):Category!
-    updateCategory(id:ID,nome:String!):Category!
-    deleteCategory(id:ID!): Boolean
-
-    createCourse(name:String!):Course!
-    updateCourse(id:ID,name:String!):Course!
-    deleteCourse(id:ID!): Boolean
-  }
-`
+}

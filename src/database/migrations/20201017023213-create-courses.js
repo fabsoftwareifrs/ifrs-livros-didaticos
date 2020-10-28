@@ -14,38 +14,31 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { gql } = require('apollo-server-express')
-
-module.exports = gql`
-  type AuthResponse {
-    token: String!
+'use strict';
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('courses', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      created_At: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updated_At: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+  },
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('courses');
   }
-  type Category {
-    id:ID!
-    nome:String!
-  }
-  type Course {
-    id:ID!
-    name:String!
-  }
-  type Query {
-    hello: String
-
-    categories: [Category!]
-    category(id:ID!): Category!
-
-    courses: [Course!]
-    course(id:ID!): Course!
-  }
-  type Mutation {
-    login(login: String!, password: String!): AuthResponse
-
-    createCategory(nome:String!):Category!
-    updateCategory(id:ID,nome:String!):Category!
-    deleteCategory(id:ID!): Boolean
-
-    createCourse(name:String!):Course!
-    updateCourse(id:ID,name:String!):Course!
-    deleteCourse(id:ID!): Boolean
-  }
-`
+};
