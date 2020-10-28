@@ -28,6 +28,22 @@ module.exports = gql`
     id:ID!
     name:String!
   }
+  type Classes {
+    id:ID!
+    name:String!
+    course_id:Int!
+    courses:Course!
+  }
+  type Students {
+    id:ID!
+    name:String!
+    email:String!
+    matricula:String!
+    course_id:Int!
+    class_id:Int!
+    courses:Course!
+    classes:Classes!
+  }
   type Query {
     hello: String
 
@@ -36,6 +52,12 @@ module.exports = gql`
 
     courses: [Course!]
     course(id:ID!): Course!
+
+    classes: [Classes!]
+    class(id:ID!): Classes!
+
+    students: [Students!]
+    student(id:ID!): Students!
   }
   type Mutation {
     login(login: String!, password: String!): AuthResponse
@@ -47,5 +69,13 @@ module.exports = gql`
     createCourse(name:String!):Course!
     updateCourse(id:ID,name:String!):Course!
     deleteCourse(id:ID!): Boolean
+
+    createClass(name:String!, course_id:Int!):Classes!
+    updateClass(id:ID,name:String!,course_id:Int!):Classes!
+    deleteClass(id:ID!): Boolean
+
+    createStudent(name:String!,email:String!,matricula:String!,course_id:Int!,class_id:Int!):Students!
+    updateStudent(id:ID,name:String!,email:String!,matricula:String!,course_id:Int!,class_id:Int!):Students!
+    deleteStudent(id:ID!): Boolean
   }
 `

@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course} = require('../../models')
+const {Category, Course,Classes,Student} = require('../../models')
 
 let mutations = {
   
@@ -53,6 +53,41 @@ let mutations = {
     return(true);
   },
 
+  //Classes
+  createClass: async (_, {name,course_id}) => {
+    var classe= await Classes.create({name,course_id})
+    const {id}=classe
+    classe= await Classes.findByPk(id,{include:{association: 'courses' }})
+    return(classe)
+  },
+  updateClass: async (_,{id,name,course_id}) => {
+    const classe= await Classes.findByPk(id,{include:{association: 'courses' }})
+    classe.update({name,course_id})
+    return classe 
+  },
+  deleteClass: async (_, {id}) => {
+    const classe= await Classes.findByPk(id)
+    classe.destroy()
+    return(true);
+  },
+
+  //Students
+  createStudent: async (_, {name, email, matricula, course_id, class_id}) => {
+    var student= await Student.create({name,email, matricula, course_id, class_id})
+    const {id}=student
+    student= await Student.findByPk(id,{include:[{association: 'courses' },{association: 'classes' }]})
+    return(student)
+  },
+  updateStudent: async (_,{id,name,email, matricula, course_id, class_id}) => {
+    const student= await Student.findByPk(id,{include:[{association: 'courses' },{association: 'classes' }]})
+    student.update({name,email, matricula, course_id, class_id})
+    return student 
+  },
+  deleteStudent: async (_, {id}) => {
+    const student= await Student.findByPk(id)
+    student.destroy()
+    return(true);
+  },
 }
 
 const modules = [require('./auth')]
