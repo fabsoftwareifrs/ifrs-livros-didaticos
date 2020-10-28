@@ -13,32 +13,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
+'use strict'
+require('dotenv').config()
+const { Model } = require('sequelize')
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
+module.exports = (sequelize, DataTypes) => {
+  class Book extends Model {
+    static associate(models) {
+      Book.hasOne(models.Category, { foreignKey: 'categoryId', as: 'category' })
+    }
+  }
 
-const sequelize = new Sequelize(config)
+  Book.init({
+    name: DataTypes.STRING,
+    code: DataTypes.STRING,
+    author: DataTypes.STRING,
+    volume: DataTypes.STRING,
+    quantity: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'Book',
+  })
 
-const models = {}
-
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book')
-]
-
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
-
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+  return Book
+}
