@@ -22,7 +22,7 @@ module.exports = gql`
   }
   type Category {
     id:ID!
-    nome:String!
+    name:String!
   }
   type Course {
     id:ID!
@@ -38,7 +38,7 @@ module.exports = gql`
     id:ID!
     name:String!
     email:String!
-    matricula:String!
+    matriculation:String!
     course_id:Int!
     class_id:Int!
     courses:Course!
@@ -74,8 +74,8 @@ module.exports = gql`
     updateBooks(id: ID,name:String,code:String,author:String,volume:String,quantity:Integer!):Books!
     deleteBooks(id:ID!)
 
-    createCategory(nome:String!):Category!
-    updateCategory(id:ID,nome:String!):Category!
+    createCategory(name:String!):Category!
+    updateCategory(id:ID,name:String!):Category!
     deleteCategory(id:ID!): Boolean
 
     createCourse(name:String!):Course!
@@ -86,8 +86,8 @@ module.exports = gql`
     updateClass(id:ID,name:String!,course_id:Int!):Classes!
     deleteClass(id:ID!): Boolean
 
-    createStudent(name:String!,email:String!,matricula:String!,course_id:Int!,class_id:Int!):Students!
-    updateStudent(id:ID,name:String!,email:String!,matricula:String!,course_id:Int!,class_id:Int!):Students!
+    createStudent(name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students!
+    updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students!
     deleteStudent(id:ID!): Boolean
   }
 `

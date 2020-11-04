@@ -34,19 +34,19 @@ let mutations = {
   },
   
   //Categories
-  createCategory: async (_, {nome}) => {
-    const category = await Category.create({nome})
+  createCategory: async (_, {name}) => {
+    const category = await Category.create({name})
     
     return(category)
   },
-  updateCategory: async (_, {id,nome}) => {
+  updateCategory: async (_, {id,name}) => {
     const category = await Category.findByPk(id)
-    category.update({nome})
+    category.update({name})
     return category 
   },
   deleteCategory: async (_, {id}) => {
     const category = await Category.findByPk(id)
-    const {nome} = category
+    const {name} = category
     category.destroy()
     return(true);
   },
@@ -87,15 +87,15 @@ let mutations = {
   },
 
   //Students
-  createStudent: async (_, {name, email, matricula, course_id, class_id}) => {
-    var student= await Student.create({name,email, matricula, course_id, class_id})
+  createStudent: async (_, {name, email, matriculation, course_id, class_id}) => {
+    var student= await Student.create({name,email, matriculation, course_id, class_id})
     const {id}=student
     student= await Student.findByPk(id,{include:[{association: 'courses' },{association: 'classes' }]})
     return(student)
   },
-  updateStudent: async (_,{id,name,email, matricula, course_id, class_id}) => {
+  updateStudent: async (_,{id,name,email, matriculation, course_id, class_id}) => {
     const student= await Student.findByPk(id,{include:[{association: 'courses' },{association: 'classes' }]})
-    student.update({name,email, matricula, course_id, class_id})
+    student.update({name,email, matriculation, course_id, class_id})
     return student 
   },
   deleteStudent: async (_, {id}) => {

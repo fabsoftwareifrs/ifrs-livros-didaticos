@@ -1,3 +1,24 @@
+'use strict';
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    /**
+     * Add altering commands here.
+     *
+     * Example:
+     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+     */
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
+  }
+};
 /*
  * This file is part of LMS Livros Didáticos.
  *
@@ -13,54 +34,33 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
-
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('students', {
+    return queryInterface.createTable('categories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      email: {
+      created_at: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATE,
       },
-      matriculation: {
+      updated_at: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATE,
       },
-      course_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {model: 'courses', key: 'id'},
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-      },
-      class_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {model: 'classes', key: 'id'},
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-      },
-      created_At: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updated_At: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+    })
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('students');
+    return queryInterface.dropTable('categories')
   }
 };
