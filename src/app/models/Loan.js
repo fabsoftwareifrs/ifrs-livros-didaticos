@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      //Loan.hasOne(models.Student, { foreignKey: 'studentId', as: 'student' })
-      //Loan.hasOne(models.Book, { foreignKey: 'bookId', as: 'book' })
-      //Loan.hasOne(models.User, { foreignKey: 'userId', as: 'user' })
+      Loan.hasOne(models.Student, { foreignKey: 'studentId', as: 'student' })
+      Loan.hasOne(models.Book, { foreignKey: 'bookId', as: 'book' })
+      Loan.hasOne(models.User, { foreignKey: 'userId', as: 'user' })
     }
   };
   Loan.init({

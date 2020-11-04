@@ -33,10 +33,10 @@ module.exports = gql`
     withdrawDate: String!
     loanDays: Int!
     delivered: Boolean!
-    deliveredDate: String!
-    studentId: Int!
-    bookId: Int!
-    userId: Int!
+    deliveredDate: String
+    studentId: [Student]!
+    bookId: [Book]!
+    userId: [User]!
   }
   type Query {
     hello: String
@@ -61,8 +61,9 @@ module.exports = gql`
     updateCourse(id:ID,name:String!): Course!
     deleteCourse(id:ID!): Boolean
 
-    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan!
-    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan!
+    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:[Student]!, bookId:[Book]!, userId:[User]!): Loan!
+    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:[Student]!, bookId:[Book]!, userId:[User]!): Loan!
     deleteLoan(id:ID!): Boolean
+    
   }
 `
