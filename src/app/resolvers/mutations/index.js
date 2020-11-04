@@ -15,8 +15,13 @@
  */
 
 const {Category, Course,Classes,Student, Books} = require('../../models')
-
+const {sendMessage}= require('./contacts')
 let mutations = {
+  //Mail
+  mail: async (_, { from }) => {
+    const mail= await sendMessage(_,{from})
+    return mail
+  },
   //Books
   createBook: async (_, {name,code,author,volume,quantity}) => {
     const book = await Books.create({name,code,author,volume,quantity})
@@ -27,8 +32,8 @@ let mutations = {
     category.update({name,code,author,volume,quantity})
     return book
   },
-  deleteCategory: async (_, {id}) => {
-    const book = await Category.findByPk(id)
+  deleteBook: async (_, {id}) => {
+    const book = await Books.findByPk(id)
     book.destroy()
     return(true);
   },

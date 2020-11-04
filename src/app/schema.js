@@ -20,6 +20,7 @@ module.exports = gql`
   type AuthResponse {
     token: String!
   }
+  
   type Category {
     id:ID!
     name:String!
@@ -43,17 +44,20 @@ module.exports = gql`
     class_id:Int!
     courses:Course!
     classes:Classes!
-
+  }
   type Book {
       id:ID!
       name:String!
       code:String!
       author:String!
       volume:String!
-      quantity:Integer!
+      quantity:Int!
   }
   type Query {
     hello: String
+
+    books: [Book!]
+    book(id:ID!): Book!
 
     categories: [Category!]
     category(id:ID!): Category!
@@ -70,9 +74,11 @@ module.exports = gql`
   type Mutation {
     login(login: String!, password: String!): AuthResponse
 
-    createBooks(name:String,code:String,author:String,volume:String,quantity:Integer!):Books!
-    updateBooks(id: ID,name:String,code:String,author:String,volume:String,quantity:Integer!):Books!
-    deleteBooks(id:ID!)
+    mail(from:String!):Boolean!
+
+    createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book!
+    updateBook(id: ID,name:String,code:String,author:String,volume:String,quantity:Int!):Book!
+    deleteBook(id:ID!):Boolean
 
     createCategory(name:String!):Category!
     updateCategory(id:ID,name:String!):Category!
