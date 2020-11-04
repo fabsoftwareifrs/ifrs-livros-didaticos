@@ -14,31 +14,11 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Record extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  Record.init({
-    student: DataTypes.STRING,
-    book: DataTypes.STRING,
-    user: DataTypes.STRING,
-    bookStatus: DataTypes.STRING,
-    recordType: DataTypes.STRING
-  }, {
-    sequelize,
-    underscored: true,
-    modelName: 'Record',
-  });
-  return Record;
-};
+const { Loan } = require("@models")
+
+let queries = {  
+    loans: ()=> Loan.findAll(),
+    loan: (_, {id}) => Loan.findByPk(id),
+}
+
+module.exports = { queries }

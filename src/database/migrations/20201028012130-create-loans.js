@@ -17,32 +17,40 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('records', {
+    await queryInterface.createTable('loans', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      student: {
+      withdraw_date: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATEONLY
       },
-      book: {
+      loan_days: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
-      user: {
+      delivered: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN
       },
-      book_status: {
+      delivered_date: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATEONLY
       },
-      record_type: {
+      student_id: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
+      },
+      book_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      user_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
       },
       created_at: {
         allowNull: false,
@@ -55,6 +63,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('records');
+    await queryInterface.dropTable('loans');
   }
 };

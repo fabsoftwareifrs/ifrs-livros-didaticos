@@ -14,46 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course, Loan} = require('../../models')
+const { Loan } = require('@models')
 
 let mutations = {
   
-  //Categories
-  createCategory: async (_, {nome}) => {
-    const category= await Category.create({nome})
-    
-    return(category)
-  },
-  updateCategory: async (_, {id,nome}) => {
-    const category= await Category.findByPk(id)
-    category.update({nome})
-    return category 
-  },
-  deleteCategory: async (_, {id}) => {
-    const category= await Category.findByPk(id)
-    const {nome}=category
-    category.destroy()
-    return(true);
-  },
-
-  //Courses
-  createCourse: async (_, {name}) => {
-    const course= await Course.create({name})
-    return(course)
-  },
-  updateCourse: async (_, {id,name}) => {
-    const course= await Course.findByPk(id)
-    course.update({name})
-    return course 
-  },
-  deleteCourse: async (_, {id}) => {
-    const course= await Course.findByPk(id)
-    const {name}=course
-    course.destroy()
-    return(true);
-  },
-
-  //Loans
   createLoan: async (_, {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
     const loan= await Loan.create({ withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId })
     return(loan)
@@ -71,16 +35,6 @@ let mutations = {
     loan.destroy()
     return(true);
   },
-
 }
 
-const modules = [
-  require('./auth'),
-  //require('./loan')        
-]
-
-modules.forEach((module) => {
-  mutations = { ...mutations, ...module }
-})
-
-module.exports = { ...mutations }
+module.exports = { mutations }
