@@ -17,16 +17,40 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('courses', {
+    await queryInterface.createTable('loans', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      withdraw_date: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATEONLY
+      },
+      loan_days: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      delivered: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },
+      delivered_date: {
+        allowNull: false,
+        type: Sequelize.DATEONLY
+      },
+      student_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      book_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      user_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
       },
       created_at: {
         allowNull: false,
@@ -39,6 +63,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('courses');
+    await queryInterface.dropTable('loans');
   }
 };

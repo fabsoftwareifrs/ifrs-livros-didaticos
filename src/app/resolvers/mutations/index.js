@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course,Classes,Student, Books} = require('../../models')
+const {Category, Course,Classes,Student, Books, Loan} = require('../../models')
 
 let mutations = {
   //Books
@@ -103,9 +103,31 @@ let mutations = {
     student.destroy()
     return(true);
   },
+
+  //Loans
+  createLoan: async (_, {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
+    const loan= await Loan.create({ withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId })
+    return(loan)
+  },
+  
+  updateLoan: async (_, {id, withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
+    const loan= await Record.findByPk(id)
+    loan.update({withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId})
+    return loan 
+  },
+  
+  deleteLoan: async (_, {id}) => {
+    const loan= await Loan.findByPk(id)
+    const {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}=loan
+    loan.destroy()
+    return(true);
+  },
 }
 
-const modules = [require('./auth')]
+const modules = [
+  require('./auth'),
+  //require('./loan')        
+]
 
 modules.forEach((module) => {
   mutations = { ...mutations, ...module }

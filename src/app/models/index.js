@@ -27,7 +27,8 @@ const modules = [
   require('./Course'),
   require('./Classes'),
   require('./Student'),
-  require('./Book')
+  require('./Book'),
+  require('./Loan')
 ]
 
 modules.forEach((module) => {

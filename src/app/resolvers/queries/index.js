@@ -14,9 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course,Classes,Student,Books} = require("../../models")
-
-
+const {Category, Course,Classes,Student,Books, Loan} = require("../../models")
 
 let queries = {
   categories: ()=> Category.findAll(),
@@ -33,9 +31,14 @@ let queries = {
 
   books: () => Books.findAll(),
   books: (_, {id}) => Books.findByPk(id),
+
+  loans: ()=> Loan.findAll(),
+  loan: (_, {id}) => Loan.findByPk(id),
 }
 
-const modules = []
+const modules = [
+  //require('./loan')
+]
 
 modules.forEach((module) => {
   queries = { ...queries, ...module }

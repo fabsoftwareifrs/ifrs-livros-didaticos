@@ -49,6 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       expiresIn: SECONDS_IN_A_DAY,
     })
   }
-
+  
   return User
 }
