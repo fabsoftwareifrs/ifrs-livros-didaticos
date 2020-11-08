@@ -24,9 +24,11 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
     {
+      name: DataTypes.STRING,
       login: DataTypes.STRING,
       password: DataTypes.VIRTUAL(DataTypes.STRING),
       passwordHash: DataTypes.STRING,
+      accessLevel: DataTypes.INTEGER,
     },
     {
       underscored: true,

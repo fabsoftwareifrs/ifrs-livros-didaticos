@@ -37,6 +37,7 @@ let queries = {
 }
 
 const modules = [
+  require('./user'),
   //require('./loan')
 ]
 

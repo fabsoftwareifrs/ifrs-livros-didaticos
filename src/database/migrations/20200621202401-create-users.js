@@ -24,6 +24,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       login: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -31,6 +35,10 @@ module.exports = {
       password_hash: {
         allowNull: false,
         type: Sequelize.STRING,
+      },
+      access_level: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,

@@ -20,7 +20,13 @@ module.exports = gql`
   type AuthResponse {
     token: String!
   }
-  
+  type User{
+    id: ID!
+    name: String!
+    login: String!
+    password: String!
+    accessLevel: Int!
+  }
   type Category {
     id:ID!
     name:String!
@@ -66,6 +72,9 @@ module.exports = gql`
   type Query {
     hello: String
 
+    users: [User!]
+    user(id:ID!): User!
+
     books: [Book!]
     book(id:ID!): Book!
 
@@ -89,6 +98,10 @@ module.exports = gql`
 
     mail(from:String!):Boolean!
 
+    createUser(name:String!,login:String!,password:String!,accessLevl:Int!):User!
+    updateUser(id:ID,name:String!,login:String!,password:String!,accessLevl:Int!):User!
+    deleteUser(id:ID!):Boolean
+    
     createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book!
     updateBook(id: ID,name:String,code:String,author:String,volume:String,quantity:Int!):Book!
     deleteBook(id:ID!):Boolean

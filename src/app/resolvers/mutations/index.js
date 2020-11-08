@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {Category, Course,Classes,Student, Books,Loan} = require('../../models')
+const {Category, Course, Classes, Student, Books, Loan, User} = require('../../models')
 const {sendMessage}= require('./contacts')
 let mutations = {
   //Mail
@@ -22,6 +22,7 @@ let mutations = {
     const mail= await sendMessage(_,{from})
     return mail
   },
+
   //Books
   createBook: async (_, {name,code,author,volume,quantity}) => {
     const book = await Books.create({name,code,author,volume,quantity})
@@ -41,7 +42,6 @@ let mutations = {
   //Categories
   createCategory: async (_, {name}) => {
     const category = await Category.create({name})
-    
     return(category)
   },
   updateCategory: async (_, {id,name}) => {
@@ -131,6 +131,7 @@ let mutations = {
 
 const modules = [
   require('./auth'),
+  require('./user'),
   //require('./loan')        
 ]
 
