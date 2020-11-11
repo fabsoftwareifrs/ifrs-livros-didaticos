@@ -14,21 +14,15 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
- let queries={
-   
- }
+const {sendMessage}= require('../contacts')
 
-const modules = [
-  require('./loan'),
-  require('./book'),
-  require('./category'),
-  require('./classes'),
-  require('./course'),    
-  require('./student'),  
-]
+let mutations = {
+  
+  //Mail
+  mail: async (_, { from }) => {
+    const mail= await sendMessage(_,{from})
+    return mail
+  },
+}
 
-modules.forEach((module) => {
-  queries = { ...queries, ...module }
-})
-
-module.exports = { ...queries }
+module.exports =  mutations 

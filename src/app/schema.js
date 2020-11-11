@@ -29,13 +29,18 @@ module.exports = gql`
     id: ID!
     name: String!
   }
+  type User {
+    id: ID!
+    login: String!
+    password_hash: String!
+  }
   type Loan {
     id: ID!
     withdrawDate: String!
     loanDays: Int!
     delivered: Boolean!
     deliveredDate: String
-    studentId: Student!
+    studentId: Students!
     bookId: Book!
     userId: User!
   }
@@ -84,6 +89,7 @@ module.exports = gql`
     loans: [Loan!]
     loan(id:ID!): Loan!
   }
+
   type Mutation {
     login(login: String!, password: String!): AuthResponse
 
@@ -109,8 +115,8 @@ module.exports = gql`
     updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students!
     deleteStudent(id:ID!): Boolean
 
-    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Student!, bookId:Book!, userId:User!): Loan!
-    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Student!, bookId:Book!, userId:User!): Loan!
+    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Int!, bookId:Int!, userId:Int!): Loan!
+    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan!
     deleteLoan(id:ID!): Boolean
   }
 `
