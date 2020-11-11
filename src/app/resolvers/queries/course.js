@@ -14,21 +14,11 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
- let queries={
-   
- }
+const { Course } = require("@models")
 
-const modules = [
-  require('./loan'),
-  require('./book'),
-  require('./category'),
-  require('./classes'),
-  require('./course'),    
-  require('./student'),  
-]
+let queries = {  
+    courses: ()=> Course.findAll(),
+    course: (_, {id}) => Course.findByPk(id),
+}
 
-modules.forEach((module) => {
-  queries = { ...queries, ...module }
-})
-
-module.exports = { ...queries }
+module.exports =  queries 

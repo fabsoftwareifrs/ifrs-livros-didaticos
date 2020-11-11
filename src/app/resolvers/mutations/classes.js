@@ -14,21 +14,28 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
- let queries={
-   
- }
+const { Classes } = require('@models')
 
-const modules = [
-  require('./loan'),
-  require('./book'),
-  require('./category'),
-  require('./classes'),
-  require('./course'),    
-  require('./student'),  
-]
+let mutations = {
+  
+   //Classes
+   createClass: async (_, {name,course_id}) => {
+    var classe= await Classes.create({name,course_id})
+    const {id}=classe
+    classe= await Classes.findByPk(id,{include:{association: 'courses' }})
+    return(classe)
+  },
+  updateClass: async (_,{id,name,course_id}) => {
+    const classe= await Classes.findByPk(id,{include:{association: 'courses' }})
+    classe.update({name,course_id})
+    return classe 
+  },
+  deleteClass: async (_, {id}) => {
+    const classe= await Classes.findByPk(id)
+    classe.destroy()
+    return(true);
+  },
 
-modules.forEach((module) => {
-  queries = { ...queries, ...module }
-})
+}
 
-module.exports = { ...queries }
+module.exports = mutations 

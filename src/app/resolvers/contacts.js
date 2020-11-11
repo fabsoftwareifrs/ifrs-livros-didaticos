@@ -14,21 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
- let queries={
-   
- }
+const sendNodeMail = require("../utils/sendNodeMail");
+const template = require("../templates/email");
 
-const modules = [
-  require('./loan'),
-  require('./book'),
-  require('./category'),
-  require('./classes'),
-  require('./course'),    
-  require('./student'),  
-]
+const sendMessage = async (_,  input ) => {
+	const mailtext = `Mensagem de teste`;
+	const mailhmtl = `<p><b>Mensagem de teste</b></p>`;
 
-modules.forEach((module) => {
-  queries = { ...queries, ...module }
-})
+	const mailMessage = {
+		from: input.from,
+		to: "edufaggion@gmail.com",
+		subject: "Mensagem de teste",
+		text: mailtext,
+		html: template(mailhmtl),
+	};
 
-module.exports = { ...queries }
+	const mail= await sendNodeMail(mailMessage);
+	return mail.success;
+};
+
+module.exports = { sendMessage };

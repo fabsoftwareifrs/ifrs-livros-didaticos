@@ -21,4 +21,4 @@ let queries = {
     loan: (_, {id}) => Loan.findByPk(id),
 }
 
-module.exports = { queries }
+module.exports =  queries 

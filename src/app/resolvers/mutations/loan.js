@@ -37,4 +37,4 @@ let mutations = {
   },
 }
 
-module.exports = { mutations }
+module.exports =  mutations 

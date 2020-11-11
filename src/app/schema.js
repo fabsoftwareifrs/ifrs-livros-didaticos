@@ -35,6 +35,11 @@ module.exports = gql`
     id: ID!
     name: String!
   }
+  type User {
+    id: ID!
+    login: String!
+    password_hash: String!
+  }
   type Loan {
     id: ID!
     withdrawDate: String!
@@ -96,6 +101,7 @@ module.exports = gql`
     loans: [Loan!]
     loan(id:ID!): Loan!
   }
+
   type Mutation {
     login(login: String!, password: String!): AuthResponse
 
