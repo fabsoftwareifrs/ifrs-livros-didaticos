@@ -24,7 +24,7 @@ module.exports = gql`
     id: ID!
     name: String!
     login: String!
-    password: String!
+    password: String
     accessLevel: Int!
   }
   type Category {
@@ -41,9 +41,12 @@ module.exports = gql`
     loanDays: Int!
     delivered: Boolean!
     deliveredDate: String
-    studentId: Student!
-    bookId: Book!
-    userId: User!
+    studentId: Int!
+    bookId: Int!
+    userId: Int!
+    students: Students!
+    books: Book!
+    users: User!
   }
   type Classes {
     id:ID!
@@ -62,12 +65,12 @@ module.exports = gql`
     classes:Classes!
   }
   type Book {
-      id:ID!
-      name:String!
-      code:String!
-      author:String!
-      volume:String!
-      quantity:Int!
+    id:ID!
+    name:String!
+    code:String!
+    author:String!
+    volume:String!
+    quantity:Int!
   }
   type Query {
     hello: String
@@ -98,8 +101,8 @@ module.exports = gql`
 
     mail(from:String!):Boolean!
 
-    createUser(name:String!,login:String!,password:String!,accessLevl:Int!):User!
-    updateUser(id:ID,name:String!,login:String!,password:String!,accessLevl:Int!):User!
+    createUser(name:String!,login:String!,password:String!,accessLevel:Int!):User!
+    updateUser(id:ID,name:String!,login:String!,password:String!,accessLevel:Int!):User!
     deleteUser(id:ID!):Boolean
     
     createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book!
@@ -122,8 +125,8 @@ module.exports = gql`
     updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students!
     deleteStudent(id:ID!): Boolean
 
-    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Student!, bookId:Book!, userId:User!): Loan!
-    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Student!, bookId:Book!, userId:User!): Loan!
+    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Int!, bookId:Int!, userId:Int!): Loan!
+    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan!
     deleteLoan(id:ID!): Boolean
   }
 `

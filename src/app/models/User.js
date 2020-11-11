@@ -20,20 +20,31 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    'User',
-    {
-      name: DataTypes.STRING,
-      login: DataTypes.STRING,
-      password: DataTypes.VIRTUAL(DataTypes.STRING),
-      passwordHash: DataTypes.STRING,
-      accessLevel: DataTypes.INTEGER,
-    },
-    {
-      underscored: true,
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      
     }
-  )
+  };
+
+  User.init({
+    name: DataTypes.STRING,
+    login: DataTypes.STRING,
+    password: DataTypes.VIRTUAL(DataTypes.STRING),
+    passwordHash: DataTypes.STRING,
+    accessLevel: DataTypes.INTEGER,
+  }, {
+    sequelize,
+    modelName: 'User',
+    underscored: true,
+  });
 
   User.beforeSave(async (user) => {
     if (user.password) {
@@ -51,6 +62,6 @@ module.exports = (sequelize, DataTypes) => {
       expiresIn: SECONDS_IN_A_DAY,
     })
   }
-  
+
   return User
 }

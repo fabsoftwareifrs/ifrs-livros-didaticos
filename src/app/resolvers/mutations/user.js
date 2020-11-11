@@ -24,7 +24,7 @@ let mutations = {
   },
 
   updateUser: async (_, {id, name, login, password, accessLevel}) => {
-    const user= await Record.findByPk(id)
+    const user= await User.findByPk(id)
     user.update({name, login, password, accessLevel})
     return user 
   },

@@ -23,6 +23,25 @@ let mutations = {
     return mail
   },
 
+  //Users
+  createUser: async (_, {name, login, password, accessLevel}) => {
+    const user= await User.create({ name, login, password, accessLevel })
+    return(user)
+  },
+
+  updateUser: async (_, {id, name, login, password, accessLevel}) => {
+    const user= await User.findByPk(id)
+    user.update({name, login, password, accessLevel})
+    return user 
+  },
+
+  deleteUser: async (_, {id}) => {
+    const user= await User.findByPk(id)
+    const {name, login, password, accessLevel}=user
+    user.destroy()
+    return(true);
+  },
+
   //Books
   createBook: async (_, {name,code,author,volume,quantity}) => {
     const book = await Books.create({name,code,author,volume,quantity})
@@ -131,7 +150,7 @@ let mutations = {
 
 const modules = [
   require('./auth'),
-  require('./user'),
+  //require('./user'),
   //require('./loan')        
 ]
 
