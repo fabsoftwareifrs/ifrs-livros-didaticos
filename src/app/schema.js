@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,11 +34,6 @@ module.exports = gql`
   type Course {
     id: ID!
     name: String!
-  }
-  type User {
-    id: ID!
-    login: String!
-    password_hash: String!
   }
   type Loan {
     id: ID!
@@ -77,6 +72,10 @@ module.exports = gql`
     volume:String!
     quantity:Int!
   }
+  type AccessLevel {
+    id:ID!
+    role:String!
+  }
   type Query {
     hello: String
 
@@ -100,6 +99,9 @@ module.exports = gql`
 
     loans: [Loan!]
     loan(id:ID!): Loan!
+
+    accessLevels: [AccessLevel!]
+    accessLevel(id:ID!): AccessLevel!
   }
 
   type Mutation {
@@ -110,7 +112,7 @@ module.exports = gql`
     createUser(name:String!,login:String!,password:String!,accessLevel:Int!):User!
     updateUser(id:ID,name:String!,login:String!,password:String!,accessLevel:Int!):User!
     deleteUser(id:ID!):Boolean
-    
+
     createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book!
     updateBook(id: ID,name:String,code:String,author:String,volume:String,quantity:Int!):Book!
     deleteBook(id:ID!):Boolean
@@ -134,5 +136,10 @@ module.exports = gql`
     createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Int!, bookId:Int!, userId:Int!): Loan!
     updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan!
     deleteLoan(id:ID!): Boolean
+
+    createAccessLevel(role:String!):AccessLevel!
+    updateAccessLevel(id:ID,role:String!):AccessLevel!
+    deleteAccessLevel(id:ID!): Boolean
+
   }
 `

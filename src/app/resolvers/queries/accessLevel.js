@@ -14,33 +14,11 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
+const { AccessLevel } = require("@models")
 
-const sequelize = new Sequelize(config)
+let queries = {
+    accessLevels: ()=> AccessLevel.findAll(),
+    accessLevel: (_, {id}) => AccessLevel.findByPk(id),
+}
 
-const models = {}
-
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book'),
-  require('./Loan'),
-  require('./AccessLevel')
-]
-
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
-
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+module.exports =  queries

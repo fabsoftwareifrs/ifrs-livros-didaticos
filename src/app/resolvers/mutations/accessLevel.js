@@ -14,33 +14,27 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
+const { AccessLevel } = require('@models')
 
-const sequelize = new Sequelize(config)
+let mutations = {
 
-const models = {}
+  createAccessLevel: async (_, {role}) => {
+    const accessLevel = await AccessLevel.create({role})
 
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book'),
-  require('./Loan'),
-  require('./AccessLevel')
-]
+    return(accessLevel)
+  },
+  updateAccessLevel: async (_, {id,role}) => {
+    const accessLevel = await AccessLevel.findByPk(id)
+    accessLevel.update({role})
+    return accessLevel
+  },
+  deleteAccessLevel: async (_, {id}) => {
+    const accessLevel = await AccessLevel.findByPk(id)
+    const {role} = accessLevel
+    accessLevel.destroy()
+    return(true);
+  },
 
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
+}
 
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+module.exports =  mutations

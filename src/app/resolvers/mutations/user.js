@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -17,7 +17,7 @@
 const { User } = require('@models')
 
 let mutations = {
-  
+
   createUser: async (_, {name, login, password, accessLevel}) => {
     const user= await User.create({ name, login, password, accessLevel })
     return(user)
@@ -26,7 +26,7 @@ let mutations = {
   updateUser: async (_, {id, name, login, password, accessLevel}) => {
     const user= await User.findByPk(id)
     user.update({name, login, password, accessLevel})
-    return user 
+    return user
   },
 
   deleteUser: async (_, {id}) => {
@@ -37,4 +37,4 @@ let mutations = {
   },
 }
 
-module.exports = { mutations }
+module.exports =  mutations
