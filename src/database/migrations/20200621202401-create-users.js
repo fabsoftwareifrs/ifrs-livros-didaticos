@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,9 +36,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      access_level: {
+      access_level_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {model: 'AccessLevel', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       created_at: {
         allowNull: false,

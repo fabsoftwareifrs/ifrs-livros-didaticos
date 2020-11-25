@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      
+      User.hasOne(models.AccessLevel, { foreignKey: 'accessLevelId', as: 'accessLevel' })
     }
   };
 
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     login: DataTypes.STRING,
     password: DataTypes.VIRTUAL(DataTypes.STRING),
     passwordHash: DataTypes.STRING,
-    accessLevel: DataTypes.INTEGER,
+    accessLevelId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'User',

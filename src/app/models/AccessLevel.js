@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.hasMany(models.User, { foreignKey: 'accessLevelId', as: 'User' });
     }
   };
   AccessLevel.init({
