@@ -20,7 +20,7 @@ const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     static associate(models) {
-      Book.hasOne(models.Category, { foreignKey: 'categoryId', as: 'category' })
+      //Book.hasOne(models.Category, { foreignKey: 'category_id', as: 'category' })
     }
   }
 
@@ -29,11 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     code: DataTypes.STRING,
     author: DataTypes.STRING,
     volume: DataTypes.STRING,
-    quantity: DataTypes.INTEGER,
-    categoryId: DataTypes.INTEGER
+    quantity: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Book',
+    underscored: true
   })
 
   return Book

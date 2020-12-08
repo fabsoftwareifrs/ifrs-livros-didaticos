@@ -14,22 +14,22 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Books } = require('@models')
+const { Book } = require('@models')
 
 let mutations = {
   
     //Books
     createBook: async (_, {name,code,author,volume,quantity}) => {
-      const book = await Books.create({name,code,author,volume,quantity})
-      return(book)
+      const book = await Book.create({name,code,author,volume,quantity})
+      return book
     },
     updateBook: async (_, {id,name,code,author,volume,quantity}) => {
-      const book = await Books.findByPk(id)
-      category.update({name,code,author,volume,quantity})
+      const book = await Book.findByPk(id)
+      book.update({name,code,author,volume,quantity})
       return book
     },
     deleteBook: async (_, {id}) => {
-      const book = await Books.findByPk(id)
+      const book = await Book.findByPk(id)
       book.destroy()
       return(true);
     },

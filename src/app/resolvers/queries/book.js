@@ -18,7 +18,7 @@ const { Books } = require("@models")
 
 let queries = {  
     books: () => Books.findAll(),
-    books: (_, {id}) => Books.findByPk(id),
+    book: (_, {id}) => Books.findByPk(id),
 }
 
 module.exports = queries 
