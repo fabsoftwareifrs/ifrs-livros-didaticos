@@ -72,6 +72,11 @@ module.exports = gql`
     volume:String!
     quantity:Int!
   }
+  type PaginateBook {
+    docs:[Book!]
+    pages:Int!
+    total:Int!
+  }
   type AccessLevel {
     id:ID!
     role:String!
@@ -82,6 +87,7 @@ module.exports = gql`
     users: [User!]
     user(id:ID!): User!
 
+    paginateBooks(page:Int!,limit:Int!): PaginateBook!
     books: [Book!]
     book(id:ID!): Book!
 

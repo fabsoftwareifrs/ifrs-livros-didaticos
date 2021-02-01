@@ -14,11 +14,21 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Books } = require("@models")
+const { Book } = require("@models")
 
 let queries = {  
-    books: () => Books.findAll(),
-    book: (_, {id}) => Books.findByPk(id),
+    paginateBooks: async (_,{page,limit}) => {
+        const options = {
+            page, // Default 1
+            paginate: limit, // Default 25
+            
+          }
+        const book= await Book.paginate(options)
+        console.log(book)
+        return(book)
+    },
+    books: () => Book.findAll(),
+    book: (_, {id}) => Book.findByPk(id),
 }
 
 module.exports = queries 
