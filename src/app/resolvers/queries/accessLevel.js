@@ -17,6 +17,15 @@
 const { AccessLevel } = require("@models")
 
 let queries = {
+    paginateAccessLevel: async (_,{page,limit}) => {
+        const options = {
+            page, // Default 1
+            paginate: limit, // Default 25
+            
+          }
+        const accessLevel= await AccessLevel.paginate(options)
+        return(accessLevel)
+    },
     accessLevels: ()=> AccessLevel.findAll(),
     accessLevel: (_, {id}) => AccessLevel.findByPk(id),
 }

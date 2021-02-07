@@ -16,6 +16,7 @@
 
 'use strict';
 const { Model } = require('sequelize');
+const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
   class AccessLevel extends Model {
     /**
@@ -33,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'AccessLevel',
     underscored: true,
-  });
+  })
+  sequelizePaginate.paginate(AccessLevel)
   return AccessLevel;
 };

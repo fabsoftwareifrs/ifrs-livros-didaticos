@@ -81,6 +81,11 @@ module.exports = gql`
     id:ID!
     role:String!
   }
+  type PaginateAccessLevel {
+    docs:[AccessLevel!]
+    pages:Int!
+    total:Int!
+  }
   type Query {
     hello: String
 
@@ -106,6 +111,7 @@ module.exports = gql`
     loans: [Loan!]
     loan(id:ID!): Loan!
 
+    paginateAccessLevel(page:Int!,limit:Int!): PaginateAccessLevel!
     accessLevels: [AccessLevel!]
     accessLevel(id:ID!): AccessLevel!
   }
