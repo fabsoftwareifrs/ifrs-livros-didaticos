@@ -24,7 +24,6 @@ let queries = {
             
           }
         const book= await Book.paginate(options)
-        console.log(book)
         return(book)
     },
     books: () => Book.findAll(),

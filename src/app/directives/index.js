@@ -14,6 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const isAuthenticated = require('./isAuthenticated')
 
-module.exports = { isAuthenticated }
+const isAuthorized = require('./isAuthorized')
+
+module.exports = { isAuthorized }

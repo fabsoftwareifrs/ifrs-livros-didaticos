@@ -16,7 +16,16 @@
 
 const { Category } = require("@models")
 
-let queries = {  
+let queries = { 
+    paginateCategories: async (_,{page,limit}) => {
+        const options = {
+            page, // Default 1
+            paginate: limit, // Default 25
+            
+          }
+        const category= await Category.paginate(options)
+        return(category)
+    }, 
     categories: ()=> Category.findAll(),
     category: (_, {id}) => Category.findByPk(id),
 }
