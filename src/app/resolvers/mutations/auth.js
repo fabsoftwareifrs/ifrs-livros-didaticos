@@ -28,7 +28,7 @@ const login = async (_, { login, password }) => {
 
   return {
     token: User.generateToken({ id: user.id }),
-    id: user.id,
+    user: user,
   }
 }
 

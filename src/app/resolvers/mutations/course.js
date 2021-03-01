@@ -30,7 +30,6 @@ let mutations = {
   },
   deleteCourse: async (_, {id}) => {
     const course = await Course.findByPk(id)
-    const {name} = course
     course.destroy()
     return(true);
   },

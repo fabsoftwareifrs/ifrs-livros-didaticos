@@ -19,15 +19,16 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
 directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
 
+  
+
   type AuthResponse {
     token: String!
-    id:Int!
+    user:User!
   }
   type User{
     id: ID!
     name: String!
     login: String!
-    password: String
     accessLevel: Int!
   }
   type Category {
@@ -37,6 +38,11 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
   type Course {
     id: ID!
     name: String!
+  }
+  type PaginateCourse {
+    docs:[Course!]
+    pages:Int!
+    total:Int!
   }
   type Loan {
     id: ID!
@@ -103,6 +109,7 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     categories: [Category!]
     category(id:ID!): Category!
 
+    paginateCourses(page:Int!,limit:Int!): PaginateCourse!
     courses: [Course!]
     course(id:ID!): Course!
 
