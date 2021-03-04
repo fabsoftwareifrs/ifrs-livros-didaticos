@@ -17,14 +17,18 @@
 const { gql } = require('apollo-server-express')
 
 module.exports = gql`
+directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
+
+  
+
   type AuthResponse {
     token: String!
+    user:User!
   }
   type User{
     id: ID!
     name: String!
     login: String!
-    password: String
     accessLevel: Int!
   }
   type Category {
@@ -34,6 +38,11 @@ module.exports = gql`
   type Course {
     id: ID!
     name: String!
+  }
+  type PaginateCourse {
+    docs:[Course!]
+    pages:Int!
+    total:Int!
   }
   type Loan {
     id: ID!
@@ -77,6 +86,11 @@ module.exports = gql`
     pages:Int!
     total:Int!
   }
+  type PaginateCategory {
+    docs:[Category!]
+    pages:Int!
+    total:Int!
+  }
   type AccessLevel {
     id:ID!
     role:String!
@@ -96,9 +110,11 @@ module.exports = gql`
     books: [Book!]
     book(id:ID!): Book!
 
+    paginateCategories(page:Int!,limit:Int!): PaginateCategory!
     categories: [Category!]
     category(id:ID!): Category!
 
+    paginateCourses(page:Int!,limit:Int!): PaginateCourse!
     courses: [Course!]
     course(id:ID!): Course!
 
@@ -117,41 +133,41 @@ module.exports = gql`
   }
 
   type Mutation {
-    login(login: String!, password: String!): AuthResponse
+    login(login: String!, password: String!): AuthResponse 
 
-    mail(from:String!):Boolean!
+    mail(from:String!):Boolean! @isAuthorized(roles: [1])
 
-    createUser(name:String!,login:String!,password:String!,accessLevel:Int!):User!
-    updateUser(id:ID,name:String!,login:String!,password:String!,accessLevel:Int!):User!
-    deleteUser(id:ID!):Boolean
+    createUser(name:String!,login:String!,password:String!,accessLevel:Int!):User! @isAuthorized(roles: [1])
+    updateUser(id:ID,name:String!,login:String!,password:String!,accessLevel:Int!):User! @isAuthorized(roles: [1])
+    deleteUser(id:ID!):Boolean @isAuthorized(roles: [1])
 
-    createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book!
-    updateBook(id: ID,name:String,code:String,author:String,volume:String,quantity:Int!):Book!
-    deleteBook(id:ID!):Boolean
+    createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book! @isAuthorized(roles: [1])
+    updateBook(id: ID,name:String,code:String,author:String,volume:String,quantity:Int!):Book! @isAuthorized(roles: [1])
+    deleteBook(id:ID!):Boolean @isAuthorized(roles: [1])
 
-    createCategory(name:String!):Category!
-    updateCategory(id:ID,name:String!):Category!
-    deleteCategory(id:ID!): Boolean
+    createCategory(name:String!):Category! @isAuthorized(roles: [1])
+    updateCategory(id:ID,name:String!):Category! @isAuthorized(roles: [1])
+    deleteCategory(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createCourse(name:String!): Course!
-    updateCourse(id:ID,name:String!): Course!
-    deleteCourse(id:ID!): Boolean
+    createCourse(name:String!): Course! @isAuthorized(roles: [1])
+    updateCourse(id:ID,name:String!): Course! @isAuthorized(roles: [1])
+    deleteCourse(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createClass(name:String!, course_id:Int!):Classes!
-    updateClass(id:ID,name:String!,course_id:Int!):Classes!
-    deleteClass(id:ID!): Boolean
+    createClass(name:String!, course_id:Int!):Classes! @isAuthorized(roles: [1])
+    updateClass(id:ID,name:String!,course_id:Int!):Classes! @isAuthorized(roles: [1])
+    deleteClass(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createStudent(name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students!
-    updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students!
-    deleteStudent(id:ID!): Boolean
+    createStudent(name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students! @isAuthorized(roles: [1])
+    updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students! @isAuthorized(roles: [1])
+    deleteStudent(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Int!, bookId:Int!, userId:Int!): Loan!
-    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan!
-    deleteLoan(id:ID!): Boolean
+    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Int!, bookId:Int!, userId:Int!): Loan! @isAuthorized(roles: [1])
+    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan! @isAuthorized(roles: [1])
+    deleteLoan(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createAccessLevel(role:String!):AccessLevel!
-    updateAccessLevel(id:ID,role:String!):AccessLevel!
-    deleteAccessLevel(id:ID!): Boolean
+    createAccessLevel(role:String!):AccessLevel! @isAuthorized(roles: [1])
+    updateAccessLevel(id:ID,role:String!):AccessLevel! @isAuthorized(roles: [1])
+    deleteAccessLevel(id:ID!): Boolean @isAuthorized(roles: [1])
 
   }
 `

@@ -1,24 +1,3 @@
-'use strict';
-
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-  },
-
-  down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  }
-};
 /*
  * This file is part of LMS Livros Didáticos.
  *
@@ -35,32 +14,17 @@ module.exports = {
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 'use strict';
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('categories', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.renameColumn('categories', 'nome', 'name', {
+      allowNull: false,
+      type: Sequelize.STRING,
     })
   },
-
-  down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('categories')
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.renameColumn('categories', 'name', 'nome', {
+      allowNull: false,
+      type: Sequelize.STRING,
+    })
   }
 };
