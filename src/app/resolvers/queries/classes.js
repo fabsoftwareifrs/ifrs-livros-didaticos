@@ -17,6 +17,15 @@
 const { Classes } = require("@models")
 
 let queries = {  
+    paginateClasses: async (_,{page,limit}) => {
+        const options = {
+            page, // Default 1
+            paginate: limit, // Default 25
+            
+          }
+        const classes= await Classes.paginate(options)
+        return(classes)
+    },
     classes: ()=> Classes.findAll({include:{association: 'courses' }}),
     class: (_, {id}) => Classes.findByPk(id,{include:{association: 'courses' }}),
 }

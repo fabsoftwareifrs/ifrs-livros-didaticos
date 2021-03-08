@@ -63,6 +63,11 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     course_id:Int!
     courses:Course!
   }
+  type PaginateClasses {
+    docs:[Classes!]
+    pages:Int!
+    total:Int!
+  }
   type Students {
     id:ID!
     name:String!
@@ -118,6 +123,7 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     courses: [Course!]
     course(id:ID!): Course!
 
+    paginateClasses(page:Int!,limit:Int!): PaginateClasses!
     classes: [Classes!]
     class(id:ID!): Classes!
 

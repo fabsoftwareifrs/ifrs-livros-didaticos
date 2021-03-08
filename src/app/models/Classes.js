@@ -15,9 +15,10 @@
  */
 
 'use strict';
-const {
-  Model
-} = require('sequelize');
+require('dotenv').config()
+const { Model } = require('sequelize');
+const sequelizePaginate = require('sequelize-paginate')
+
 module.exports = (sequelize, DataTypes) => {
   class Classes extends Model {
     /**
@@ -36,5 +37,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Classes',
     underscored: true,
   });
+  sequelizePaginate.paginate(Classes)
   return Classes;
 };
