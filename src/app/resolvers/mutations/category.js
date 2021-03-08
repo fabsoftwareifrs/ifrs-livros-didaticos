@@ -16,26 +16,23 @@
 
 const { Category } = require('@models')
 
-let mutations = {
-  
-      //Categories
-  createCategory: async (_, {name}) => {
+  //Categories
+  const createCategory= async (_, {name}) => {
     const category = await Category.create({name})
     
     return(category)
-  },
-  updateCategory: async (_, {id,name}) => {
+  }
+  const updateCategory= async (_, {id,name}) => {
     const category = await Category.findByPk(id)
     category.update({name})
     return category 
-  },
-  deleteCategory: async (_, {id}) => {
+  }
+  const deleteCategory= async (_, {id}) => {
     const category = await Category.findByPk(id)
-    const {name} = category
     category.destroy()
     return(true);
-  },
+  }
 
-}
 
-module.exports =  mutations 
+
+module.exports =  {createCategory, updateCategory, deleteCategory}

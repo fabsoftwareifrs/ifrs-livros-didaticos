@@ -16,24 +16,22 @@
 
 const { Course } = require('@models')
 
-let mutations = {
-  
   //Courses
-  createCourse: async (_, {name}) => {
+  const createCourse= async (_, {name}) => {
     const course = await Course.create({name})
     return(course)
-  },
-  updateCourse: async (_, {id,name}) => {
+  }
+  const updateCourse= async (_, {id,name}) => {
     const course = await Course.findByPk(id)
     course.update({name})
     return course 
-  },
-  deleteCourse: async (_, {id}) => {
+  }
+  const deleteCourse= async (_, {id}) => {
     const course = await Course.findByPk(id)
     course.destroy()
     return(true);
-  },
+  }
 
-}
 
-module.exports =  mutations 
+
+module.exports =  {createCourse, updateCourse, deleteCourse} 

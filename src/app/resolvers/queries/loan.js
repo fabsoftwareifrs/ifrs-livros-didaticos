@@ -16,9 +16,8 @@
 
 const { Loan } = require("@models")
 
-let queries = {  
-    loans: ()=> Loan.findAll(),
-    loan: (_, {id}) => Loan.findByPk(id),
-}
+    const loans= ()=> Loan.findAll()
+    const loan= (_, {id}) => Loan.findByPk(id)
 
-module.exports =  queries 
+
+module.exports =  {loan, loans} 

@@ -16,8 +16,8 @@
 
 const { Course } = require("@models")
 
-let queries = { 
-    paginateCourses: async (_,{page,limit}) => {
+
+    const paginateCourses= async (_,{page,limit}) => {
         const options = {
             page, // Default 
             paginate: limit, // Default 25
@@ -25,9 +25,9 @@ let queries = {
           }
         const course= await Course.paginate(options)
         return(course)
-    }, 
-    courses: ()=> Course.findAll(),
-    course: (_, {id}) => Course.findByPk(id),
-}
+    }
+    const courses= ()=> Course.findAll()
+    const course= (_, {id}) => Course.findByPk(id)
 
-module.exports =  queries 
+
+module.exports =  {paginateCourses, courses, course} 

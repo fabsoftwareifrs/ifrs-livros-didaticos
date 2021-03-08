@@ -16,23 +16,23 @@
 
 const { Book } = require('@models')
 
-let mutations = {
+
   
     //Books
-    createBook: async (_, {name,code,author,volume,quantity}) => {
+    const createBook= async (_, {name,code,author,volume,quantity}) => {
       const book = await Book.create({name,code,author,volume,quantity})
       return book
-    },
-    updateBook: async (_, {id,name,code,author,volume,quantity}) => {
+    }
+    const updateBook= async (_, {id,name,code,author,volume,quantity}) => {
       const book = await Book.findByPk(id)
       book.update({name,code,author,volume,quantity})
       return book
-    },
-    deleteBook: async (_, {id}) => {
+    }
+    const deleteBook= async (_, {id}) => {
       const book = await Book.findByPk(id)
       book.destroy()
       return(true);
-    },
-}
+    }
 
-module.exports = mutations 
+
+module.exports = {createBook, updateBook, deleteBook} 

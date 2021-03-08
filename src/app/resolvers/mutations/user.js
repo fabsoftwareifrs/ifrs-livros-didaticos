@@ -16,25 +16,22 @@
 
 const { User } = require('@models')
 
-let mutations = {
-
-  createUser: async (_, {name, login, password, accessLevel}) => {
+  const createUser= async (_, {name, login, password, accessLevel}) => {
     const user= await User.create({ name, login, password, accessLevel })
     return(user)
-  },
+  }
 
-  updateUser: async (_, {id, name, login, password, accessLevel}) => {
+  const updateUser= async (_, {id, name, login, password, accessLevel}) => {
     const user= await User.findByPk(id)
     user.update({name, login, password, accessLevel})
     return user
-  },
+  }
 
-  deleteUser: async (_, {id}) => {
+  const deleteUser= async (_, {id}) => {
     const user= await User.findByPk(id)
-    const {name, login, password, accessLevel}=user
     user.destroy()
     return(true);
-  },
-}
+  }
 
-module.exports =  mutations
+
+module.exports =  {createUser, updateUser, deleteUser}

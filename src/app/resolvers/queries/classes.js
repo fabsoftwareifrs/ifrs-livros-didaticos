@@ -16,9 +16,9 @@
 
 const { Classes } = require("@models")
 
-let queries = {  
-    classes: ()=> Classes.findAll({include:{association: 'courses' }}),
-    class: (_, {id}) => Classes.findByPk(id,{include:{association: 'courses' }}),
-}
+ 
+    const classes = ()=> Classes.findAll({include:{association: 'courses' }})
+    const classRoom = (_, {id}) => Classes.findByPk(id,{include:{association: 'courses' }})
 
-module.exports =  queries 
+
+module.exports =  {classes, classRoom}

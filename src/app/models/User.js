@@ -19,7 +19,7 @@ require('dotenv').config()
 
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
+const sequelizePaginate = require('sequelize-paginate')
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -62,6 +62,6 @@ module.exports = (sequelize, DataTypes) => {
       expiresIn: SECONDS_IN_A_DAY,
     })
   }
-
+  sequelizePaginate.paginate(User)
   return User
 }

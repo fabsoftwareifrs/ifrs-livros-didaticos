@@ -16,14 +16,14 @@
 
 require('dotenv').config()
 const { ApolloError } = require('apollo-server-express')
-
+const getToken = require('./getToken')
 const { User } = require('@models')
 const jwt = require('jsonwebtoken')
 
 
 const getAuthenticatedUser = async (authorization) => {
   try {
-    const token = authorization
+    const token = getToken(authorization)
 
     if (!token) return null
 

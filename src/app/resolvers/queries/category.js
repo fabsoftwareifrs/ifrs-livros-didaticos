@@ -16,8 +16,8 @@
 
 const { Category } = require("@models")
 
-let queries = { 
-    paginateCategories: async (_,{page,limit}) => {
+
+    const paginateCategories= async (_,{page,limit}) => {
         const options = {
             page, // Default 1
             paginate: limit, // Default 25
@@ -25,9 +25,9 @@ let queries = {
           }
         const category= await Category.paginate(options)
         return(category)
-    }, 
-    categories: ()=> Category.findAll(),
-    category: (_, {id}) => Category.findByPk(id),
-}
+    }
+    const categories= ()=> Category.findAll()
+    const category= (_, {id}) => Category.findByPk(id)
 
-module.exports =  queries 
+
+module.exports =  {paginateCategories, categories, category} 

@@ -26,7 +26,7 @@ const modules = [
   require('./course'),
   require('./student'),
   require('./user'),
-  require('./accessLevel'),
+ 
 ]
 
 modules.forEach((module) => {

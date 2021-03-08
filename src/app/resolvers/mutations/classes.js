@@ -16,26 +16,24 @@
 
 const { Classes } = require('@models')
 
-let mutations = {
-  
    //Classes
-   createClass: async (_, {name,course_id}) => {
+  const createClass= async (_, {name,course_id}) => {
     var classe= await Classes.create({name,course_id})
     const {id}=classe
     classe= await Classes.findByPk(id,{include:{association: 'courses' }})
     return(classe)
-  },
-  updateClass: async (_,{id,name,course_id}) => {
+  }
+  const updateClass= async (_,{id,name,course_id}) => {
     const classe= await Classes.findByPk(id,{include:{association: 'courses' }})
     classe.update({name,course_id})
     return classe 
-  },
-  deleteClass: async (_, {id}) => {
+  }
+  const deleteClass= async (_, {id}) => {
     const classe= await Classes.findByPk(id)
     classe.destroy()
     return(true);
-  },
+  }
 
-}
 
-module.exports = mutations 
+
+module.exports = {createClass, updateClass, deleteClass} 

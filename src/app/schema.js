@@ -28,8 +28,14 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
   type User{
     id: ID!
     name: String!
+    lastName: String!
     login: String!
     accessLevel: Int!
+  }
+  type PaginateUser {
+    docs:[User!]
+    pages:Int!
+    total:Int!
   }
   type Category {
     id:ID!
@@ -91,18 +97,11 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     pages:Int!
     total:Int!
   }
-  type AccessLevel {
-    id:ID!
-    role:String!
-  }
-  type PaginateAccessLevel {
-    docs:[AccessLevel!]
-    pages:Int!
-    total:Int!
-  }
+  
   type Query {
     hello: String
 
+    paginateUsers(page:Int!,limit:Int!): PaginateUser!
     users: [User!]
     user(id:ID!): User!
 
@@ -119,7 +118,7 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     course(id:ID!): Course!
 
     classes: [Classes!]
-    class(id:ID!): Classes!
+    classRoom(id:ID!): Classes!
 
     students: [Students!]
     student(id:ID!): Students!
@@ -127,9 +126,6 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     loans: [Loan!]
     loan(id:ID!): Loan!
 
-    paginateAccessLevel(page:Int!,limit:Int!): PaginateAccessLevel!
-    accessLevels: [AccessLevel!]
-    accessLevel(id:ID!): AccessLevel!
   }
 
   type Mutation {
@@ -138,7 +134,7 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     mail(from:String!):Boolean! @isAuthorized(roles: [1])
 
     createUser(name:String!,login:String!,password:String!,accessLevel:Int!):User! @isAuthorized(roles: [1])
-    updateUser(id:ID,name:String!,login:String!,password:String!,accessLevel:Int!):User! @isAuthorized(roles: [1])
+    updateUser(id:ID,name:String!,login:String!,password:String,accessLevel:Int!):User! @isAuthorized(roles: [1])
     deleteUser(id:ID!):Boolean @isAuthorized(roles: [1])
 
     createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book! @isAuthorized(roles: [1])
@@ -165,9 +161,6 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan! @isAuthorized(roles: [1])
     deleteLoan(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createAccessLevel(role:String!):AccessLevel! @isAuthorized(roles: [1])
-    updateAccessLevel(id:ID,role:String!):AccessLevel! @isAuthorized(roles: [1])
-    deleteAccessLevel(id:ID!): Boolean @isAuthorized(roles: [1])
 
   }
 `

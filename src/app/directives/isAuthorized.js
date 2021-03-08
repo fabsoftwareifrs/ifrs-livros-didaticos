@@ -27,9 +27,10 @@ class IsAuthorized extends SchemaDirectiveVisitor {
       const [, , { authenticatedUser }] = args; 		
       		
       if (!authenticatedUser)	throw new AuthenticationError("You are not authenticated!"); 
-      		if (!roles.includes(authenticatedUser.accessLevel)) {				
-              throw new AuthenticationError("You are not authorized!");			
-          } 			
+      
+      if (!roles.includes(authenticatedUser.accessLevel)) {				
+          throw new AuthenticationError("You are not authorized!");			
+      } 			
       const result = await resolve.apply(this, args); 			
       return result;		
     };	

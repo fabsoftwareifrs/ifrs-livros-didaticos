@@ -14,15 +14,13 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {sendMessage}= require('../contacts')
-
-let mutations = {
+const {sendMessage}= require('./contacts')
   
   //Mail
-  mail: async (_, { from }) => {
+  const mail= async (_, { from }) => {
     const mail= await sendMessage(_,{from})
     return mail
-  },
-}
+  }
 
-module.exports =  mutations 
+
+module.exports =  {mail} 

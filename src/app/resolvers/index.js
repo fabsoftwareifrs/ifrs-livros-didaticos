@@ -19,7 +19,9 @@ const mutations = require('./mutations')
 const queries = require('./queries')
 
 let others = {}
-const modules = {}
+const modules = {
+  User:require('./User')
+}
 
 Object.keys(modules).forEach((moduleName) => {
   others = { ...others, [moduleName]: modules[moduleName] }

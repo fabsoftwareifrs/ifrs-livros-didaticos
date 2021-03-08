@@ -16,25 +16,24 @@
 
 const { Loan } = require('@models')
 
-let mutations = {
   
-  createLoan: async (_, {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
+  const createLoan= async (_, {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
     const loan= await Loan.create({ withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId })
     return(loan)
-  },
+  }
 
-  updateLoan: async (_, {id, withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
+  const updateLoan= async (_, {id, withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
     const loan= await Record.findByPk(id)
     loan.update({withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId})
     return loan 
-  },
+  }
 
-  deleteLoan: async (_, {id}) => {
+  const deleteLoan= async (_, {id}) => {
     const loan= await Loan.findByPk(id)
     const {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}=loan
     loan.destroy()
     return(true);
-  },
-}
+  }
 
-module.exports =  mutations 
+
+module.exports =  {createLoan, updateLoan, deleteLoan} 
