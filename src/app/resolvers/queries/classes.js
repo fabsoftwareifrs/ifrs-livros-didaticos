@@ -16,9 +16,17 @@
 
 const { Classes } = require("@models")
 
- 
+    const paginateClasses= async (_,{page,limit}) => {
+        const options = {
+            page, // Default 1
+            paginate: limit, // Default 25
+            
+        }
+        const classes= await Classes.paginate(options)
+        return(classes)
+    }
     const classes = ()=> Classes.findAll({include:{association: 'courses' }})
     const classRoom = (_, {id}) => Classes.findByPk(id,{include:{association: 'courses' }})
 
 
-module.exports =  {classes, classRoom}
+module.exports =  {classes, classRoom, paginateClasses}
