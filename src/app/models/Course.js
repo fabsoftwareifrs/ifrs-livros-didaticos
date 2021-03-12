@@ -18,6 +18,7 @@
 const {
   Model
 } = require('sequelize');
+const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     /**
@@ -37,5 +38,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Course',
     underscored: true,
   });
+  sequelizePaginate.paginate(Course)
   return Course;
 };
