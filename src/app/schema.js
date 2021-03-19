@@ -74,6 +74,11 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     pages:Int!
     total:Int!
   }
+  type PaginateStudents {
+    docs:[Students!]
+    pages:Int!
+    total:Int!
+  }
   type Students {
     id:ID!
     name:String!
@@ -126,6 +131,7 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     classes: [Classes!]
     classRoom(id:ID!): Classes!
 
+    paginateStudents(page:Int!,limit:Int!): PaginateStudents!
     students: [Students!]
     student(id:ID!): Students!
 

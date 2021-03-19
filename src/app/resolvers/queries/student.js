@@ -16,8 +16,17 @@
 
 const { Student } = require("@models")
 
+    const paginateStudents= async (_,{page,limit}) => {
+        const options = {
+            page, // Default 
+            paginate: limit, // Default 25
+            
+        }
+        const student= await Student.paginate(options)
+        return(student)
+    }
     const students= ()=> Student.findAll({include:[{association: 'courses' },{association: 'classes' }]})
     const student= (_, {id}) => Student.findByPk(id,{include:[{association: 'courses' },{association: 'classes' }]})
 
 
-module.exports =  {students, student} 
+module.exports =  {students, student, paginateStudents} 
