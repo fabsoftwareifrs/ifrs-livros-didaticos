@@ -13,56 +13,41 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
-
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('loans', {
+    return queryInterface.createTable('periods', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      withdraw_date: {
+      name: {
         allowNull: false,
-        type: Sequelize.DATEONLY
+        type: Sequelize.STRING,
       },
-      loan_days: {
+      start: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.DATE,
       },
-      delivered: {
+      end: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      delivered_date: {
-        allowNull: false,
-        type: Sequelize.DATEONLY
-      },
-      student_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },
-      book_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },
-      user_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.DATE,
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('loans');
+    return queryInterface.dropTable('periods')
   }
 };

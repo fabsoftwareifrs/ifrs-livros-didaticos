@@ -15,9 +15,17 @@
  */
 
 const { Loan } = require("@models")
+const paginateLoans= async (_,{page,limit}) => {
+    const options = {
+        page, // Default 
+        paginate: limit, // Default 25
+        include:[{association: 'students' },{association: 'books' },{association: 'users' },{association: 'periods' }]
+    }
+    const loan= await Loan.paginate(options)
+    return(loan)
+}
+    const loans= ()=> Loan.findAll({include:[{association: 'students' },{association: 'books' },{association: 'users' },{association: 'periods' }]})
+    const loan= (_, {id}) => Loan.findByPk(id,{include:[{association: 'students' },{association: 'books' },{association: 'users' },{association: 'periods' }]})
 
-    const loans= ()=> Loan.findAll()
-    const loan= (_, {id}) => Loan.findByPk(id)
 
-
-module.exports =  {loan, loans} 
+module.exports =  {loan, loans,paginateLoans} 

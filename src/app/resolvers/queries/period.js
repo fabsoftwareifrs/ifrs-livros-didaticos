@@ -1,4 +1,3 @@
-
 /*
  * This file is part of LMS Livros Didáticos.
  *
@@ -10,26 +9,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const mutations = require('./mutations')
-const queries = require('./queries')
+const { Period } = require("@models")
+const paginatePeriods= async (_,{page,limit}) => {
+    const options = {
+        page, // Default 
+        paginate: limit, // Default 25
+    }
+    const period= await Period.paginate(options)
+    return(period)
+}    
+    const periods= ()=> Period.findAll()
+    const period= (_, {id}) => Period.findByPk(id)
 
-let others = {}
-const modules = {
-  User:require('./User'),
-  Loan:require('./Loan')
-}
-
-Object.keys(modules).forEach((moduleName) => {
-  others = { ...others, [moduleName]: modules[moduleName] }
-})
-
-module.exports = {
-  ...others,
-  Mutation: mutations,
-  Query: queries,
-}
+module.exports = {period, periods, paginatePeriods}

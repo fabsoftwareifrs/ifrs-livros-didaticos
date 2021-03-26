@@ -16,7 +16,7 @@
 
 'use strict';
 const { Model } = require('sequelize');
-
+const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
   class Loan extends Model {
     /**
@@ -25,23 +25,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      //Loan.hasOne(models.Student, { foreignKey: 'studentId', as: 'student' })
-      //Loan.hasOne(models.Book, { foreignKey: 'bookId', as: 'book' })
-      //Loan.hasOne(models.User, { foreignKey: 'userId', as: 'user' })
+      this.belongsTo(models.Student, { foreignKey: 'student_id', as: 'students' })
+      this.belongsTo(models.Book, { foreignKey: 'book_id', as: 'books' })
+      this.belongsTo(models.User, { foreignKey: 'user_id', as: 'users' })
+      this.belongsTo(models.Period, { foreignKey: 'period_id', as: 'periods' })
     }
   };
   Loan.init({
-    withdrawDate: DataTypes.DATEONLY,
-    loanDays: DataTypes.INTEGER,
     delivered: DataTypes.BOOLEAN,
-    deliveredDate: DataTypes.DATEONLY,
-    studentId: DataTypes.INTEGER,
-    bookId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
   }, {
     sequelize,
     underscored: true,
     modelName: 'Loan',
   });
+  sequelizePaginate.paginate(Loan)
   return Loan;
 };

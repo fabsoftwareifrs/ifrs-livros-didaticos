@@ -1,4 +1,3 @@
-
 /*
  * This file is part of LMS Livros Didáticos.
  *
@@ -10,26 +9,29 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const mutations = require('./mutations')
-const queries = require('./queries')
+const { Period } = require('@models')
 
-let others = {}
-const modules = {
-  User:require('./User'),
-  Loan:require('./Loan')
-}
+  const createPeriod= async (_, {name, start, end}) => {
+    const period= await Period.create({name, start, end})
+    return(period)
+  }
 
-Object.keys(modules).forEach((moduleName) => {
-  others = { ...others, [moduleName]: modules[moduleName] }
-})
+  const updatePeriod= async (_, {id, name, start, end}) => {
+    const period= await Period.findByPk(id)
+    period.update({name, start, end})
+    return period
+  }
 
-module.exports = {
-  ...others,
-  Mutation: mutations,
-  Query: queries,
-}
+  const deletePeriod= async (_, {id}) => {
+    const period= await Period.findByPk(id)
+    period.destroy()
+    return(true);
+  }
+
+
+module.exports =  {createPeriod, updatePeriod, deletePeriod}

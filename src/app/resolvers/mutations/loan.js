@@ -17,20 +17,20 @@
 const { Loan } = require('@models')
 
   
-  const createLoan= async (_, {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
-    const loan= await Loan.create({ withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId })
-    return(loan)
+  const createLoan= async (_, { delivered, period_id, student_id, book_id, user_id}) => {
+    const loan= await Loan.create({  delivered, period_id, student_id, book_id, user_id})
+    const {id}=loan
+    return(await Loan.findByPk(id,{include:[{association: 'students' },{association: 'books' },{association: 'users' },{association: 'periods' }]}))
   }
 
-  const updateLoan= async (_, {id, withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}) => {
-    const loan= await Record.findByPk(id)
-    loan.update({withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId})
+  const updateLoan= async (_, {id, delivered, period_id, student_id, book_id, user_id}) => {
+    const loan= await Loan.findByPk(id,{include:[{association: 'students' },{association: 'books' },{association: 'users' },{association: 'periods' }]})
+    loan.update({ delivered, period_id, student_id, book_id, user_id})
     return loan 
   }
 
   const deleteLoan= async (_, {id}) => {
     const loan= await Loan.findByPk(id)
-    const {withdrawDate, loanDays, delivered, deliveredDate, studentId, bookId, userId}=loan
     loan.destroy()
     return(true);
   }

@@ -20,7 +20,7 @@ const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     static associate(models) {
-      //Book.hasOne(models.Category, { foreignKey: 'category_id', as: 'category' })
+      
     }
   }
 

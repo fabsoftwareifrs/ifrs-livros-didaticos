@@ -26,6 +26,7 @@ const modules = [
   require('./course'),
   require('./student'),
   require('./user'),
+  require('./period'),
  
 ]
 

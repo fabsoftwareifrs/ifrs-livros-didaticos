@@ -52,16 +52,32 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
   }
   type Loan {
     id: ID!
-    withdrawDate: String!
-    loanDays: Int!
     delivered: Boolean!
-    deliveredDate: String
-    studentId: Int!
-    bookId: Int!
-    userId: Int!
+    late: Boolean!
+    student_id: Int!
+    book_id: Int!
+    user_id: Int!
+    period_id:Int!
     students: Students!
     books: Book!
     users: User!
+    periods: Period!
+  }
+  type PaginateLoans {
+    docs:[Loan!]
+    pages:Int!
+    total:Int!
+  }
+  type Period {
+    id: ID!
+    name: String!
+    start: String!
+    end: String!
+  }
+  type PaginatePeriods {
+    docs:[Period!]
+    pages:Int!
+    total:Int!
   }
   type Classes {
     id:ID!
@@ -135,8 +151,13 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     students: [Students!]
     student(id:ID!): Students!
 
+    paginateLoans(page:Int!,limit:Int!): PaginateLoans!
     loans: [Loan!]
     loan(id:ID!): Loan!
+
+    paginatePeriods(page:Int!,limit:Int!): PaginatePeriods!
+    periods: [Period!]
+    period(id:ID!): Period!
 
   }
 
@@ -169,10 +190,13 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students! @isAuthorized(roles: [1])
     deleteStudent(id:ID!): Boolean @isAuthorized(roles: [1])
 
-    createLoan(withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String, studentId:Int!, bookId:Int!, userId:Int!): Loan! @isAuthorized(roles: [1])
-    updateLoan(id:ID!, withdrawDate:String!, loanDays:Int!, delivered:Boolean!, deliveredDate:String!, studentId:Int!, bookId:Int!, userId:Int!): Loan! @isAuthorized(roles: [1])
+    createLoan(delivered:Boolean!, period_id:Int!, student_id:Int!, book_id:Int!, user_id:Int!): Loan! @isAuthorized(roles: [1])
+    updateLoan(id:ID!, delivered:Boolean!, period_id:Int!, student_id:Int!, book_id:Int!, user_id:Int!): Loan! @isAuthorized(roles: [1])
     deleteLoan(id:ID!): Boolean @isAuthorized(roles: [1])
 
+    createPeriod(name:String!,start:String!,end:String!):Period! @isAuthorized(roles: [1])
+    updatePeriod(id:ID,name:String!,start:String!,end:String!):Period! @isAuthorized(roles: [1])
+    deletePeriod(id:ID!):Boolean @isAuthorized(roles: [1])
 
   }
 `

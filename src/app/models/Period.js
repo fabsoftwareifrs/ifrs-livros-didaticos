@@ -1,4 +1,3 @@
-
 /*
  * This file is part of LMS Livros Didáticos.
  *
@@ -15,21 +14,31 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const mutations = require('./mutations')
-const queries = require('./queries')
-
-let others = {}
-const modules = {
-  User:require('./User'),
-  Loan:require('./Loan')
-}
-
-Object.keys(modules).forEach((moduleName) => {
-  others = { ...others, [moduleName]: modules[moduleName] }
-})
-
-module.exports = {
-  ...others,
-  Mutation: mutations,
-  Query: queries,
-}
+'use strict';
+const {
+  Model
+} = require('sequelize');
+const sequelizePaginate = require('sequelize-paginate')
+module.exports = (sequelize, DataTypes) => {
+  class Period extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+     
+    }
+  };
+  Period.init({
+    name: DataTypes.STRING,
+    start: DataTypes.DATE,
+    end: DataTypes.DATE
+  }, {
+    sequelize,
+    modelName: 'Period',
+    underscored: true,
+  });
+  sequelizePaginate.paginate(Period)
+  return Period;
+};

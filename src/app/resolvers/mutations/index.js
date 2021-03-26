@@ -27,7 +27,8 @@ const modules = [
   require('./course'),
   require('./mail'),
   require('./student'),
-  require('./user')
+  require('./user'),
+  require('./period'),
 ]
 
 modules.forEach((module) => {
