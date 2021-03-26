@@ -83,7 +83,7 @@ directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
     id:ID!
     name:String!
     course_id:Int!
-    courses:Course!
+    courses:Course
   }
   type PaginateClasses {
     docs:[Classes!]

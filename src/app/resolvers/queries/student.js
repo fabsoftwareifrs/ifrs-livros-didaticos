@@ -20,7 +20,7 @@ const { Student } = require("@models")
         const options = {
             page, // Default 
             paginate: limit, // Default 25
-            
+            include:[{association: 'courses' },{association: 'classes' }]
         }
         const student= await Student.paginate(options)
         return(student)
