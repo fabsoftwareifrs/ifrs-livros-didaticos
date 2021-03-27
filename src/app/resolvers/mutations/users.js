@@ -14,34 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
+const { User } = require('@models')
 
-const sequelize = new Sequelize(config)
+const createUser = async (_, { input }) => {
+  const user = await User.create(input)
+  return user
+}
 
-const models = {}
+const updateUser = async (_, { id, input }) => {
+  const user = await User.findByPk(id)
+  await user.update(input)
+  return user
+}
 
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book'),
-  require('./Copy'),
-  require('./Loan'),
-  require('./Period'),
-]
+const deleteUser = async (_, { id }) => {
+  const user = await User.findByPk(id)
+  await user.destroy()
+  return user
+}
 
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
-
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+module.exports = { createUser, updateUser, deleteUser }

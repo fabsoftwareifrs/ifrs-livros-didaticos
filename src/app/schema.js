@@ -17,186 +17,275 @@
 const { gql } = require('apollo-server-express')
 
 module.exports = gql`
-directive @isAuthorized(roles: [Int!]) on FIELD_DEFINITION
+  scalar Date
 
-  
+  directive @isAuthorized(roles: [Int!]!) on FIELD_DEFINITION
+
+  enum Role {
+    ADMIN
+  }
+
+  enum Status {
+    MISPLACED
+    LOANED
+    AVAILABLE
+  }
 
   type AuthResponse {
     token: String!
-    user:User!
+    user: User!
   }
-  type User{
+
+  type User {
     id: ID!
     name: String!
     lastName: String!
     login: String!
     accessLevel: Int!
   }
+
   type PaginateUser {
-    docs:[User!]
-    pages:Int!
-    total:Int!
+    docs: [User!]
+    pages: Int!
+    total: Int!
   }
+
   type Category {
-    id:ID!
-    name:String!
+    id: ID!
+    name: String!
   }
   type Course {
     id: ID!
     name: String!
   }
+
   type PaginateCourse {
-    docs:[Course!]
-    pages:Int!
-    total:Int!
+    docs: [Course!]
+    pages: Int!
+    total: Int!
   }
+
   type Loan {
     id: ID!
+    start: Date!
+    end: Date
     delivered: Boolean!
     late: Boolean!
-    student_id: Int!
-    book_id: Int!
-    user_id: Int!
-    period_id:Int!
-    students: Students!
-    books: Book!
-    users: User!
-    periods: Period!
+    student: Student!
+    copy: Copy!
+    user: User!
+    period: Period!
   }
+
   type PaginateLoans {
-    docs:[Loan!]
-    pages:Int!
-    total:Int!
+    docs: [Loan!]
+    pages: Int!
+    total: Int!
   }
+
   type Period {
     id: ID!
     name: String!
-    start: String!
-    end: String!
+    start: Date!
+    end: Date!
   }
+
   type PaginatePeriods {
-    docs:[Period!]
-    pages:Int!
-    total:Int!
+    docs: [Period!]
+    pages: Int!
+    total: Int!
   }
+
   type Classes {
-    id:ID!
-    name:String!
-    course_id:Int!
-    courses:Course
+    id: ID!
+    name: String!
+    course: Course
   }
+
   type PaginateClasses {
-    docs:[Classes!]
-    pages:Int!
-    total:Int!
+    docs: [Classes!]
+    pages: Int!
+    total: Int!
   }
+
   type PaginateStudents {
-    docs:[Students!]
-    pages:Int!
-    total:Int!
+    docs: [Student!]
+    pages: Int!
+    total: Int!
   }
-  type Students {
-    id:ID!
-    name:String!
-    email:String!
-    matriculation:String!
-    course_id:Int!
-    class_id:Int!
-    courses:Course!
-    classes:Classes!
+
+  type Student {
+    id: ID!
+    name: String!
+    email: String!
+    matriculation: String!
+    course: Course!
+    classes: Classes!
   }
+
   type Book {
-    id:ID!
-    name:String!
-    code:String!
-    author:String!
-    volume:String!
-    quantity:Int!
+    id: ID!
+    name: String!
+    author: String!
+    volume: String!
+    copies: [Copy!]!
+    category: Category!
   }
+
+  type Copy {
+    id: ID!
+    code: String!
+    book: Book!
+    status: Status!
+  }
+
   type PaginateBook {
-    docs:[Book!]
-    pages:Int!
-    total:Int!
+    docs: [Book!]
+    pages: Int!
+    total: Int!
   }
   type PaginateCategory {
-    docs:[Category!]
-    pages:Int!
-    total:Int!
+    docs: [Category!]
+    pages: Int!
+    total: Int!
   }
-  
+
+  input BookInput {
+    name: String
+    author: String
+    volume: String
+  }
+
+  input CopyInput {
+    status: Status!
+    bookId: Int!
+  }
+
+  input UserInput {
+    name: String!
+    login: String!
+    password: String!
+    accessLevel: Int!
+  }
+
+  input CourseInput {
+    name: String!
+  }
+
+  input CategoryInput {
+    name: String!
+  }
+
+  input ClassInput {
+    name: String!
+    courseId: Int!
+  }
+
+  input StudentInput {
+    name: String!
+    email: String!
+    matriculation: String!
+    courseId: Int!
+    classId: Int!
+  }
+
+  input LoanInput {
+    studentId: Int!
+    copyId: Int!
+    periodId: Int!
+  }
+
+  input PeriodInput {
+    name: String!
+    start: Date!
+    end: Date!
+  }
+
+  input AuthInput {
+    login: String!
+    password: String!
+  }
+
   type Query {
     hello: String
 
-    paginateUsers(page:Int!,limit:Int!): PaginateUser!
+    paginateUsers(page: Int!, limit: Int!): PaginateUser!
     users: [User!]
-    user(id:ID!): User!
+    user(id: ID!): User!
 
-    paginateBooks(page:Int!,limit:Int!): PaginateBook!
-    books: [Book!]
-    book(id:ID!): Book!
+    paginateBooks(page: Int!, limit: Int!): PaginateBook!
+    books: [Book!]!
+    book(id: ID!): Book!
 
-    paginateCategories(page:Int!,limit:Int!): PaginateCategory!
+    paginateCategories(page: Int!, limit: Int!): PaginateCategory!
     categories: [Category!]
-    category(id:ID!): Category!
+    category(id: ID!): Category!
 
-    paginateCourses(page:Int!,limit:Int!): PaginateCourse!
+    paginateCourses(page: Int!, limit: Int!): PaginateCourse!
     courses: [Course!]
-    course(id:ID!): Course!
+    course(id: ID!): Course!
 
-    paginateClasses(page:Int!,limit:Int!): PaginateClasses!
+    copies: [Copy!]!
+    copiesByBookId(bookId: Int!): [Copy!]!
+
+    paginateClasses(page: Int!, limit: Int!): PaginateClasses!
     classes: [Classes!]
-    classRoom(id:ID!): Classes!
+    classRoom(id: ID!): Classes!
 
-    paginateStudents(page:Int!,limit:Int!): PaginateStudents!
-    students: [Students!]
-    student(id:ID!): Students!
+    paginateStudents(page: Int!, limit: Int!): PaginateStudents!
+    students: [Student!]
+    student(id: ID!): Student!
 
-    paginateLoans(page:Int!,limit:Int!): PaginateLoans!
+    paginateLoans(page: Int!, limit: Int!): PaginateLoans!
     loans: [Loan!]
-    loan(id:ID!): Loan!
+    loan(id: ID!): Loan!
 
-    paginatePeriods(page:Int!,limit:Int!): PaginatePeriods!
+    paginatePeriods(page: Int!, limit: Int!): PaginatePeriods!
     periods: [Period!]
-    period(id:ID!): Period!
-
+    period(id: ID!): Period!
   }
 
   type Mutation {
-    login(login: String!, password: String!): AuthResponse 
+    login(input: AuthInput): AuthResponse
 
-    mail(from:String!):Boolean! @isAuthorized(roles: [1])
+    mail(from: String!): Boolean! @isAuthorized(roles: [1])
 
-    createUser(name:String!,login:String!,password:String!,accessLevel:Int!):User! @isAuthorized(roles: [1])
-    updateUser(id:ID,name:String!,login:String!,password:String,accessLevel:Int!):User! @isAuthorized(roles: [1])
-    deleteUser(id:ID!):Boolean @isAuthorized(roles: [1])
+    createUser(input: UserInput): User!
+    updateUser(id: ID, input: UserInput): User! @isAuthorized(roles: [1])
+    deleteUser(id: ID!): User! @isAuthorized(roles: [1])
 
-    createBook(name:String,code:String,author:String,volume:String,quantity:Int!):Book! @isAuthorized(roles: [1])
-    updateBook(id: ID,name:String,code:String,author:String,volume:String,quantity:Int!):Book! @isAuthorized(roles: [1])
-    deleteBook(id:ID!):Boolean @isAuthorized(roles: [1])
+    createBook(input: BookInput): Book!
+    updateBook(id: ID, input: BookInput): Book! @isAuthorized(roles: [1])
+    deleteBook(id: ID!): Book! @isAuthorized(roles: [1])
 
-    createCategory(name:String!):Category! @isAuthorized(roles: [1])
-    updateCategory(id:ID,name:String!):Category! @isAuthorized(roles: [1])
-    deleteCategory(id:ID!): Boolean @isAuthorized(roles: [1])
+    createCopy(input: CopyInput): Copy!
+    updateCopy(id: ID, input: CopyInput): Copy!
+    deleteCopy(id: ID!): Copy!
 
-    createCourse(name:String!): Course! @isAuthorized(roles: [1])
-    updateCourse(id:ID,name:String!): Course! @isAuthorized(roles: [1])
-    deleteCourse(id:ID!): Boolean @isAuthorized(roles: [1])
+    createCategory(input: CategoryInput): Category!
+    updateCategory(id: ID, input: CategoryInput): Category!
+      @isAuthorized(roles: [1])
+    deleteCategory(id: ID!): Category! @isAuthorized(roles: [1])
 
-    createClass(name:String!, course_id:Int!):Classes! @isAuthorized(roles: [1])
-    updateClass(id:ID,name:String!,course_id:Int!):Classes! @isAuthorized(roles: [1])
-    deleteClass(id:ID!): Boolean @isAuthorized(roles: [1])
+    createCourse(input: CourseInput): Course!
+    updateCourse(id: ID, input: CourseInput): Course! @isAuthorized(roles: [1])
+    deleteCourse(id: ID!): Course! @isAuthorized(roles: [1])
 
-    createStudent(name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students! @isAuthorized(roles: [1])
-    updateStudent(id:ID,name:String!,email:String!,matriculation:String!,course_id:Int!,class_id:Int!):Students! @isAuthorized(roles: [1])
-    deleteStudent(id:ID!): Boolean @isAuthorized(roles: [1])
+    createClass(input: ClassInput): Classes!
+    updateClass(id: ID, input: ClassInput): Classes! @isAuthorized(roles: [1])
+    deleteClass(id: ID!): Classes! @isAuthorized(roles: [1])
 
-    createLoan(delivered:Boolean!, period_id:Int!, student_id:Int!, book_id:Int!, user_id:Int!): Loan! @isAuthorized(roles: [1])
-    updateLoan(id:ID!, delivered:Boolean!, period_id:Int!, student_id:Int!, book_id:Int!, user_id:Int!): Loan! @isAuthorized(roles: [1])
-    deleteLoan(id:ID!): Boolean @isAuthorized(roles: [1])
+    createStudent(input: StudentInput): Student!
+    updateStudent(id: ID, input: StudentInput): Student!
+      @isAuthorized(roles: [1])
+    deleteStudent(id: ID!): Student! @isAuthorized(roles: [1])
 
-    createPeriod(name:String!,start:String!,end:String!):Period! @isAuthorized(roles: [1])
-    updatePeriod(id:ID,name:String!,start:String!,end:String!):Period! @isAuthorized(roles: [1])
-    deletePeriod(id:ID!):Boolean @isAuthorized(roles: [1])
+    createLoan(input: LoanInput): Loan!
+    updateLoan(id: ID!, input: LoanInput): Loan! @isAuthorized(roles: [1])
+    deleteLoan(id: ID!): Loan! @isAuthorized(roles: [1])
 
+    createPeriod(input: PeriodInput): Period!
+    updatePeriod(id: ID, input: PeriodInput): Period! @isAuthorized(roles: [1])
+    deletePeriod(id: ID!): Period! @isAuthorized(roles: [1])
   }
 `

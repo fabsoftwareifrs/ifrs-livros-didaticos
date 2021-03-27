@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -17,7 +17,8 @@
 const { UserInputError } = require('apollo-server-express')
 const { User } = require('@models')
 
-const login = async (_, { login, password }) => {
+const login = async (_, { input }) => {
+  const { login, password } = input
   const user = await User.findOne({ where: { login } })
   if (!user) throw new UserInputError('Usuário não encontrado!')
   if (!(await user.verifyPassword(password))) {

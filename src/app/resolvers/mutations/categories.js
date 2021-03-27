@@ -9,30 +9,29 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
 const { Category } = require('@models')
 
-  //Categories
-  const createCategory= async (_, {name}) => {
-    const category = await Category.create({name})
-    
-    return(category)
-  }
-  const updateCategory= async (_, {id,name}) => {
-    const category = await Category.findByPk(id)
-    category.update({name})
-    return category 
-  }
-  const deleteCategory= async (_, {id}) => {
-    const category = await Category.findByPk(id)
-    category.destroy()
-    return(true);
-  }
+// Categories
+const createCategory = async (_, { input }) => {
+  const category = await Category.create(input)
+  return category
+}
 
+const updateCategory = async (_, { id, input }) => {
+  const category = await Category.findByPk(id)
+  category.update(input)
+  return category
+}
 
+const deleteCategory = async (_, { id }) => {
+  const category = await Category.findByPk(id)
+  category.destroy()
+  return category
+}
 
-module.exports =  {createCategory, updateCategory, deleteCategory}
+module.exports = { createCategory, updateCategory, deleteCategory }

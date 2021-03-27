@@ -14,16 +14,24 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Period } = require("@models")
-const paginatePeriods= async (_,{page,limit}) => {
-    const options = {
-        page, // Default 
-        paginate: limit, // Default 25
-    }
-    const period= await Period.paginate(options)
-    return(period)
-}    
-    const periods= ()=> Period.findAll()
-    const period= (_, {id}) => Period.findByPk(id)
+const { Course } = require('@models')
 
-module.exports = {period, periods, paginatePeriods}
+// Courses
+const createCourse = async (_, { input }) => {
+  const course = await Course.create(input)
+  return course
+}
+
+const updateCourse = async (_, { id, input }) => {
+  const course = await Course.findByPk(id)
+  await course.update(input)
+  return course
+}
+
+const deleteCourse = async (_, { id }) => {
+  const course = await Course.findByPk(id)
+  await course.destroy()
+  return course
+}
+
+module.exports = { createCourse, updateCourse, deleteCourse }

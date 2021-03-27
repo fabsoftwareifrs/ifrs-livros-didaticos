@@ -9,15 +9,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
@@ -26,16 +24,18 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate(models) {}
+  }
+  Course.init(
+    {
+      name: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'Course',
+      underscored: true,
     }
-  };
-  Course.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Course',
-    underscored: true,
-  });
+  )
   sequelizePaginate.paginate(Course)
-  return Course;
-};
+  return Course
+}

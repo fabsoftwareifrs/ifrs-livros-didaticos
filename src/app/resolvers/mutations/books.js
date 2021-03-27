@@ -9,25 +9,27 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Course } = require("@models")
+const { Book } = require('@models')
+
+const createBook= async (_, {input}) => {
+  const book = await Book.create(input);
+  return book;
+}
+const updateBook = async (_, {id, input}) => {
+  const book = await Book.findByPk(id)
+  await book.update(input);
+  return book;
+}
+const deleteBook= async (_, {id}) => {
+  const book = await Book.findByPk(id)
+  book.destroy()
+  return(true);
+}
 
 
-    const paginateCourses= async (_,{page,limit}) => {
-        const options = {
-            page, // Default 
-            paginate: limit, // Default 25
-            
-          }
-        const course= await Course.paginate(options)
-        return(course)
-    }
-    const courses= ()=> Course.findAll()
-    const course= (_, {id}) => Course.findByPk(id)
-
-
-module.exports =  {paginateCourses, courses, course} 
+module.exports = {createBook, updateBook, deleteBook}

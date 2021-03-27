@@ -9,13 +9,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict';
-const { Model } = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
   class Loan extends Model {
@@ -25,19 +25,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Student, { foreignKey: 'student_id', as: 'students' })
-      this.belongsTo(models.Book, { foreignKey: 'book_id', as: 'books' })
-      this.belongsTo(models.User, { foreignKey: 'user_id', as: 'users' })
-      this.belongsTo(models.Period, { foreignKey: 'period_id', as: 'periods' })
+      Loan.belongsTo(models.Student, { foreignKey: 'studentId' })
+      Loan.belongsTo(models.Copy, { foreignKey: 'copyId' })
+      Loan.belongsTo(models.Period, { foreignKey: 'periodId' })
     }
-  };
-  Loan.init({
-    delivered: DataTypes.BOOLEAN,
-  }, {
-    sequelize,
-    underscored: true,
-    modelName: 'Loan',
-  });
+  }
+  Loan.init(
+    {
+      start: {
+        type: DataTypes.DATEONLY,
+        defaultValue: new Date(),
+      },
+      end: DataTypes.DATEONLY,
+    },
+    {
+      sequelize,
+      underscored: true,
+      modelName: 'Loan',
+    }
+  )
   sequelizePaginate.paginate(Loan)
-  return Loan;
-};
+  return Loan
+}

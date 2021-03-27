@@ -9,24 +9,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Student } = require("@models")
+const { Copy } = require('@models')
 
-    const paginateStudents= async (_,{page,limit}) => {
-        const options = {
-            page, // Default 
-            paginate: limit, // Default 25
-            include:[{association: 'courses' },{association: 'classes' }]
-        }
-        const student= await Student.paginate(options)
-        return(student)
-    }
-    const students= ()=> Student.findAll({include:[{association: 'courses' },{association: 'classes' }]})
-    const student= (_, {id}) => Student.findByPk(id,{include:[{association: 'courses' },{association: 'classes' }]})
+const createCopy = async (_, { input }) => {
+  const copy = await Copy.create(input)
+  return copy
+}
+const updateCopy = async (_, { id, input }) => {
+  const copy = await Copy.findByPk(id)
+  await copy.update(input)
+  return copy
+}
+const deleteCopy = async (_, { id }) => {
+  const copy = await Copy.findByPk(id)
+  await copy.destroy()
+  return copy
+}
 
-
-module.exports =  {students, student, paginateStudents} 
+module.exports = { createCopy, updateCopy, deleteCopy }

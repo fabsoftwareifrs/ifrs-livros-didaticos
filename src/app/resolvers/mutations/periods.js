@@ -16,22 +16,21 @@
 
 const { Period } = require('@models')
 
-  const createPeriod= async (_, {name, start, end}) => {
-    const period= await Period.create({name, start, end})
-    return(period)
-  }
+const createPeriod = async (_, { input }) => {
+  const period = await Period.create(input)
+  return period
+}
 
-  const updatePeriod= async (_, {id, name, start, end}) => {
-    const period= await Period.findByPk(id)
-    period.update({name, start, end})
-    return period
-  }
+const updatePeriod = async (_, { id, input }) => {
+  const period = await Period.findByPk(id)
+  await period.update(input)
+  return period
+}
 
-  const deletePeriod= async (_, {id}) => {
-    const period= await Period.findByPk(id)
-    period.destroy()
-    return(true);
-  }
+const deletePeriod = async (_, { id }) => {
+  const period = await Period.findByPk(id)
+  await period.destroy()
+  return period
+}
 
-
-module.exports =  {createPeriod, updatePeriod, deletePeriod}
+module.exports = { createPeriod, updatePeriod, deletePeriod }

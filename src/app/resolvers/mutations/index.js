@@ -20,15 +20,16 @@ let mutations={
 
 const modules = [
   require('./auth'),
-  require('./loan'),
-  require('./book'),
-  require('./category'),
+  require('./loans'),
+  require('./books'),
+  require('./categories'),
   require('./classes'),
-  require('./course'),
+  require('./courses'),
   require('./mail'),
-  require('./student'),
-  require('./user'),
-  require('./period'),
+  require('./students'),
+  require('./users'),
+  require('./periods'),
+  require('./copies')
 ]
 
 modules.forEach((module) => {

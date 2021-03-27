@@ -9,14 +9,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict';
+'use strict'
 require('dotenv').config()
-const { Model } = require('sequelize');
+const { Model } = require('sequelize')
 const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (sequelize, DataTypes) => {
@@ -27,16 +27,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Course, { foreignKey: 'course_id', as: 'courses' });
+      Classes.belongsTo(models.Course, { foreignKey: 'courseId' })
+      Classes.hasMany(models.Student, { foreignKey: 'classId' })
     }
-  };
-  Classes.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Classes',
-    underscored: true,
-  });
+  }
+  Classes.init(
+    {
+      name: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'Classes',
+      underscored: true,
+    }
+  )
   sequelizePaginate.paginate(Classes)
-  return Classes;
-};
+  return Classes
+}

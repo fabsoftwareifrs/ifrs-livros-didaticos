@@ -9,28 +9,28 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const sendNodeMail = require("../../utils/sendNodeMail");
-const template = require("../../templates/email");
+const sendNodeMail = require('../../utils/sendNodeMail')
+const template = require('../../templates/email')
 
-const sendMessage = async (_,  input ) => {
-	const mailtext = `Mensagem de teste`;
-	const mailhmtl = `<p><b>Mensagem de teste</b></p>`;
+const sendMessage = async (_, input) => {
+  const mailtext = `Mensagem de teste`
+  const mailhmtl = `<p><b>Mensagem de teste</b></p>`
 
-	const mailMessage = {
-		from: input.from,
-		to: "edufaggion@gmail.com",
-		subject: "Mensagem de teste",
-		text: mailtext,
-		html: template(mailhmtl),
-	};
+  const mailMessage = {
+    from: input.from,
+    to: 'edufaggion@gmail.com',
+    subject: 'Mensagem de teste',
+    text: mailtext,
+    html: template(mailhmtl),
+  }
 
-	const mail= await sendNodeMail(mailMessage);
-	return mail.success;
-};
+  const mail = await sendNodeMail(mailMessage)
+  return mail.success
+}
 
-module.exports = { sendMessage };
+module.exports = { sendMessage }

@@ -14,34 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
+const { Book, Category, Copy } = require('@models')
 
-const sequelize = new Sequelize(config)
+const copies = async () => {
+  const copies = await Copy.findAll({
+    include: [{ model: Book, include: [{ model: Category }] }],
+  })
 
-const models = {}
+  return copies
+}
 
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book'),
-  require('./Copy'),
-  require('./Loan'),
-  require('./Period'),
-]
+const copiesByBookId = async (_, { bookId }) => {
+  const copies = await Copy.findAll({
+    include: [{ model: Book, include: [{ model: Category }] }],
+    where: { bookId },
+  })
 
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
+  return copies
+}
 
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+module.exports = { copies, copiesByBookId }

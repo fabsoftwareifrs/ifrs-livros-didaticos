@@ -14,25 +14,30 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Classes } = require('@models')
+const { Loan } = require('@models')
 
-// Classes
-const createClass = async (_, { input }) => {
-  var classe = await Classes.create(input)
-  classe.course = await classe.getCourse()
-  return classe
+const createLoan = async (_, { input }) => {
+  const loan = await Loan.create(input)
+  loan.student = await loan.getStudent()
+  loan.copy = await loan.getCopy()
+  loan.period = await loan.getPeriod()
+  console.log(loan.start)
+  return loan
 }
 
-const updateClass = async (_, { id, input }) => {
-  const classe = await Classes.findByPk(id)
-  await classe.update(input)
-  classe.course = await classe.getCourse()
-  return classe
-}
-const deleteClass = async (_, { id }) => {
-  const classe = await Classes.findByPk(id)
-  classe.destroy()
-  return classe
+const updateLoan = async (_, { id, input }) => {
+  const loan = await Loan.findByPk(id)
+  await loan.update(input)
+  loan.student = await loan.getStudent()
+  loan.copy = await loan.getCopy()
+  loan.period = await loan.getPeriod()
+  return loan
 }
 
-module.exports = { createClass, updateClass, deleteClass }
+const deleteLoan = async (_, { id }) => {
+  const loan = await Loan.findByPk(id)
+  await loan.destroy()
+  return loan
+}
+
+module.exports = { createLoan, updateLoan, deleteLoan }

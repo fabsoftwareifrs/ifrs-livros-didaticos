@@ -1,5 +1,5 @@
-const lastName= (object)=>{
-    console.log(object)
-    return `${object.name} sobrenome`
+const lastName = (object) => {
+  console.log(object)
+  return `${object.name} sobrenome`
 }
-module.exports= {lastName}
+module.exports = { lastName }

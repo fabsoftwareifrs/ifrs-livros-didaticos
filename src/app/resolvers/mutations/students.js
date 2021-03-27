@@ -14,24 +14,30 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { User } = require('@models')
+const { Student } = require('@models')
 
-  const createUser= async (_, {name, login, password, accessLevel}) => {
-    const user= await User.create({ name, login, password, accessLevel })
-    return(user)
-  }
+// Students
+const createStudent = async (_, { input }) => {
+  var student = await Student.create(input)
 
-  const updateUser= async (_, {id, name, login, password, accessLevel}) => {
-    const user= await User.findByPk(id)
-    user.update({name, login, password, accessLevel})
-    return user
-  }
+  student.course = await student.getCourse()
+  student.classes = await student.getClass()
 
-  const deleteUser= async (_, {id}) => {
-    const user= await User.findByPk(id)
-    user.destroy()
-    return(true);
-  }
+  return student
+}
 
+const updateStudent = async (_, { id, input }) => {
+  const student = await Student.findByPk(id)
+  await student.update(input)
+  student.course = await student.getCourse()
+  student.classes = await student.getClass()
+  return student
+}
 
-module.exports =  {createUser, updateUser, deleteUser}
+const deleteStudent = async (_, { id }) => {
+  const student = await Student.findByPk(id)
+  await student.destroy()
+  return student
+}
+
+module.exports = { createStudent, updateStudent, deleteStudent }

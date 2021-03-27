@@ -1,9 +1,4 @@
-const late= (object)=>{
-    if(object.delivered){
-        return false
-    }else{
-        return (object.periods.end<new Date())
-    }
-    
-}
-module.exports= {late}
+const late = ({ end, period }) => (end ? false : period.end < new Date())
+
+const delivered = ({ end }) => !!end
+module.exports = { late, delivered }

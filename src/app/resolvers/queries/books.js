@@ -14,34 +14,29 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../config/database')
+const { Book, Category, Copy } = require('@models')
 
-const sequelize = new Sequelize(config)
+const paginateBooks = async (_, { page, limit }) => {
+  const options = {
+    page, // Default 1
+    paginate: limit, // Default 25
+  }
+  const book = await Book.paginate(options)
+  return book
+}
+const books = async () => {
+  const books = await Book.findAll({
+    include: [{ model: Category }, { model: Copy, required: false }],
+  })
 
-const models = {}
+  console.log(books)
+  return books
+}
+const book = async (_, { id }) => {
+  const book = await Book.findByPk(id, {
+    include: [{ model: Category }, { model: Copy, required: false }],
+  })
+  return book
+}
 
-const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book'),
-  require('./Copy'),
-  require('./Loan'),
-  require('./Period'),
-]
-
-modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
-
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
-
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+module.exports = { paginateBooks, books, book }
