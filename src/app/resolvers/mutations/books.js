@@ -16,20 +16,23 @@
 
 const { Book } = require('@models')
 
-const createBook= async (_, {input}) => {
+const createBook = async (_, { input }) => {
+
   const book = await Book.create(input);
+  book.Category = await book.getCategory()
   return book;
 }
-const updateBook = async (_, {id, input}) => {
+const updateBook = async (_, { id, input }) => {
   const book = await Book.findByPk(id)
   await book.update(input);
+  book.Category = await book.getCategory()
   return book;
 }
-const deleteBook= async (_, {id}) => {
+const deleteBook = async (_, { id }) => {
   const book = await Book.findByPk(id)
   book.destroy()
-  return(true);
+  return (true);
 }
 
 
-module.exports = {createBook, updateBook, deleteBook}
+module.exports = { createBook, updateBook, deleteBook }

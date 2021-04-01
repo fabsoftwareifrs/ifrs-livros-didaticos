@@ -17,17 +17,12 @@
 const { Category } = require("@models")
 
 
-    const paginateCategories= async (_,{page,limit}) => {
-        const options = {
-            page, // Default 1
-            paginate: limit, // Default 25
-            
-          }
-        const category= await Category.paginate(options)
-        return(category)
-    }
-    const categories= ()=> Category.findAll()
-    const category= (_, {id}) => Category.findByPk(id)
+const paginateCategories = async (_, { input }) => {
+    const category = await Category.paginate(input)
+    return (category)
+}
+const categories = () => Category.findAll()
+const category = (_, { id }) => Category.findByPk(id)
 
 
-module.exports =  {paginateCategories, categories, category} 
+module.exports = { paginateCategories, categories, category }

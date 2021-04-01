@@ -14,37 +14,34 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Loan } = require('@models')
-const paginateLoans = async (_, { page, limit }) => {
+const { Loan, Student, Copy, User, Period } = require('@models')
+const paginateLoans = async (_, { input }) => {
   const options = {
-    page, // Default
-    paginate: limit, // Default 25
+    input,
     include: [
-      { association: 'student' },
-      { association: 'books' },
-      { association: 'users' },
-      { association: 'periods' },
+      { model: Student },
+      { model: Copy },
+      { model: Period },
     ],
   }
   const loan = await Loan.paginate(options)
+
   return loan
 }
 const loans = () =>
   Loan.findAll({
     include: [
-      { association: 'student' },
-      { association: 'books' },
-      { association: 'users' },
-      { association: 'periods' },
+      { model: Student },
+      { model: Copy },
+      { model: Period },
     ],
   })
 const loan = (_, { id }) =>
   Loan.findByPk(id, {
     include: [
-      { association: 'student' },
-      { association: 'books' },
-      { association: 'users' },
-      { association: 'periods' },
+      { model: Student },
+      { model: Copy },
+      { model: Period },
     ],
   })
 

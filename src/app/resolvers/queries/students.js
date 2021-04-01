@@ -14,24 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Student } = require('@models')
+const { Student, Course, Classes } = require('@models')
 
-const paginateStudents = async (_, { page, limit }) => {
+const paginateStudents = async (_, { input }) => {
   const options = {
-    page, // Default
-    paginate: limit, // Default 25
-    include: [{ association: 'courses' }, { association: 'classes' }],
+    input,
+    include: [{ model: Course }, { model: Classes }],
   }
   const student = await Student.paginate(options)
   return student
 }
-const students = () =>
-  Student.findAll({
-    include: [{ association: 'courses' }, { association: 'classes' }],
+const students = async () =>
+  await Student.findAll({
+    include: [{ model: Course }, { model: Classes }],
   })
-const student = (_, { id }) =>
-  Student.findByPk(id, {
-    include: [{ association: 'courses' }, { association: 'classes' }],
+const student = async (_, { id }) =>
+  await Student.findByPk(id, {
+    include: [{ model: Course }, { model: Classes }],
   })
 
 module.exports = { students, student, paginateStudents }

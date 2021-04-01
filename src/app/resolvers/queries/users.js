@@ -16,16 +16,11 @@
 
 const { User } = require("@models")
 
-    const paginateUsers= async (_,{page,limit}) => {
-        const options = {
-            page, // Default 
-            paginate: limit, // Default 25
-            
-        }
-        const user= await User.paginate(options)
-        return(user)
-    }
-    const users= ()=> User.findAll()
-    const user= (_, {id}) => User.findByPk(id)
+const paginateUsers = async (_, { input }) => {
+    const user = await User.paginate(input)
+    return (user)
+}
+const users = () => User.findAll()
+const user = (_, { id }) => User.findByPk(id)
 
-module.exports = {user, users, paginateUsers}
+module.exports = { user, users, paginateUsers }

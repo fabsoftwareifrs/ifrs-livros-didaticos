@@ -18,19 +18,19 @@ const { Loan } = require('@models')
 
 const createLoan = async (_, { input }) => {
   const loan = await Loan.create(input)
-  loan.student = await loan.getStudent()
-  loan.copy = await loan.getCopy()
-  loan.period = await loan.getPeriod()
-  console.log(loan.start)
+  loan.Student = await loan.getStudent()
+  loan.Copy = await loan.getCopy()
+  loan.Period = await loan.getPeriod()
   return loan
 }
 
 const updateLoan = async (_, { id, input }) => {
   const loan = await Loan.findByPk(id)
+  console.log(id)
   await loan.update(input)
-  loan.student = await loan.getStudent()
-  loan.copy = await loan.getCopy()
-  loan.period = await loan.getPeriod()
+  loan.Student = await loan.getStudent()
+  loan.Copy = await loan.getCopy()
+  loan.Period = await loan.getPeriod()
   return loan
 }
 

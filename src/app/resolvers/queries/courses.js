@@ -16,12 +16,8 @@
 
 const { Course } = require('@models')
 
-const paginateCourses = async (_, { page, limit }) => {
-  const options = {
-    page, // Default
-    paginate: limit, // Default 25
-  }
-  const course = await Course.paginate(options)
+const paginateCourses = async (_, { input }) => {
+  const course = await Course.paginate(input)
   return course
 }
 const courses = () => Course.findAll()

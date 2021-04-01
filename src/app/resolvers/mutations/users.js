@@ -16,6 +16,7 @@
 
 const { User } = require('@models')
 
+
 const createUser = async (_, { input }) => {
   const user = await User.create(input)
   return user
@@ -23,7 +24,9 @@ const createUser = async (_, { input }) => {
 
 const updateUser = async (_, { id, input }) => {
   const user = await User.findByPk(id)
-  await user.update(input)
+  if(input.password!==""){
+    await user.update(input)
+  }
   return user
 }
 

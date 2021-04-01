@@ -18,7 +18,7 @@ const { Book, Category, Copy } = require('@models')
 
 const copies = async () => {
   const copies = await Copy.findAll({
-    include: [{ model: Book, include: [{ model: Category }] }],
+    include: [{ model: Book, include: { model: Category } }],
   })
 
   return copies
@@ -26,7 +26,7 @@ const copies = async () => {
 
 const copiesByBookId = async (_, { bookId }) => {
   const copies = await Copy.findAll({
-    include: [{ model: Book, include: [{ model: Category }] }],
+    include: [{ model: Book, include: { model: Category } }],
     where: { bookId },
   })
 

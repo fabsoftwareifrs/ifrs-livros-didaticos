@@ -20,8 +20,8 @@ const { Student } = require('@models')
 const createStudent = async (_, { input }) => {
   var student = await Student.create(input)
 
-  student.course = await student.getCourse()
-  student.classes = await student.getClass()
+  student.Course = await student.getCourse()
+  student.Classes = await student.getClass()
 
   return student
 }
@@ -29,8 +29,8 @@ const createStudent = async (_, { input }) => {
 const updateStudent = async (_, { id, input }) => {
   const student = await Student.findByPk(id)
   await student.update(input)
-  student.course = await student.getCourse()
-  student.classes = await student.getClass()
+  student.Course = await student.getCourse()
+  student.Classes = await student.getClass()
   return student
 }
 

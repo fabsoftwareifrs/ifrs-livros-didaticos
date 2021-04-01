@@ -15,12 +15,8 @@
  */
 
 const { Period } = require('@models')
-const paginatePeriods = async (_, { page, limit }) => {
-  const options = {
-    page, // Default
-    paginate: limit, // Default 25
-  }
-  const period = await Period.paginate(options)
+const paginatePeriods = async (_, { input }) => {
+  const period = await Period.paginate(input)
   return period
 }
 const periods = () => Period.findAll()

@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Student.belongsTo(models.Course, { foreignKey: 'courseId' })
       Student.belongsTo(models.Classes, { foreignKey: 'classId' })
+      Student.hasMany(models.Loan, { foreignKey: 'studentId' })
     }
   }
   Student.init(

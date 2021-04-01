@@ -21,8 +21,9 @@ let others = {}
 const modules = {
   Book: require('./Book'),
   Copy: require('./Copy'),
-  User: require('./User'),
   Loan: require('./Loan'),
+  Classes: require('./Classes'),
+  Student: require('./Student')
 }
 
 Object.keys(modules).forEach((moduleName) => {

@@ -16,17 +16,17 @@
 
 const { Book, Category, Copy } = require('@models')
 
-const paginateBooks = async (_, { page, limit }) => {
+const paginateBooks = async (_, { input }) => {
   const options = {
-    page, // Default 1
-    paginate: limit, // Default 25
+    input,
+    include: { model: Category },
   }
   const book = await Book.paginate(options)
   return book
 }
 const books = async () => {
   const books = await Book.findAll({
-    include: [{ model: Category }, { model: Copy, required: false }],
+    include: { model: Category },
   })
 
   console.log(books)
@@ -34,7 +34,7 @@ const books = async () => {
 }
 const book = async (_, { id }) => {
   const book = await Book.findByPk(id, {
-    include: [{ model: Category }, { model: Copy, required: false }],
+    include: { model: Category },
   })
   return book
 }

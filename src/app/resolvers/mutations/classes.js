@@ -19,14 +19,14 @@ const { Classes } = require('@models')
 // Classes
 const createClass = async (_, { input }) => {
   var classe = await Classes.create(input)
-  classe.course = await classe.getCourse()
+  classe.Course = await classe.getCourse()
   return classe
 }
 
 const updateClass = async (_, { id, input }) => {
   const classe = await Classes.findByPk(id)
   await classe.update(input)
-  classe.course = await classe.getCourse()
+  classe.Course = await classe.getCourse()
   return classe
 }
 const deleteClass = async (_, { id }) => {

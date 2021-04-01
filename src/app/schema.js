@@ -39,7 +39,6 @@ module.exports = gql`
   type User {
     id: ID!
     name: String!
-    lastName: String!
     login: String!
     accessLevel: Int!
   }
@@ -99,7 +98,7 @@ module.exports = gql`
   type Classes {
     id: ID!
     name: String!
-    course: Course
+    course:Course!
   }
 
   type PaginateClasses {
@@ -128,7 +127,7 @@ module.exports = gql`
     name: String!
     author: String!
     volume: String!
-    copies: [Copy!]!
+    copies: [Copy!]
     category: Category!
   }
 
@@ -138,6 +137,7 @@ module.exports = gql`
     book: Book!
     status: Status!
   }
+
 
   type PaginateBook {
     docs: [Book!]
@@ -154,6 +154,7 @@ module.exports = gql`
     name: String
     author: String
     volume: String
+    categoryId: Int
   }
 
   input CopyInput {
@@ -205,42 +206,46 @@ module.exports = gql`
     login: String!
     password: String!
   }
+  input PaginateInput {
+    page: Int!
+    paginate: Int!
+  }
 
   type Query {
     hello: String
 
-    paginateUsers(page: Int!, limit: Int!): PaginateUser!
+    paginateUsers(input:PaginateInput!): PaginateUser!
     users: [User!]
     user(id: ID!): User!
 
-    paginateBooks(page: Int!, limit: Int!): PaginateBook!
-    books: [Book!]!
+    paginateBooks(input:PaginateInput!): PaginateBook!
+    books: [Book!]
     book(id: ID!): Book!
 
-    paginateCategories(page: Int!, limit: Int!): PaginateCategory!
+    paginateCategories(input:PaginateInput!): PaginateCategory!
     categories: [Category!]
     category(id: ID!): Category!
 
-    paginateCourses(page: Int!, limit: Int!): PaginateCourse!
+    paginateCourses(input:PaginateInput!): PaginateCourse!
     courses: [Course!]
     course(id: ID!): Course!
 
     copies: [Copy!]!
     copiesByBookId(bookId: Int!): [Copy!]!
 
-    paginateClasses(page: Int!, limit: Int!): PaginateClasses!
+    paginateClasses(input:PaginateInput!): PaginateClasses!
     classes: [Classes!]
     classRoom(id: ID!): Classes!
 
-    paginateStudents(page: Int!, limit: Int!): PaginateStudents!
+    paginateStudents(input:PaginateInput!): PaginateStudents!
     students: [Student!]
     student(id: ID!): Student!
 
-    paginateLoans(page: Int!, limit: Int!): PaginateLoans!
+    paginateLoans(input:PaginateInput!): PaginateLoans!
     loans: [Loan!]
     loan(id: ID!): Loan!
 
-    paginatePeriods(page: Int!, limit: Int!): PaginatePeriods!
+    paginatePeriods(input:PaginateInput!): PaginatePeriods!
     periods: [Period!]
     period(id: ID!): Period!
   }
@@ -250,41 +255,39 @@ module.exports = gql`
 
     mail(from: String!): Boolean! @isAuthorized(roles: [1])
 
-    createUser(input: UserInput): User!
+    createUser(input: UserInput): User! @isAuthorized(roles: [1])
     updateUser(id: ID, input: UserInput): User! @isAuthorized(roles: [1])
     deleteUser(id: ID!): User! @isAuthorized(roles: [1])
 
-    createBook(input: BookInput): Book!
+    createBook(input: BookInput): Book! @isAuthorized(roles: [1])
     updateBook(id: ID, input: BookInput): Book! @isAuthorized(roles: [1])
     deleteBook(id: ID!): Book! @isAuthorized(roles: [1])
 
-    createCopy(input: CopyInput): Copy!
-    updateCopy(id: ID, input: CopyInput): Copy!
-    deleteCopy(id: ID!): Copy!
+    createCopy(input: CopyInput): Copy! @isAuthorized(roles: [1])
+    updateCopy(id: ID, input: CopyInput): Copy! @isAuthorized(roles: [1])
+    deleteCopy(id: ID!): Copy! @isAuthorized(roles: [1])
 
-    createCategory(input: CategoryInput): Category!
-    updateCategory(id: ID, input: CategoryInput): Category!
-      @isAuthorized(roles: [1])
+    createCategory(input: CategoryInput): Category! @isAuthorized(roles: [1])
+    updateCategory(id: ID, input: CategoryInput): Category! @isAuthorized(roles: [1])
     deleteCategory(id: ID!): Category! @isAuthorized(roles: [1])
 
-    createCourse(input: CourseInput): Course!
+    createCourse(input: CourseInput): Course! @isAuthorized(roles: [1])
     updateCourse(id: ID, input: CourseInput): Course! @isAuthorized(roles: [1])
     deleteCourse(id: ID!): Course! @isAuthorized(roles: [1])
 
-    createClass(input: ClassInput): Classes!
+    createClass(input: ClassInput): Classes! @isAuthorized(roles: [1])
     updateClass(id: ID, input: ClassInput): Classes! @isAuthorized(roles: [1])
     deleteClass(id: ID!): Classes! @isAuthorized(roles: [1])
 
-    createStudent(input: StudentInput): Student!
-    updateStudent(id: ID, input: StudentInput): Student!
-      @isAuthorized(roles: [1])
+    createStudent(input: StudentInput): Student! @isAuthorized(roles: [1])
+    updateStudent(id: ID, input: StudentInput): Student! @isAuthorized(roles: [1])
     deleteStudent(id: ID!): Student! @isAuthorized(roles: [1])
 
-    createLoan(input: LoanInput): Loan!
+    createLoan(input: LoanInput): Loan! @isAuthorized(roles: [1])
     updateLoan(id: ID!, input: LoanInput): Loan! @isAuthorized(roles: [1])
     deleteLoan(id: ID!): Loan! @isAuthorized(roles: [1])
 
-    createPeriod(input: PeriodInput): Period!
+    createPeriod(input: PeriodInput): Period! @isAuthorized(roles: [1])
     updatePeriod(id: ID, input: PeriodInput): Period! @isAuthorized(roles: [1])
     deletePeriod(id: ID!): Period! @isAuthorized(roles: [1])
   }

@@ -1,5 +1,5 @@
 const category = ({ Category }) => Category
 
-const copies = ({ Copies }) => Copies
+const copies = ({ Copy }) => Copy
 
 module.exports = { category, copies }
