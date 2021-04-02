@@ -18,7 +18,7 @@ const { Student, Course, Classes } = require('@models')
 
 const paginateStudents = async (_, { input }) => {
   const options = {
-    input,
+    ...input,
     include: [{ model: Course }, { model: Classes }],
   }
   const student = await Student.paginate(options)

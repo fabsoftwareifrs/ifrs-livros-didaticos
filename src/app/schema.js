@@ -159,7 +159,7 @@ module.exports = gql`
 
   input CopyInput {
     status: Status!
-    bookId: Int!
+    bookId: Int
   }
 
   input UserInput {
@@ -232,6 +232,7 @@ module.exports = gql`
 
     copies: [Copy!]!
     copiesByBookId(bookId: Int!): [Copy!]!
+    copy(id:ID!): Copy!
 
     paginateClasses(input:PaginateInput!): PaginateClasses!
     classes: [Classes!]

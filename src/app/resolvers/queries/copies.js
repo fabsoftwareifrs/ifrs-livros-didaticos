@@ -32,5 +32,9 @@ const copiesByBookId = async (_, { bookId }) => {
 
   return copies
 }
+const copy = async (_, { id }) => {
+  const copy = await Copy.findByPk(id, { include: [{ model: Book, include: { model: Category } }] })
+  return copy
+}
 
-module.exports = { copies, copiesByBookId }
+module.exports = { copies, copiesByBookId, copy }

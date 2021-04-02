@@ -18,7 +18,7 @@ const { Book, Category, Copy } = require('@models')
 
 const paginateBooks = async (_, { input }) => {
   const options = {
-    input,
+    ...input,
     include: { model: Category },
   }
   const book = await Book.paginate(options)

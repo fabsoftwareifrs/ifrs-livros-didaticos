@@ -17,7 +17,7 @@
 const { Loan, Student, Copy, User, Period } = require('@models')
 const paginateLoans = async (_, { input }) => {
   const options = {
-    input,
+    ...input,
     include: [
       { model: Student },
       { model: Copy },
