@@ -7,7 +7,8 @@
   "scripts": {
     "watch:src": "webpack --config webpack.dev.js",
     "watch:dist": "nodemon dist/server.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "start": "node ./dist/server.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.2",
