@@ -19,6 +19,8 @@ require('dotenv').config({
   path: '.env',
 })
 
+console.log('nome do host', process.env.DB_NAME)
+
 module.exports = {
   database: process.env.DB_NAME,
   username: process.env.DB_USERNAME,
