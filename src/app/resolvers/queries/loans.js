@@ -15,18 +15,34 @@
  */
 
 const { Loan, Student, Copy, User, Period } = require('@models')
-const paginateLoans = async (_, { input }) => {
+const sequelize = require('sequelize')
+const { Op } = require('sequelize')
+const paginateLoans = async (_, { input, late }) => {
   const options = {
-    ...input,
     include: [
       { model: Student },
       { model: Copy },
       { model: Period },
     ],
+    limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page]
   }
-  const loan = await Loan.paginate(options)
-
-  return loan
+  if (late) {
+    options.where = {
+      [Op.and]: [
+        { end: null },
+        { '$Period.end$': { [Op.lt]: sequelize.fn('CURRENT_DATE') } }
+      ]
+    }
+  } else {
+    options.where = {
+      [Op.or]: [
+        { end: { [Op.ne]: null } },
+        { '$Period.end$': { [Op.gt]: sequelize.fn('CURRENT_DATE') } }
+      ]
+    }
+  }
+  const loan = await Loan.findAndCountAll(options)
+  return { docs: loan.rows, total: loan.count }
 }
 const loans = () =>
   Loan.findAll({
@@ -36,6 +52,7 @@ const loans = () =>
       { model: Period },
     ],
   })
+
 const loan = (_, { id }) =>
   Loan.findByPk(id, {
     include: [

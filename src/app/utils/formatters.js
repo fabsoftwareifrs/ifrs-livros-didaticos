@@ -9,31 +9,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-require('dotenv').config({
-  // path: process.env.NODE_ENV === "production" ? ".env" : ".env.dev",
-  path: '.env',
-})
-
-console.log('nome do host', process.env.DB_NAME)
-
-module.exports = {
-  database: process.env.DB_NAME,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOSTNAME,
-  dialect: 'mysql',
-  logging: false, // console.log,
-  operatorAliases: false,
-  define: {
-    timestamps: true,
-    underscored: true,
-  },
-  timezone: '-03:00',
-  benchmark: true,
-  // logging: console.log
+const formatDate = (d) => {
+    let date = d.substr(8, 2) + "/" + d.substr(5, 2) + "/" + d.substr(0, 4);
+    return date
 }
+module.exports = { formatDate }

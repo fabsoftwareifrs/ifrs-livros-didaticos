@@ -14,13 +14,57 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const {sendMessage}= require('./contacts')
-  
-  //Mail
-  const mail= async (_, { from }) => {
-    const mail= await sendMessage(_,{from})
-    return mail
+const { sendMessage } = require('./contacts')
+const { Loan, Student, Copy, Period, Book } = require('@models')
+const { formatDate } = require('../../utils/formatters')
+//Mail
+const warnMail = async (_, { loans }) => {
+  const subject = "Lembrete de devolução."
+  var errors = []
+  console.log(loans)
+  loans.map(async function (loanId) {
+    console.log(loanId)
+    let loan = await Loan.findByPk(loanId, {
+      include: [
+        { model: Student },
+        { model: Copy, include: { model: Book } },
+        { model: Period },
+      ],
+    })
+    let message = `Olá ${loan.Student.name}! Estamos entrando em contato para lembra-lo(a) que você deve entregar seu exemplar do livro didático "${loan.Copy.Book.name}" de código "${loan.Copy.code}" até ${formatDate(loan.Period.end)}!`
+    let mail = await sendMessage(_, loan.Student.email, subject, message)
+    if (!mail) {
+      errors.push(`Erro ao enviar e-mail para ${loan.Student.email}`)
+    }
+  })
+  if (errors.length == 0) {
+    errors.push('success')
   }
+  return { response: errors }
+}
+
+const lateMail = async (_, { loans }) => {
+  const subject = "Devolução em atraso!"
+  var errors = []
+  loans.map(async function (loanId) {
+    let loan = await Loan.findByPk(loanId, {
+      include: [
+        { model: Student },
+        { model: Copy, include: { model: Book } },
+        { model: Period },
+      ],
+    })
+    let message = `Olá ${loan.Student.name}! A entrega seu exemplar do livro didático "${loan.Copy.Book.name}" de código "${loan.Copy.code}" está atarasada desde ${formatDate(loan.Period.end)}! Por favor faça a devolução o mais rapido possivel.`
+    let mail = await sendMessage(_, loan.Student.email, subject, message)
+    if (!mail) {
+      errors.push(`Erro ao enviar e-mail para ${loan.Student.email}`)
+    }
+  })
+  if (errors.length == 0) {
+    errors.push('success')
+  }
+  return { response: errors }
+}
 
 
-module.exports =  {mail} 
+module.exports = { warnMail, lateMail }

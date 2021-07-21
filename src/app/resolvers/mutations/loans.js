@@ -20,6 +20,7 @@ const createLoan = async (_, { input }) => {
   const loan = await Loan.create(input)
   loan.Student = await loan.getStudent()
   loan.Copy = await loan.getCopy()
+  await loan.Copy.update({ status: 'LOANED' })
   loan.Period = await loan.getPeriod()
   return loan
 }
@@ -35,6 +36,8 @@ const updateLoan = async (_, { id, input }) => {
 
 const deleteLoan = async (_, { id }) => {
   const loan = await Loan.findByPk(id)
+  loan.Copy = await loan.getCopy()
+  await loan.Copy.update({ status: 'AVAILABLE' })
   await loan.destroy()
   return loan
 }
@@ -44,6 +47,7 @@ const terminateLoan = async (_, { id, input }) => {
   await loan.update({ end: input.end || Sequelize.NOW() })
   loan.Student = await loan.getStudent()
   loan.Copy = await loan.getCopy()
+  await loan.Copy.update({ status: 'AVAILABLE' })
   loan.Period = await loan.getPeriod()
   return loan
 }
@@ -53,6 +57,7 @@ const cancelTerminateLoan = async (_, { id }) => {
   await loan.update({ end: null })
   loan.Student = await loan.getStudent()
   loan.Copy = await loan.getCopy()
+  await loan.Copy.update({ status: 'LOANED' })
   loan.Period = await loan.getPeriod()
   return loan
 }

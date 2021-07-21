@@ -29,8 +29,8 @@ const sendNodeMail = async ({
 	attachments = [],
 }) => {
 	try {
-		if (!from) throw new Error("E-mail de envio não foi informado!");
-		if (!to) throw new Error("E-mail de destino não foi informado!");
+		if (!from) return { success: false }
+		if (!to) return { success: false }
 
 		let transport = nodemailer.createTransport({
 			service: process.env.EMAIL_SERVICE,
@@ -50,7 +50,7 @@ const sendNodeMail = async ({
 			},
 			...attachments,
 		];
-		
+
 		const message = {
 			replyTo: "noreply@google.com",
 			from,
@@ -62,17 +62,15 @@ const sendNodeMail = async ({
 		};
 
 		transport.sendMail(message, function (err, info) {
-			if (err) throw new Error("Problemas no envio de email!");
+			if (err) return { success: false }
 		});
 
 		return {
 			success: true,
-			message: `Email enviado com sucesso!`,
 		};
 	} catch (e) {
 		return {
 			success: false,
-			message: e.message,
 		};
 	}
 };

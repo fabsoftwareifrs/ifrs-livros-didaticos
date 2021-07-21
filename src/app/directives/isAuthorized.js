@@ -19,21 +19,21 @@ const {
   AuthenticationError,
 } = require('apollo-server-express')
 const { defaultFieldResolver } = require('graphql')
-class IsAuthorized extends SchemaDirectiveVisitor {	
-  visitFieldDefinition(field) {		
-    const { resolve = defaultFieldResolver } = field;		
-    const { roles } = this.args; 		
-    field.resolve = async function (...args) {			
-      const [, , { authenticatedUser }] = args; 		
-      		
-      if (!authenticatedUser)	throw new AuthenticationError("You are not authenticated!"); 
-      
-      if (!roles.includes(authenticatedUser.accessLevel)) {				
-          throw new AuthenticationError("You are not authorized!");			
-      } 			
-      const result = await resolve.apply(this, args); 			
-      return result;		
-    };	
+class IsAuthorized extends SchemaDirectiveVisitor {
+  visitFieldDefinition(field) {
+    const { resolve = defaultFieldResolver } = field;
+    const { roles } = this.args;
+    field.resolve = async function (...args) {
+      const [, , { authenticatedUser }] = args;
+
+      if (!authenticatedUser) throw new AuthenticationError("You are not authenticated!");
+
+      if (!roles.includes(authenticatedUser.accessLevel)) {
+        throw new AuthenticationError("You are not authorized!");
+      }
+      const result = await resolve.apply(this, args);
+      return result;
+    };
   }
-} 
+}
 module.exports = IsAuthorized

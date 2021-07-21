@@ -127,7 +127,6 @@ module.exports = gql`
     name: String!
     author: String!
     volume: String!
-    copies: [Copy!]
     category: Category!
   }
 
@@ -136,6 +135,10 @@ module.exports = gql`
     code: String!
     book: Book!
     status: Status!
+  }
+
+  type mailResponse {
+    response:[String]!
   }
 
   type PaginateBook {
@@ -234,6 +237,7 @@ module.exports = gql`
     course(id: ID!): Course!
 
     copies: [Copy!]!
+    availableCopies: [Copy!]!
     copiesByBookId(bookId: Int!): [Copy!]!
     copy(id: ID!): Copy!
 
@@ -245,7 +249,7 @@ module.exports = gql`
     students: [Student!]
     student(id: ID!): Student!
 
-    paginateLoans(input: PaginateInput!): PaginateLoans!
+    paginateLoans(input: PaginateInput!, late:Boolean!): PaginateLoans!
     loans: [Loan!]
     loan(id: ID!): Loan!
 
@@ -257,7 +261,9 @@ module.exports = gql`
   type Mutation {
     login(input: AuthInput): AuthResponse
 
-    mail(from: String!): Boolean! @isAuthorized(roles: [1])
+    warnMail(loans: [Int]!): mailResponse! @isAuthorized(roles: [1])
+
+    lateMail(loans: [Int]!): mailResponse! @isAuthorized(roles: [1])
 
     createUser(input: UserInput): User! @isAuthorized(roles: [1])
     updateUser(id: ID, input: UserInput): User! @isAuthorized(roles: [1])

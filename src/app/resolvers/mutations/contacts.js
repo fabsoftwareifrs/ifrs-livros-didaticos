@@ -17,14 +17,14 @@
 const sendNodeMail = require('../../utils/sendNodeMail')
 const template = require('../../templates/email')
 
-const sendMessage = async (_, input) => {
-  const mailtext = `Mensagem de teste`
-  const mailhmtl = `<p><b>Mensagem de teste</b></p>`
+const sendMessage = async (_, to, subject, message) => {
+  const mailtext = message
+  const mailhmtl = `<p><b>${message}</b></p>`
 
   const mailMessage = {
-    from: input.from,
-    to: 'edufaggion@gmail.com',
-    subject: 'Mensagem de teste',
+    from: 'edufaggion@gmail.com',
+    to,
+    subject,
     text: mailtext,
     html: template(mailhmtl),
   }

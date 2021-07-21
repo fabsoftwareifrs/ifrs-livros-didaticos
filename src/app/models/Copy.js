@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Copy extends Model {
     static associate(models) {
       Copy.belongsTo(models.Book, { foreignKey: 'bookId' })
+      Copy.hasOne(models.Loan, { foreignKey: 'copyId' })
     }
   }
   Copy.init(
@@ -19,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   )
 
-  Copy.beforeSave(async (copy) => {
+  Copy.beforeCreate(async (copy) => {
     copy.code = nanoid(8)
   })
 

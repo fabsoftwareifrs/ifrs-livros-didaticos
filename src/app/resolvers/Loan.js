@@ -1,6 +1,5 @@
 const late = ({ end, Period }) => (end ? false : new Date(Period.end) < new Date())
 
-
 const delivered = ({ end }) => !!end
 
 const student = ({ Student }) => Student

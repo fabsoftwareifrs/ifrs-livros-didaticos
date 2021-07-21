@@ -24,6 +24,15 @@ const copies = async () => {
   return copies
 }
 
+const availableCopies = async () => {
+  const copies = await Copy.findAll({
+    include: [{ model: Book, include: { model: Category } }],
+    where: { status: 'AVAILABLE' }
+  })
+
+  return copies
+}
+
 const copiesByBookId = async (_, { bookId }) => {
   const copies = await Copy.findAll({
     include: [{ model: Book, include: { model: Category } }],
@@ -37,4 +46,4 @@ const copy = async (_, { id }) => {
   return copy
 }
 
-module.exports = { copies, copiesByBookId, copy }
+module.exports = { availableCopies, copies, copiesByBookId, copy }

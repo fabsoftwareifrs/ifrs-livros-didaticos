@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book, Category, Copy } = require('@models')
+const { Book, Category } = require('@models')
 
 const paginateBooks = async (_, { input }) => {
   const options = {
@@ -29,7 +29,6 @@ const books = async () => {
     include: { model: Category },
   })
 
-  console.log(books)
   return books
 }
 const book = async (_, { id }) => {
