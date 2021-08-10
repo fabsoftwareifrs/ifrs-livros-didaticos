@@ -14,24 +14,24 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Course } = require('@models')
+const { Course } = require("@models");
 
 // Courses
 const createCourse = async (_, { input }) => {
-  const course = await Course.create(input)
-  return course
-}
+  const course = await Course.create(input);
+  return course;
+};
 
 const updateCourse = async (_, { id, input }) => {
-  const course = await Course.findByPk(id)
-  await course.update(input)
-  return course
-}
+  const course = await Course.findByPk(id);
+  await course.update(input);
+  return course;
+};
 
 const deleteCourse = async (_, { id }) => {
-  const course = await Course.findByPk(id)
-  await course.destroy()
-  return course
-}
+  const course = await Course.findByPk(id);
+  await course.destroy();
+  return course;
+};
 
-module.exports = { createCourse, updateCourse, deleteCourse }
+module.exports = { createCourse, updateCourse, deleteCourse };

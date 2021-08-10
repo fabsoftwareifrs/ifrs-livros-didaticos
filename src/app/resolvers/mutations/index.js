@@ -14,26 +14,24 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-let mutations = {
-
-}
+let mutations = {};
 
 const modules = [
-  require('./auth'),
-  require('./loans'),
-  require('./books'),
-  require('./categories'),
-  require('./classes'),
-  require('./courses'),
-  require('./mail'),
-  require('./students'),
-  require('./users'),
-  require('./periods'),
-  require('./copies')
-]
+  require("./auth"),
+  require("./loans"),
+  require("./books"),
+  require("./categories"),
+  require("./classes"),
+  require("./courses"),
+  require("./mail"),
+  require("./students"),
+  require("./users"),
+  require("./periods"),
+  require("./copies"),
+];
 
 modules.forEach((module) => {
-  mutations = { ...mutations, ...module }
-})
+  mutations = { ...mutations, ...module };
+});
 
-module.exports = { ...mutations }
+module.exports = { ...mutations };

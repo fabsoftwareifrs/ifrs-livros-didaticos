@@ -14,22 +14,22 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-let queries = {}
+let queries = {};
 
 const modules = [
-  require('./loans'),
-  require('./copies'),
-  require('./books'),
-  require('./categories'),
-  require('./classes'),
-  require('./courses'),
-  require('./students'),
-  require('./users'),
-  require('./periods'),
-]
+  require("./loans"),
+  require("./copies"),
+  require("./books"),
+  require("./categories"),
+  require("./classes"),
+  require("./courses"),
+  require("./students"),
+  require("./users"),
+  require("./periods"),
+];
 
 modules.forEach((module) => {
-  queries = { ...queries, ...module }
-})
+  queries = { ...queries, ...module };
+});
 
-module.exports = { ...queries }
+module.exports = { ...queries };

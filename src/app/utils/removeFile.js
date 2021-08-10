@@ -9,18 +9,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const path = require('path')
-const { unlink } = require('fs')
+const path = require("path");
+const { unlink } = require("fs");
 
 module.exports = (file) => {
   return new Promise((resolve) => {
-    if (!file) resolve(false)
-    const pathname = path.resolve('uploads', file)
-    unlink(pathname, (e) => resolve(!e))
-  })
-}
+    if (!file) resolve(false);
+    const pathname = path.resolve("uploads", file);
+    unlink(pathname, (e) => resolve(!e));
+  });
+};

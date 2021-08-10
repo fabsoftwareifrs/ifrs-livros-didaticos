@@ -14,28 +14,41 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book, Category } = require('@models')
+const { Book, Category } = require("@models");
+const { Op } = require("sequelize");
 
 const paginateBooks = async (_, { input }) => {
   const options = {
-    ...input,
+    page: input.page,
+    paginate: input.paginate,
     include: { model: Category },
+    limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
+  };
+  if (input.search !== "") {
+    options.where = {
+      [Op.or]: [
+        { name: { [Op.like]: "%" + input.search + "%" } },
+        { author: { [Op.like]: "%" + input.search + "%" } },
+        { volume: { [Op.like]: "%" + input.search + "%" } },
+        { "$Category.name$": { [Op.like]: "%" + input.search + "%" } },
+      ],
+    };
   }
-  const book = await Book.paginate(options)
-  return book
-}
+  const book = await Book.findAndCountAll(options);
+  return { docs: book.rows, total: book.count };
+};
 const books = async () => {
   const books = await Book.findAll({
     include: { model: Category },
-  })
+  });
 
-  return books
-}
+  return books;
+};
 const book = async (_, { id }) => {
   const book = await Book.findByPk(id, {
     include: { model: Category },
-  })
-  return book
-}
+  });
+  return book;
+};
 
-module.exports = { paginateBooks, books, book }
+module.exports = { paginateBooks, books, book };

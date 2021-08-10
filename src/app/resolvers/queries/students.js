@@ -14,23 +14,37 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Student, Course, Classes } = require('@models')
+const { Student, Course, Classes } = require("@models");
+const { Op } = require("sequelize");
 
 const paginateStudents = async (_, { input }) => {
   const options = {
-    ...input,
+    page: input.page,
+    paginate: input.paginate,
     include: [{ model: Course }, { model: Classes }],
+    limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
+  };
+  if (input.search !== "") {
+    options.where = {
+      [Op.or]: [
+        { name: { [Op.like]: "%" + input.search + "%" } },
+        { email: { [Op.like]: "%" + input.search + "%" } },
+        { matriculation: { [Op.like]: "%" + input.search + "%" } },
+        { "$Course.name$": { [Op.like]: "%" + input.search + "%" } },
+        { "$Class.name$": { [Op.like]: "%" + input.search + "%" } },
+      ],
+    };
   }
-  const student = await Student.paginate(options)
-  return student
-}
+  const student = await Student.findAndCountAll(options);
+  return { docs: student.rows, total: student.count };
+};
 const students = async () =>
   await Student.findAll({
     include: [{ model: Course }, { model: Classes }],
-  })
+  });
 const student = async (_, { id }) =>
   await Student.findByPk(id, {
     include: [{ model: Course }, { model: Classes }],
-  })
+  });
 
-module.exports = { students, student, paginateStudents }
+module.exports = { students, student, paginateStudents };

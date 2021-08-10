@@ -13,44 +13,35 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
+
 "use strict";
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("books", {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
+    await queryInterface.removeColumn("copies", "book_id");
+    await queryInterface.addColumn("copies", "book_id", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "books",
+        key: "id",
       },
-      name: {
-        type: Sequelize.STRING,
-      },
-      code: {
-        type: Sequelize.STRING,
-      },
-      author: {
-        type: Sequelize.STRING,
-      },
-      volume: {
-        type: Sequelize.STRING,
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-      },
-      created_at: {
-        allowNull: false,
-        defaultValue: Sequelize.fn("NOW"),
-        type: Sequelize.DATE,
-      },
-      updated_at: {
-        allowNull: false,
-        defaultValue: Sequelize.fn("NOW"),
-        type: Sequelize.DATE,
-      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("books");
+    await queryInterface.removeColumn("copies", "book_id");
+    await queryInterface.addColumn("copies", "book_id", {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: "books",
+        key: "id",
+      },
+      onUpdate: "RESTRICT",
+      onDelete: "RESTRICT",
+    });
   },
 };

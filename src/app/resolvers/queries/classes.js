@@ -9,23 +9,35 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Classes, Course } = require("@models")
+const { Classes, Course } = require("@models");
+const { Op } = require("sequelize");
 
 const paginateClasses = async (_, { input }) => {
-    const options = {
-        ...input,
-        include: { model: Course }
-    }
-    const classes = await Classes.paginate(options)
-    return (classes)
-}
-const classes = async () => await Classes.findAll({ include: { model: Course } })
-const classRoom = async (_, { id }) => await Classes.findByPk(id, { include: { model: Course } })
+  const options = {
+    page: input.page,
+    paginate: input.paginate,
+    include: { model: Course },
+    limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
+  };
+  if (input.search !== "") {
+    options.where = {
+      [Op.or]: [
+        { name: { [Op.like]: "%" + input.search + "%" } },
+        { "$Course.name$": { [Op.like]: "%" + input.search + "%" } },
+      ],
+    };
+  }
+  const classes = await Classes.findAndCountAll(options);
+  return { docs: classes.rows, total: classes.count };
+};
+const classes = async () =>
+  await Classes.findAll({ include: { model: Course } });
+const classRoom = async (_, { id }) =>
+  await Classes.findByPk(id, { include: { model: Course } });
 
-
-module.exports = { classes, classRoom, paginateClasses }
+module.exports = { classes, classRoom, paginateClasses };

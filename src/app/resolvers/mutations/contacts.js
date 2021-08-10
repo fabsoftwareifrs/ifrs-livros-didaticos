@@ -14,23 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const sendNodeMail = require('../../utils/sendNodeMail')
-const template = require('../../templates/email')
+const sendNodeMail = require("../../utils/sendNodeMail");
+const template = require("../../templates/email");
 
 const sendMessage = async (_, to, subject, message) => {
-  const mailtext = message
-  const mailhmtl = `<p><b>${message}</b></p>`
+  const mailtext = message;
+  const mailhmtl = `<p><b>${message}</b></p>`;
 
   const mailMessage = {
-    from: 'edufaggion@gmail.com',
+    from: "edufaggion@gmail.com",
     to,
     subject,
     text: mailtext,
     html: template(mailhmtl),
-  }
+  };
 
-  const mail = await sendNodeMail(mailMessage)
-  return mail.success
-}
+  const mail = await sendNodeMail(mailMessage);
+  return mail.success;
+};
 
-module.exports = { sendMessage }
+module.exports = { sendMessage };

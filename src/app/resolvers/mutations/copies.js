@@ -14,21 +14,21 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Copy } = require('@models')
+const { Copy } = require("@models");
 
 const createCopy = async (_, { input }) => {
-  const copy = await Copy.create(input)
-  return copy
-}
+  const copy = await Copy.create(input);
+  return copy;
+};
 const updateCopy = async (_, { id, input }) => {
-  const copy = await Copy.findByPk(id)
-  await copy.update(input)
-  return copy
-}
+  const copy = await Copy.findByPk(id);
+  await copy.update(input);
+  return copy;
+};
 const deleteCopy = async (_, { id }) => {
-  const copy = await Copy.findByPk(id)
-  await copy.destroy()
-  return copy
-}
+  const copy = await Copy.findByPk(id);
+  await copy.destroy();
+  return copy;
+};
 
-module.exports = { createCopy, updateCopy, deleteCopy }
+module.exports = { createCopy, updateCopy, deleteCopy };

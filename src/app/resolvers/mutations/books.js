@@ -14,25 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book } = require('@models')
+const { Book } = require("@models");
 
 const createBook = async (_, { input }) => {
-
   const book = await Book.create(input);
-  book.Category = await book.getCategory()
+  book.Category = await book.getCategory();
   return book;
-}
+};
 const updateBook = async (_, { id, input }) => {
-  const book = await Book.findByPk(id)
+  const book = await Book.findByPk(id);
   await book.update(input);
-  book.Category = await book.getCategory()
+  book.Category = await book.getCategory();
   return book;
-}
+};
 const deleteBook = async (_, { id }) => {
-  const book = await Book.findByPk(id)
-  book.destroy()
-  return (true);
-}
+  const book = await Book.findByPk(id);
+  book.destroy();
+  return book;
+};
 
-
-module.exports = { createBook, updateBook, deleteBook }
+module.exports = { createBook, updateBook, deleteBook };

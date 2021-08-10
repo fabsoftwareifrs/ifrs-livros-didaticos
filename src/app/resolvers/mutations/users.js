@@ -14,26 +14,25 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { User } = require('@models')
-
+const { User } = require("@models");
 
 const createUser = async (_, { input }) => {
-  const user = await User.create(input)
-  return user
-}
+  const user = await User.create(input);
+  return user;
+};
 
 const updateUser = async (_, { id, input }) => {
-  const user = await User.findByPk(id)
-  if(input.password!==""){
-    await user.update(input)
+  const user = await User.findByPk(id);
+  if (input.password !== "") {
+    await user.update(input);
   }
-  return user
-}
+  return user;
+};
 
 const deleteUser = async (_, { id }) => {
-  const user = await User.findByPk(id)
-  await user.destroy()
-  return user
-}
+  const user = await User.findByPk(id);
+  await user.destroy();
+  return user;
+};
 
-module.exports = { createUser, updateUser, deleteUser }
+module.exports = { createUser, updateUser, deleteUser };

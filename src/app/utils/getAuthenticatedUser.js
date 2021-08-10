@@ -9,31 +9,30 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-require('dotenv').config()
-const { ApolloError } = require('apollo-server-express')
-const getToken = require('./getToken')
-const { User } = require('@models')
-const jwt = require('jsonwebtoken')
-
+require("dotenv").config();
+const { ApolloError } = require("apollo-server-express");
+const getToken = require("./getToken");
+const { User } = require("@models");
+const jwt = require("jsonwebtoken");
 
 const getAuthenticatedUser = async (authorization) => {
   try {
-    const token = getToken(authorization)
+    const token = getToken(authorization);
 
-    if (!token) return null
+    if (!token) return null;
 
-    const { id } = await jwt.verify(token, process.env.AUTH_SECRET)
+    const { id } = await jwt.verify(token, process.env.AUTH_SECRET);
 
-    const user = await User.findOne({ where: { id } })
-    return user
+    const user = await User.findOne({ where: { id } });
+    return user;
   } catch (e) {
-    throw new ApolloError(e.message, 'JWT')
+    throw new ApolloError(e.message, "JWT");
   }
-}
+};
 
-module.exports = { getAuthenticatedUser }
+module.exports = { getAuthenticatedUser };

@@ -14,36 +14,44 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book, Category, Copy } = require('@models')
+const { Book, Category, Copy } = require("@models");
+const { Op } = require("sequelize");
 
 const copies = async () => {
   const copies = await Copy.findAll({
     include: [{ model: Book, include: { model: Category } }],
-  })
+  });
 
-  return copies
-}
+  return copies;
+};
 
 const availableCopies = async () => {
   const copies = await Copy.findAll({
     include: [{ model: Book, include: { model: Category } }],
-    where: { status: 'AVAILABLE' }
-  })
+    where: { status: "AVAILABLE" },
+  });
 
-  return copies
-}
+  return copies;
+};
 
-const copiesByBookId = async (_, { bookId }) => {
-  const copies = await Copy.findAll({
+const copiesByBookId = async (_, { bookId, search }) => {
+  const options = {
     include: [{ model: Book, include: { model: Category } }],
     where: { bookId },
-  })
-
-  return copies
-}
+  };
+  if (search !== "") {
+    options.where = {
+      [Op.and]: [bookId, { code: { [Op.like]: "%" + search + "%" } }],
+    };
+  }
+  const copies = await Copy.findAll(options);
+  return copies;
+};
 const copy = async (_, { id }) => {
-  const copy = await Copy.findByPk(id, { include: [{ model: Book, include: { model: Category } }] })
-  return copy
-}
+  const copy = await Copy.findByPk(id, {
+    include: [{ model: Book, include: { model: Category } }],
+  });
+  return copy;
+};
 
-module.exports = { availableCopies, copies, copiesByBookId, copy }
+module.exports = { availableCopies, copies, copiesByBookId, copy };

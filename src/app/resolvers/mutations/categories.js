@@ -14,24 +14,24 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Category } = require('@models')
+const { Category } = require("@models");
 
 // Categories
 const createCategory = async (_, { input }) => {
-  const category = await Category.create(input)
-  return category
-}
+  const category = await Category.create(input);
+  return category;
+};
 
 const updateCategory = async (_, { id, input }) => {
-  const category = await Category.findByPk(id)
-  category.update(input)
-  return category
-}
+  const category = await Category.findByPk(id);
+  category.update(input);
+  return category;
+};
 
 const deleteCategory = async (_, { id }) => {
-  const category = await Category.findByPk(id)
-  category.destroy()
-  return category
-}
+  const category = await Category.findByPk(id);
+  category.destroy();
+  return category;
+};
 
-module.exports = { createCategory, updateCategory, deleteCategory }
+module.exports = { createCategory, updateCategory, deleteCategory };

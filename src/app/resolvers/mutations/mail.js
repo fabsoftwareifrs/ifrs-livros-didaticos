@@ -9,43 +9,47 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { sendMessage } = require('./contacts')
-const { Loan, Student, Copy, Period, Book } = require('@models')
-const { formatDate } = require('../../utils/formatters')
+const { sendMessage } = require("./contacts");
+const { Loan, Student, Copy, Period, Book } = require("@models");
+const { formatDate } = require("../../utils/formatters");
 //Mail
 const warnMail = async (_, { loans }) => {
-  const subject = "Lembrete de devolução."
-  var errors = []
-  console.log(loans)
+  const subject = "Lembrete de devolução.";
+  var errors = [];
+  console.log(loans);
   loans.map(async function (loanId) {
-    console.log(loanId)
+    console.log(loanId);
     let loan = await Loan.findByPk(loanId, {
       include: [
         { model: Student },
         { model: Copy, include: { model: Book } },
         { model: Period },
       ],
-    })
-    let message = `Olá ${loan.Student.name}! Estamos entrando em contato para lembra-lo(a) que você deve entregar seu exemplar do livro didático "${loan.Copy.Book.name}" de código "${loan.Copy.code}" até ${formatDate(loan.Period.end)}!`
-    let mail = await sendMessage(_, loan.Student.email, subject, message)
+    });
+    let message = `Olá ${
+      loan.Student.name
+    }! Estamos entrando em contato para lembra-lo(a) que você deve entregar seu exemplar do livro didático "${
+      loan.Copy.Book.name
+    }" de código "${loan.Copy.code}" até ${formatDate(loan.Period.end)}!`;
+    let mail = await sendMessage(_, loan.Student.email, subject, message);
     if (!mail) {
-      errors.push(`Erro ao enviar e-mail para ${loan.Student.email}`)
+      errors.push(`Erro ao enviar e-mail para ${loan.Student.email}`);
     }
-  })
+  });
   if (errors.length == 0) {
-    errors.push('success')
+    errors.push("success");
   }
-  return { response: errors }
-}
+  return { response: errors };
+};
 
 const lateMail = async (_, { loans }) => {
-  const subject = "Devolução em atraso!"
-  var errors = []
+  const subject = "Devolução em atraso!";
+  var errors = [];
   loans.map(async function (loanId) {
     let loan = await Loan.findByPk(loanId, {
       include: [
@@ -53,18 +57,23 @@ const lateMail = async (_, { loans }) => {
         { model: Copy, include: { model: Book } },
         { model: Period },
       ],
-    })
-    let message = `Olá ${loan.Student.name}! A entrega seu exemplar do livro didático "${loan.Copy.Book.name}" de código "${loan.Copy.code}" está atarasada desde ${formatDate(loan.Period.end)}! Por favor faça a devolução o mais rapido possivel.`
-    let mail = await sendMessage(_, loan.Student.email, subject, message)
+    });
+    let message = `Olá ${
+      loan.Student.name
+    }! A entrega seu exemplar do livro didático "${
+      loan.Copy.Book.name
+    }" de código "${loan.Copy.code}" está atarasada desde ${formatDate(
+      loan.Period.end
+    )}! Por favor faça a devolução o mais rapido possivel.`;
+    let mail = await sendMessage(_, loan.Student.email, subject, message);
     if (!mail) {
-      errors.push(`Erro ao enviar e-mail para ${loan.Student.email}`)
+      errors.push(`Erro ao enviar e-mail para ${loan.Student.email}`);
     }
-  })
+  });
   if (errors.length == 0) {
-    errors.push('success')
+    errors.push("success");
   }
-  return { response: errors }
-}
+  return { response: errors };
+};
 
-
-module.exports = { warnMail, lateMail }
+module.exports = { warnMail, lateMail };

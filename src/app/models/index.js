@@ -14,34 +14,34 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const Sequelize = require('sequelize')
-const config = require('../../database')
+const Sequelize = require("sequelize");
+const config = require("../../database");
 
-const sequelize = new Sequelize(config)
+const sequelize = new Sequelize(config);
 
-const models = {}
+const models = {};
 
 const modules = [
-  require('./User'),
-  require('./Category'),
-  require('./Course'),
-  require('./Classes'),
-  require('./Student'),
-  require('./Book'),
-  require('./Copy'),
-  require('./Loan'),
-  require('./Period'),
-]
+  require("./User"),
+  require("./Category"),
+  require("./Course"),
+  require("./Classes"),
+  require("./Student"),
+  require("./Book"),
+  require("./Copy"),
+  require("./Loan"),
+  require("./Period"),
+];
 
 modules.forEach((module) => {
-  const model = module(sequelize, Sequelize.DataTypes)
-  models[model.name] = model
-})
+  const model = module(sequelize, Sequelize.DataTypes);
+  models[model.name] = model;
+});
 
 Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) models[modelName].associate(models)
-})
+  if (models[modelName].associate) models[modelName].associate(models);
+});
 
-models.sequelize = sequelize
-models.Sequelize = Sequelize
-module.exports = models
+models.sequelize = sequelize;
+models.Sequelize = Sequelize;
+module.exports = models;

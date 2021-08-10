@@ -9,70 +9,70 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
 require("dotenv").config({
-	path: process.env.NODE_ENV === "development" ? ".env.dev" : ".env",
+  path: process.env.NODE_ENV === "development" ? ".env.dev" : ".env",
 });
 const nodemailer = require("nodemailer");
 const logoIFRSBG = require("../../assets/ifrsbg.png");
 
 const sendNodeMail = async ({
-	from,
-	to,
-	subject,
-	text,
-	html,
-	attachments = [],
+  from,
+  to,
+  subject,
+  text,
+  html,
+  attachments = [],
 }) => {
-	try {
-		if (!from) return { success: false }
-		if (!to) return { success: false }
+  try {
+    if (!from) return { success: false };
+    if (!to) return { success: false };
 
-		let transport = nodemailer.createTransport({
-			service: process.env.EMAIL_SERVICE,
-			auth: {
-				user: process.env.EMAIL_USER,
-				pass: process.env.EMAIL_PASSWORD,
-			},
-			tls: {
-				rejectUnauthorized: false,
-			},
-		});
-		const defaultAttachments = [
-			{
-				filename: "ifrsbg.png",
-				path: `${__dirname}/${logoIFRSBG.default}`,
-				cid: "ifrsbg@maisbento.com",
-			},
-			...attachments,
-		];
+    let transport = nodemailer.createTransport({
+      service: process.env.EMAIL_SERVICE,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const defaultAttachments = [
+      {
+        filename: "ifrsbg.png",
+        path: `${__dirname}/${logoIFRSBG.default}`,
+        cid: "ifrsbg@maisbento.com",
+      },
+      ...attachments,
+    ];
 
-		const message = {
-			replyTo: "noreply@google.com",
-			from,
-			to,
-			subject,
-			text,
-			html,
-			attachments: html ? defaultAttachments : null,
-		};
+    const message = {
+      replyTo: "noreply@google.com",
+      from,
+      to,
+      subject,
+      text,
+      html,
+      attachments: html ? defaultAttachments : null,
+    };
 
-		transport.sendMail(message, function (err, info) {
-			if (err) return { success: false }
-		});
+    transport.sendMail(message, function (err, info) {
+      if (err) return { success: false };
+    });
 
-		return {
-			success: true,
-		};
-	} catch (e) {
-		return {
-			success: false,
-		};
-	}
+    return {
+      success: true,
+    };
+  } catch (e) {
+    return {
+      success: false,
+    };
+  }
 };
 
 module.exports = sendNodeMail;

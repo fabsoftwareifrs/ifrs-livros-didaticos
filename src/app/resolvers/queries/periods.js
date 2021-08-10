@@ -14,12 +14,21 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Period } = require('@models')
-const paginatePeriods = async (_, { input }) => {
-  const period = await Period.paginate(input)
-  return period
-}
-const periods = () => Period.findAll()
-const period = (_, { id }) => Period.findByPk(id)
+const { Period } = require("@models");
+const { Op } = require("sequelize");
 
-module.exports = { period, periods, paginatePeriods }
+const paginatePeriods = async (_, { input }) => {
+  const options = {
+    page: input.page,
+    paginate: input.paginate,
+  };
+  if (input.search !== "") {
+    options.where = { name: { [Op.like]: "%" + input.search + "%" } };
+  }
+  const period = await Period.paginate(options);
+  return period;
+};
+const periods = () => Period.findAll();
+const period = (_, { id }) => Period.findByPk(id);
+
+module.exports = { period, periods, paginatePeriods };

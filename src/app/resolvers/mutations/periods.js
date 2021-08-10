@@ -14,23 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Period } = require('@models')
+const { Period } = require("@models");
 
 const createPeriod = async (_, { input }) => {
-  const period = await Period.create(input)
-  return period
-}
+  const period = await Period.create(input);
+  return period;
+};
 
 const updatePeriod = async (_, { id, input }) => {
-  const period = await Period.findByPk(id)
-  await period.update(input)
-  return period
-}
+  const period = await Period.findByPk(id);
+  await period.update(input);
+  return period;
+};
 
 const deletePeriod = async (_, { id }) => {
-  const period = await Period.findByPk(id)
-  await period.destroy()
-  return period
-}
+  const period = await Period.findByPk(id);
+  await period.destroy();
+  return period;
+};
 
-module.exports = { createPeriod, updatePeriod, deletePeriod }
+module.exports = { createPeriod, updatePeriod, deletePeriod };

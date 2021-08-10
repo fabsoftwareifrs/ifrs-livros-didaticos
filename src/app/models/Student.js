@@ -14,9 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict'
-const { Model } = require('sequelize')
-const sequelizePaginate = require('sequelize-paginate')
+"use strict";
+const { Model } = require("sequelize");
+const sequelizePaginate = require("sequelize-paginate");
 
 module.exports = (sequelize, DataTypes) => {
   class Student extends Model {
@@ -26,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Student.belongsTo(models.Course, { foreignKey: 'courseId' })
-      Student.belongsTo(models.Classes, { foreignKey: 'classId' })
-      Student.hasMany(models.Loan, { foreignKey: 'studentId' })
+      Student.belongsTo(models.Course, { foreignKey: "courseId" });
+      Student.belongsTo(models.Classes, { foreignKey: "classId" });
+      Student.hasMany(models.Loan, { foreignKey: "studentId" });
     }
   }
   Student.init(
@@ -39,9 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Student',
+      modelName: "Student",
     }
-  )
-  sequelizePaginate.paginate(Student)
-  return Student
-}
+  );
+  sequelizePaginate.paginate(Student);
+  return Student;
+};

@@ -14,7 +14,7 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { gql } = require('apollo-server-express')
+const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   scalar Date
@@ -138,7 +138,7 @@ module.exports = gql`
   }
 
   type mailResponse {
-    response:[String]!
+    response: [String]!
   }
 
   type PaginateBook {
@@ -211,6 +211,7 @@ module.exports = gql`
   input PaginateInput {
     page: Int!
     paginate: Int!
+    search: String!
   }
 
   input TerminateLoanInput {
@@ -238,7 +239,7 @@ module.exports = gql`
 
     copies: [Copy!]!
     availableCopies: [Copy!]!
-    copiesByBookId(bookId: Int!): [Copy!]!
+    copiesByBookId(bookId: Int!, search: String!): [Copy!]!
     copy(id: ID!): Copy!
 
     paginateClasses(input: PaginateInput!): PaginateClasses!
@@ -249,7 +250,7 @@ module.exports = gql`
     students: [Student!]
     student(id: ID!): Student!
 
-    paginateLoans(input: PaginateInput!, late:Boolean!): PaginateLoans!
+    paginateLoans(input: PaginateInput!, late: Boolean!): PaginateLoans!
     loans: [Loan!]
     loan(id: ID!): Loan!
 
@@ -306,4 +307,4 @@ module.exports = gql`
     updatePeriod(id: ID, input: PeriodInput): Period! @isAuthorized(roles: [1])
     deletePeriod(id: ID!): Period! @isAuthorized(roles: [1])
   }
-`
+`;

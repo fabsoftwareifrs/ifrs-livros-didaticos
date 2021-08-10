@@ -14,26 +14,26 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-require('dotenv').config({
+require("dotenv").config({
   // path: process.env.NODE_ENV === "production" ? ".env" : ".env.dev",
-  path: '.env',
-})
+  path: ".env",
+});
 
-console.log('nome do host', process.env.DB_NAME)
+console.log("nome do host", process.env.DB_NAME);
 
 module.exports = {
   database: process.env.DB_NAME,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOSTNAME,
-  dialect: 'mysql',
+  dialect: "mysql",
   logging: false, // console.log,
   operatorAliases: false,
   define: {
     timestamps: true,
     underscored: true,
   },
-  timezone: '-03:00',
+  timezone: "-03:00",
   benchmark: true,
-  // logging: console.log
-}
+  logging: console.log,
+};

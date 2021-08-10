@@ -14,24 +14,24 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const mutations = require('./mutations')
-const queries = require('./queries')
+const mutations = require("./mutations");
+const queries = require("./queries");
 
-let others = {}
+let others = {};
 const modules = {
-  Book: require('./Book'),
-  Copy: require('./Copy'),
-  Loan: require('./Loan'),
-  Classes: require('./Classes'),
-  Student: require('./Student')
-}
+  Book: require("./Book"),
+  Copy: require("./Copy"),
+  Loan: require("./Loan"),
+  Classes: require("./Classes"),
+  Student: require("./Student"),
+};
 
 Object.keys(modules).forEach((moduleName) => {
-  others = { ...others, [moduleName]: modules[moduleName] }
-})
+  others = { ...others, [moduleName]: modules[moduleName] };
+});
 
 module.exports = {
   ...others,
   Mutation: mutations,
   Query: queries,
-}
+};

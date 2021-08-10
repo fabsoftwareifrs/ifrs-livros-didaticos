@@ -14,52 +14,60 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Loan, Student, Copy, User, Period } = require('@models')
-const sequelize = require('sequelize')
-const { Op } = require('sequelize')
+const { Loan, Student, Copy, User, Period } = require("@models");
+const sequelize = require("sequelize");
+const { Op } = require("sequelize");
 const paginateLoans = async (_, { input, late }) => {
   const options = {
-    include: [
-      { model: Student },
-      { model: Copy },
-      { model: Period },
-    ],
-    limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page]
-  }
+    include: [{ model: Student }, { model: Copy }, { model: Period }],
+    limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
+  };
+  let where = {};
+  let allWhere = {};
   if (late) {
-    options.where = {
+    where = {
       [Op.and]: [
         { end: null },
-        { '$Period.end$': { [Op.lt]: sequelize.fn('CURRENT_DATE') } }
-      ]
-    }
+        { "$Period.end$": { [Op.lt]: sequelize.fn("CURRENT_DATE") } },
+      ],
+    };
   } else {
-    options.where = {
+    where = {
       [Op.or]: [
         { end: { [Op.ne]: null } },
-        { '$Period.end$': { [Op.gt]: sequelize.fn('CURRENT_DATE') } }
-      ]
-    }
+        { "$Period.end$": { [Op.gt]: sequelize.fn("CURRENT_DATE") } },
+      ],
+    };
   }
-  const loan = await Loan.findAndCountAll(options)
-  return { docs: loan.rows, total: loan.count }
-}
+  if (input.search !== "") {
+    allWhere = {
+      [Op.and]: [
+        where,
+        {
+          [Op.or]: [
+            { "$Period.name$": { [Op.like]: "%" + input.search + "%" } },
+            { "$Copy.code$": { [Op.like]: "%" + input.search + "%" } },
+            { "$Student.name$": { [Op.like]: "%" + input.search + "%" } },
+          ],
+        },
+      ],
+    };
+  } else {
+    allWhere = where;
+  }
+
+  options.where = allWhere;
+  const loan = await Loan.findAndCountAll(options);
+  return { docs: loan.rows, total: loan.count };
+};
 const loans = () =>
   Loan.findAll({
-    include: [
-      { model: Student },
-      { model: Copy },
-      { model: Period },
-    ],
-  })
+    include: [{ model: Student }, { model: Copy }, { model: Period }],
+  });
 
 const loan = (_, { id }) =>
   Loan.findByPk(id, {
-    include: [
-      { model: Student },
-      { model: Copy },
-      { model: Period },
-    ],
-  })
+    include: [{ model: Student }, { model: Copy }, { model: Period }],
+  });
 
-module.exports = { loan, loans, paginateLoans }
+module.exports = { loan, loans, paginateLoans };

@@ -14,10 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict'
-require('dotenv').config()
-const { Model } = require('sequelize')
-const sequelizePaginate = require('sequelize-paginate')
+"use strict";
+require("dotenv").config();
+const { Model } = require("sequelize");
+const sequelizePaginate = require("sequelize-paginate");
 
 module.exports = (sequelize, DataTypes) => {
   class Classes extends Model {
@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Classes.belongsTo(models.Course, { foreignKey: 'courseId' })
-      Classes.hasMany(models.Student, { foreignKey: 'classId' })
+      Classes.belongsTo(models.Course, { foreignKey: "courseId" });
+      Classes.hasMany(models.Student, { foreignKey: "classId" });
     }
   }
   Classes.init(
@@ -37,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Classes',
+      modelName: "Classes",
       underscored: true,
     }
-  )
-  sequelizePaginate.paginate(Classes)
-  return Classes
-}
+  );
+  sequelizePaginate.paginate(Classes);
+  return Classes;
+};

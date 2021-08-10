@@ -13,15 +13,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
-'use strict'
-require('dotenv').config()
-const { Model } = require('sequelize')
-const sequelizePaginate = require('sequelize-paginate')
+"use strict";
+require("dotenv").config();
+const { Model } = require("sequelize");
+const sequelizePaginate = require("sequelize-paginate");
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     static associate(models) {
-      Book.belongsTo(models.Category, { foreignKey: 'categoryId' })
-      Book.hasMany(models.Copy, { foreignKey: 'bookId' })
+      Book.belongsTo(models.Category, { foreignKey: "categoryId" });
+      Book.hasMany(models.Copy, { foreignKey: "bookId" });
     }
   }
 
@@ -33,10 +33,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Book',
+      modelName: "Book",
       underscored: true,
     }
-  )
-  sequelizePaginate.paginate(Book)
-  return Book
-}
+  );
+  sequelizePaginate.paginate(Book);
+  return Book;
+};

@@ -14,23 +14,23 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { UserInputError } = require('apollo-server-express')
-const { User } = require('@models')
+const { UserInputError } = require("apollo-server-express");
+const { User } = require("@models");
 
 const login = async (_, { input }) => {
-  const { login, password } = input
-  const user = await User.findOne({ where: { login } })
-  if (!user) throw new UserInputError('Usuário não encontrado!')
+  const { login, password } = input;
+  const user = await User.findOne({ where: { login } });
+  if (!user) throw new UserInputError("Usuário não encontrado!");
   if (!(await user.verifyPassword(password))) {
-    throw new UserInputError('Senha inválida!')
+    throw new UserInputError("Senha inválida!");
   }
 
-  user.passwordHash = undefined
+  user.passwordHash = undefined;
 
   return {
     token: User.generateToken({ id: user.id }),
     user: user,
-  }
-}
+  };
+};
 
-module.exports = { login }
+module.exports = { login };

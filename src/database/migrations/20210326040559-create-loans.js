@@ -14,10 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-'use strict'
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('loans', {
+    await queryInterface.createTable("loans", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -31,30 +31,30 @@ module.exports = {
       period_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: { model: 'periods', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        references: { model: "periods", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       student_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: { model: 'students', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        references: { model: "students", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       book_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: { model: 'books', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        references: { model: "books", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       user_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        references: { model: 'users', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        references: { model: "users", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       created_at: {
         allowNull: false,
@@ -64,9 +64,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    })
+    });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('loans')
+    await queryInterface.dropTable("loans");
   },
-}
+};

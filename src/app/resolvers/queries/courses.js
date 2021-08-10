@@ -14,13 +14,21 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Course } = require('@models')
+const { Course } = require("@models");
+const { Op } = require("sequelize");
 
 const paginateCourses = async (_, { input }) => {
-  const course = await Course.paginate(input)
-  return course
-}
-const courses = () => Course.findAll()
-const course = (_, { id }) => Course.findByPk(id)
+  const options = {
+    page: input.page,
+    paginate: input.paginate,
+  };
+  if (input.search !== "") {
+    options.where = { name: { [Op.like]: "%" + input.search + "%" } };
+  }
+  const course = await Course.paginate(options);
+  return course;
+};
+const courses = () => Course.findAll();
+const course = (_, { id }) => Course.findByPk(id);
 
-module.exports = { paginateCourses, courses, course }
+module.exports = { paginateCourses, courses, course };
