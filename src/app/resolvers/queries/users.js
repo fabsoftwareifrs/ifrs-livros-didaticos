@@ -19,6 +19,7 @@ const { Op } = require("sequelize");
 
 const paginateUsers = async (_, { input }) => {
   const options = {
+    order: [["name", "ASC"]],
     page: input.page,
     paginate: input.paginate,
   };

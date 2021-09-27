@@ -23,6 +23,7 @@ const paginateClasses = async (_, { input }) => {
     paginate: input.paginate,
     include: { model: Course },
     limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
+    order: [[Course, "id", "ASC"]],
   };
   if (input.search !== "") {
     options.where = {
