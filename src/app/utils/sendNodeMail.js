@@ -18,7 +18,7 @@ require("dotenv").config({
   path: process.env.NODE_ENV === "development" ? ".env.dev" : ".env",
 });
 const nodemailer = require("nodemailer");
-const logoIFRSBG = require("../../assets/ifrsbg.png");
+const logoIFRSBG = require("@assets/ifrsbg.png");
 
 const sendNodeMail = async ({
   from,

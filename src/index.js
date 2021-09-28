@@ -13,81 +13,89 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
+import express from "express";
+import cors from "cors";
+import http from "http";
+//import helmet from "helmet";
+import { ApolloServer } from "apollo-server-express";
+import {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+  ApolloServerPluginLandingPageDisabled,
+} from "apollo-server-core";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
-const express = require("express");
-const helmet = require("helmet");
-const cors = require("cors");
-const { ApolloServer } = require("apollo-server-express");
-const typeDefs = require("@app/schema");
-const resolvers = require("@resolvers");
-const directives = require("@directives");
-const { getAuthenticatedUser } = require("@utils/getAuthenticatedUser");
+import { graphqlUploadExpress } from "graphql-upload";
 
-// const sendNodeMail = require("./app/utils/sendNodeMail");
+import typeDefs from "@app/schema";
+import resolvers from "@resolvers";
+import {
+  isAuthenticatedDirectiveTransformer,
+  isAuthorizedDirectiveTransformer,
+} from "@directives";
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  uploads: {
-    maxFileSize: 0.5 * 1024 * 1024, // 500 KB
-    maxFiles: 20,
-  },
-  schemaDirectives: directives,
-  context: async ({ req }) => {
-    if (!req || !req.headers) return null;
+import getAuthenticatedUser from "@utils/getAuthenticatedUser";
 
-    const authorization = req.headers.authorization || "";
+async function startApolloServer(typeDefs, resolvers) {
+  const app = express();
+  //app.use(helmet());
+  app.use("/images", express.static(`${__dirname}/../uploads`));
+  app.use(cors());
+  app.use(express.json());
+  app.use(
+    express.urlencoded({
+      extended: true,
+    })
+  );
 
-    const authenticatedUser = await getAuthenticatedUser(authorization);
-    if (!authenticatedUser) return null;
+  app.get("/", (_, res) => {
+    res.send("IFRS API");
+  });
 
-    return { authenticatedUser };
-  },
-  introspection: true,
-  playground: process.env.NODE_ENV !== "production" || true,
-  debug: false,
-  formatError: (error) => {
-    // const e = JSON.stringify(error)
-    if (process.env.NODE_ENV === "production") {
-      // const mailtext = e
-      if (!error.message.match(/jwt expired/)) {
-        // const mailMessage = {
-        //   from: 'maisbento.suporte@gmail.com',
-        //   to: 'maisbento.suporte@gmail.com',
-        //   subject: 'Erro!',
-        //   text: mailtext
-        // }
-        // sendNodeMail(mailMessage);
-      }
-    } else {
-      console.log(error);
-    }
-    if (
-      error.message.startsWith("Database Error: ") ||
-      error.extensions.code === "INTERNAL_SERVER_ERROR" ||
-      error.extensions.code === "GRAPHQL_VALIDATION_FAILED"
-    ) {
-      return new Error("Ocorreu um erro interno, tente mais tarde.");
-    }
-    return { message: error.message };
-  },
-});
+  const httpServer = http.createServer(app);
 
-const app = express();
-app.use(helmet());
-app.use("/images", express.static(`${__dirname}/../uploads`));
-app.use(cors());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.get("/", (_, res) => {
-  res.send("IFRS API");
-});
-server.applyMiddleware({ app });
+  let schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+  });
 
-const port = process.env.PORT || 4000;
+  schema = isAuthenticatedDirectiveTransformer(schema);
+  schema = isAuthorizedDirectiveTransformer(schema);
 
-app.listen({ port }, () =>
-  console.log(
-    `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
-  )
-);
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      process.env.NODE_ENV === "production"
+        ? ApolloServerPluginLandingPageDisabled()
+        : ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
+    context: async ({ req }) => {
+      if (!req || !req.headers) return null;
+
+      const authorization = req.headers.authorization || "";
+
+      const authenticatedUser = await getAuthenticatedUser(authorization);
+
+      if (!authenticatedUser) return null;
+
+      return { authenticatedUser };
+    },
+    debug: false,
+    formatError: (error) => {
+      const e = JSON.stringify(error);
+      console.log("Error: " + e);
+
+      return { message: error.message };
+    },
+  });
+  await server.start();
+
+  app.use(graphqlUploadExpress());
+  server.applyMiddleware({ app });
+
+  const port = process.env.PORT || 4000;
+
+  await new Promise((resolve) => httpServer.listen({ port }, resolve));
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+}
+
+startApolloServer(typeDefs, resolvers);

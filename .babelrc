@@ -1,16 +1,21 @@
 {
-    "presets": ["@babel/env"],
-    "plugins": [
-      ["module-resolver", {
+  "presets": ["@babel/env"],
+  "plugins": [
+    "@babel/transform-runtime",
+    "@babel/transform-modules-commonjs",
+    "add-module-exports",
+    [
+      "module-resolver",
+      {
         "alias": {
           "@app": "./src/app",
           "@models": "./src/app/models",
           "@utils": "./src/app/utils",
           "@directives": "./src/app/directives",
-          "@resolvers": "./src/app/resolvers"
+          "@resolvers": "./src/app/resolvers",
+          "@assets": "./src/assets"
         }
-      }],
-      ["@babel/plugin-transform-runtime"],
-      ["@babel/plugin-transform-modules-commonjs"]
+      }
     ]
-  }
+  ]
+}

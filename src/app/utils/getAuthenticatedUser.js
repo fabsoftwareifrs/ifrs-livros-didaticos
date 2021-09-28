@@ -14,11 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-require("dotenv").config();
-const { ApolloError } = require("apollo-server-express");
-const getToken = require("./getToken");
-const { User } = require("@models");
-const jwt = require("jsonwebtoken");
+import { ApolloError } from "apollo-server-express";
+import { User } from "../models";
+import jwt from "jsonwebtoken";
+import getToken from "./getToken";
 
 const getAuthenticatedUser = async (authorization) => {
   try {
@@ -27,12 +26,17 @@ const getAuthenticatedUser = async (authorization) => {
     if (!token) return null;
 
     const { id } = await jwt.verify(token, process.env.AUTH_SECRET);
+    const user = await User.findOne({
+      attributes: {
+        exclude: ["passwordHash"],
+      },
+      where: { id },
+    });
 
-    const user = await User.findOne({ where: { id } });
     return user;
   } catch (e) {
     throw new ApolloError(e.message, "JWT");
   }
 };
 
-module.exports = { getAuthenticatedUser };
+export default getAuthenticatedUser;
