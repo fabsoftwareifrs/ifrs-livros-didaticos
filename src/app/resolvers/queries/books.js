@@ -14,8 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book, Category } = require("@models");
-const { Op } = require("sequelize");
+import { UserInputError } from "apollo-server-express";
+
+import { Book, Category } from "@models";
+import { Op } from "sequelize";
 
 const paginateBooks = async (_, { input }) => {
   const options = {
@@ -37,6 +39,7 @@ const paginateBooks = async (_, { input }) => {
   const book = await Book.findAndCountAll(options);
   return { docs: book.rows, total: book.count };
 };
+
 const books = async () => {
   const books = await Book.findAll({
     include: { model: Category },
@@ -44,11 +47,15 @@ const books = async () => {
 
   return books;
 };
+
 const book = async (_, { id }) => {
   const book = await Book.findByPk(id, {
     include: { model: Category },
   });
+
+  if (!book) throw new UserInputError("Registro não encontrado!");
+
   return book;
 };
 
-module.exports = { paginateBooks, books, book };
+export default { paginateBooks, books, book };

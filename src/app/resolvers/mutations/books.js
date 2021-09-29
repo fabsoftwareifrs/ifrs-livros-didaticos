@@ -14,23 +14,33 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book } = require("@models");
+import { UserInputError } from "apollo-server-express";
+import { Book } from "@models";
 
 const createBook = async (_, { input }) => {
   const book = await Book.create(input);
   book.Category = await book.getCategory();
   return book;
 };
+
 const updateBook = async (_, { id, input }) => {
   const book = await Book.findByPk(id);
+
+  if (!book) throw new UserInputError("Registro não encontrado!");
+
   await book.update(input);
   book.Category = await book.getCategory();
-  return book;
-};
-const deleteBook = async (_, { id }) => {
-  const book = await Book.findByPk(id);
-  book.destroy();
+
   return book;
 };
 
-module.exports = { createBook, updateBook, deleteBook };
+const deleteBook = async (_, { id }) => {
+  const book = await Book.findByPk(id);
+
+  if (!book) throw new UserInputError("Registro não encontrado!");
+
+  await book.destroy();
+  return book;
+};
+
+export default { createBook, updateBook, deleteBook };

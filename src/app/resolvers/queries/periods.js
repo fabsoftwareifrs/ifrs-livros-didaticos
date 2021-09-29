@@ -14,8 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Period } = require("@models");
-const { Op } = require("sequelize");
+import { UserInputError } from "apollo-server-express";
+
+import { Period } from "@models";
+import { Op } from "sequelize";
 
 const paginatePeriods = async (_, { input }) => {
   const options = {
@@ -28,7 +30,17 @@ const paginatePeriods = async (_, { input }) => {
   const period = await Period.paginate(options);
   return period;
 };
-const periods = () => Period.findAll();
-const period = (_, { id }) => Period.findByPk(id);
+const periods = async () => {
+  const periods = await Period.findAll();
+  return periods;
+};
 
-module.exports = { period, periods, paginatePeriods };
+const period = async (_, { id }) => {
+  const period = await Period.findByPk(id);
+
+  if (!period) throw new UserInputError("Registro não encontrado!");
+
+  return period;
+};
+
+export default { period, periods, paginatePeriods };

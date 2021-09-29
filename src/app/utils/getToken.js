@@ -26,4 +26,4 @@ const getToken = (authorization) => {
   return token;
 };
 
-module.exports = getToken;
+export default getToken;

@@ -15,20 +15,17 @@
  */
 
 "use strict";
-const { Model } = require("sequelize");
-const sequelizePaginate = require("sequelize-paginate");
+import { Model } from "sequelize";
+import sequelizePaginate from "sequelize-paginate";
+
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       Course.hasMany(models.Classes, { foreignKey: "courseId" });
       Course.hasMany(models.Student, { foreignKey: "courseId" });
     }
   }
+
   Course.init(
     {
       name: DataTypes.STRING,
@@ -39,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
+
   sequelizePaginate.paginate(Course);
   return Course;
 };

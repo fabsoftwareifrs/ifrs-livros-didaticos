@@ -17,19 +17,19 @@
 let queries = {};
 
 const modules = [
-  require("./loans"),
-  require("./copies"),
   require("./books"),
   require("./categories"),
   require("./classes"),
+  require("./copies"),
   require("./courses"),
+  require("./loans"),
+  require("./periods"),
   require("./students"),
   require("./users"),
-  require("./periods"),
 ];
 
 modules.forEach((module) => {
   queries = { ...queries, ...module };
 });
 
-module.exports = { ...queries };
+export default { ...queries };

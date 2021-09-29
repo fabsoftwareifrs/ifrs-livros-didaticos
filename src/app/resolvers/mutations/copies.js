@@ -14,21 +14,31 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Copy } = require("@models");
+import { UserInputError } from "apollo-server-express";
+
+import { Copy } from "@models";
 
 const createCopy = async (_, { input }) => {
   const copy = await Copy.create(input);
   return copy;
 };
+
 const updateCopy = async (_, { id, input }) => {
   const copy = await Copy.findByPk(id);
+
+  if (!copy) throw new UserInputError("Registro não encontrado!");
+
   await copy.update(input);
   return copy;
 };
+
 const deleteCopy = async (_, { id }) => {
   const copy = await Copy.findByPk(id);
+
+  if (!copy) throw new UserInputError("Registro não encontrado!");
+
   await copy.destroy();
   return copy;
 };
 
-module.exports = { createCopy, updateCopy, deleteCopy };
+export default { createCopy, updateCopy, deleteCopy };

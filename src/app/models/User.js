@@ -15,20 +15,13 @@
  */
 
 "use strict";
-require("dotenv").config();
-
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const sequelizePaginate = require("sequelize-paginate");
-const { Model } = require("sequelize");
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { Model } from "sequelize";
+import sequelizePaginate from "sequelize-paginate";
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {}
   }
 
@@ -63,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       expiresIn: SECONDS_IN_A_DAY,
     });
   };
+
   sequelizePaginate.paginate(User);
   return User;
 };

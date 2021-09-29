@@ -14,11 +14,8 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-require("dotenv").config({
-  path: process.env.NODE_ENV === "development" ? ".env.dev" : ".env",
-});
-const nodemailer = require("nodemailer");
-const logoIFRSBG = require("@assets/ifrsbg.png");
+import nodemailer from "nodemailer";
+import logoIFRSBG from "@assets/ifrsbg.png";
 
 const sendNodeMail = async ({
   from,
@@ -75,4 +72,4 @@ const sendNodeMail = async ({
   }
 };
 
-module.exports = sendNodeMail;
+export default sendNodeMail;

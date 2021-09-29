@@ -14,7 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Period } = require("@models");
+import { UserInputError } from "apollo-server-express";
+
+import { Period } from "@models";
 
 const createPeriod = async (_, { input }) => {
   const period = await Period.create(input);
@@ -23,14 +25,20 @@ const createPeriod = async (_, { input }) => {
 
 const updatePeriod = async (_, { id, input }) => {
   const period = await Period.findByPk(id);
+
+  if (!period) throw new UserInputError("Registro não encontrado!");
+
   await period.update(input);
   return period;
 };
 
 const deletePeriod = async (_, { id }) => {
   const period = await Period.findByPk(id);
+
+  if (!period) throw new UserInputError("Registro não encontrado!");
+
   await period.destroy();
   return period;
 };
 
-module.exports = { createPeriod, updatePeriod, deletePeriod };
+export default { createPeriod, updatePeriod, deletePeriod };

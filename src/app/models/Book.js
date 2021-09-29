@@ -14,9 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 "use strict";
-require("dotenv").config();
-const { Model } = require("sequelize");
-const sequelizePaginate = require("sequelize-paginate");
+import { Model } from "sequelize";
+import sequelizePaginate from "sequelize-paginate";
+
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     static associate(models) {
@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
+
   sequelizePaginate.paginate(Book);
   return Book;
 };

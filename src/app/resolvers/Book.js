@@ -16,4 +16,4 @@
 
 const category = ({ Category }) => Category;
 
-module.exports = { category };
+export default { category };

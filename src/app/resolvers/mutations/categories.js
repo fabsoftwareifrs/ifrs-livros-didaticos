@@ -14,7 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Category } = require("@models");
+import { UserInputError } from "apollo-server-express";
+
+import { Category } from "@models";
 
 // Categories
 const createCategory = async (_, { input }) => {
@@ -24,14 +26,20 @@ const createCategory = async (_, { input }) => {
 
 const updateCategory = async (_, { id, input }) => {
   const category = await Category.findByPk(id);
-  category.update(input);
+
+  if (!category) throw new UserInputError("Registro não encontrado!");
+
+  await category.update(input);
   return category;
 };
 
 const deleteCategory = async (_, { id }) => {
   const category = await Category.findByPk(id);
-  category.destroy();
+
+  if (!category) throw new UserInputError("Registro não encontrado!");
+
+  await category.destroy();
   return category;
 };
 
-module.exports = { createCategory, updateCategory, deleteCategory };
+export default { createCategory, updateCategory, deleteCategory };

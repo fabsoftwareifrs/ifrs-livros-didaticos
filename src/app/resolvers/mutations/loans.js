@@ -14,7 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Loan, Sequelize } = require("@models");
+import { UserInputError } from "apollo-server-express";
+
+import { Loan, Sequelize } from "@models";
 
 const createLoan = async (_, { input }) => {
   const loan = await Loan.create(input);
@@ -27,6 +29,9 @@ const createLoan = async (_, { input }) => {
 
 const updateLoan = async (_, { id, input }) => {
   const loan = await Loan.findByPk(id);
+
+  if (!loan) throw new UserInputError("Registro não encontrado!");
+
   await loan.update(input);
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
@@ -36,6 +41,9 @@ const updateLoan = async (_, { id, input }) => {
 
 const deleteLoan = async (_, { id }) => {
   const loan = await Loan.findByPk(id);
+
+  if (!loan) throw new UserInputError("Registro não encontrado!");
+
   loan.Copy = await loan.getCopy();
   await loan.Copy.update({ status: "AVAILABLE" });
   await loan.destroy();
@@ -44,6 +52,9 @@ const deleteLoan = async (_, { id }) => {
 
 const terminateLoan = async (_, { id, input }) => {
   const loan = await Loan.findByPk(id);
+
+  if (!loan) throw new UserInputError("Registro não encontrado!");
+
   await loan.update({ end: input.end || Sequelize.NOW() });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
@@ -54,6 +65,9 @@ const terminateLoan = async (_, { id, input }) => {
 
 const cancelTerminateLoan = async (_, { id }) => {
   const loan = await Loan.findByPk(id);
+
+  if (!loan) throw new UserInputError("Registro não encontrado!");
+
   await loan.update({ end: null });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
@@ -62,7 +76,7 @@ const cancelTerminateLoan = async (_, { id }) => {
   return loan;
 };
 
-module.exports = {
+export default {
   createLoan,
   updateLoan,
   deleteLoan,

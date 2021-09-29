@@ -14,8 +14,8 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const sendNodeMail = require("../../utils/sendNodeMail");
-const template = require("../../templates/email");
+import sendNodeMail from "../../utils/sendNodeMail";
+import template from "../../templates/email";
 
 const sendMessage = async (_, to, subject, message) => {
   const mailtext = message;
@@ -33,4 +33,4 @@ const sendMessage = async (_, to, subject, message) => {
   return mail.success;
 };
 
-module.exports = { sendMessage };
+export default { sendMessage };

@@ -14,7 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Classes } = require("@models");
+import { UserInputError } from "apollo-server-express";
+
+import { Classes } from "@models";
 
 // Classes
 const createClass = async (_, { input }) => {
@@ -25,14 +27,21 @@ const createClass = async (_, { input }) => {
 
 const updateClass = async (_, { id, input }) => {
   const classe = await Classes.findByPk(id);
+
+  if (!classe) throw new UserInputError("Registro não encontrado!");
+
   await classe.update(input);
   classe.Course = await classe.getCourse();
   return classe;
 };
+
 const deleteClass = async (_, { id }) => {
   const classe = await Classes.findByPk(id);
-  classe.destroy();
+
+  if (!classe) throw new UserInputError("Registro não encontrado!");
+
+  await classe.destroy();
   return classe;
 };
 
-module.exports = { createClass, updateClass, deleteClass };
+export default { createClass, updateClass, deleteClass };

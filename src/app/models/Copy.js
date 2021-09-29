@@ -15,8 +15,8 @@
  */
 
 "use strict";
-const { Model } = require("sequelize");
-const { nanoid } = require("nanoid");
+import { Model } from "sequelize";
+import { nanoid } from "nanoid";
 
 module.exports = (sequelize, DataTypes) => {
   class Copy extends Model {

@@ -34,4 +34,4 @@ modules.forEach((module) => {
   mutations = { ...mutations, ...module };
 });
 
-module.exports = { ...mutations };
+export default { ...mutations };

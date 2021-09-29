@@ -14,16 +14,17 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { UserInputError } = require("apollo-server-express");
-const { User } = require("@models");
+import { UserInputError } from "apollo-server-express";
+import { User } from "@models";
 
 const login = async (_, { input }) => {
   const { login, password } = input;
   const user = await User.findOne({ where: { login } });
+
   if (!user) throw new UserInputError("Usuário não encontrado!");
-  if (!(await user.verifyPassword(password))) {
+
+  if (!(await user.verifyPassword(password)))
     throw new UserInputError("Senha inválida!");
-  }
 
   user.passwordHash = undefined;
 
@@ -33,4 +34,4 @@ const login = async (_, { input }) => {
   };
 };
 
-module.exports = { login };
+export default { login };

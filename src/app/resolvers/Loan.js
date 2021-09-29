@@ -24,4 +24,5 @@ const student = ({ Student }) => Student;
 const copy = ({ Copy }) => Copy;
 
 const period = ({ Period }) => Period;
-module.exports = { late, delivered, student, copy, period };
+
+export default { late, delivered, student, copy, period };

@@ -14,9 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { gql } = require("apollo-server-express");
+import { gql } from "apollo-server-express";
 
-module.exports = gql`
+export default gql`
   scalar Date
 
   directive @isAuthorized(roles: [Int!]!) on FIELD_DEFINITION
@@ -31,37 +31,55 @@ module.exports = gql`
     AVAILABLE
   }
 
+  interface Authentication {
+    token: String!
+  }
+
+  interface Login {
+    email: String!
+    password: String!
+  }
+
+  type Auth implements Authentication {
+    token: String!
+    user: User
+    role: Role!
+  }
+
   type AuthResponse {
     token: String!
     user: User!
   }
 
-  type User {
+  type Book {
     id: ID!
     name: String!
-    login: String!
-    accessLevel: Int!
-  }
-
-  type PaginateUser {
-    docs: [User!]
-    pages: Int!
-    total: Int!
+    author: String!
+    volume: String!
+    category: Category!
   }
 
   type Category {
     id: ID!
     name: String!
   }
+
+  type Classes {
+    id: ID!
+    name: String!
+    course: Course!
+  }
+
+  type Copy {
+    id: ID!
+    code: String!
+    book: Book!
+    status: Status!
+  }
+
   type Course {
     id: ID!
     name: String!
-  }
-
-  type PaginateCourse {
-    docs: [Course!]
-    pages: Int!
-    total: Int!
   }
 
   type Loan {
@@ -76,41 +94,11 @@ module.exports = gql`
     period: Period!
   }
 
-  type PaginateLoans {
-    docs: [Loan!]
-    pages: Int!
-    total: Int!
-  }
-
   type Period {
     id: ID!
     name: String!
     start: Date!
     end: Date!
-  }
-
-  type PaginatePeriods {
-    docs: [Period!]
-    pages: Int!
-    total: Int!
-  }
-
-  type Classes {
-    id: ID!
-    name: String!
-    course: Course!
-  }
-
-  type PaginateClasses {
-    docs: [Classes!]
-    pages: Int!
-    total: Int!
-  }
-
-  type PaginateStudents {
-    docs: [Student!]
-    pages: Int!
-    total: Int!
   }
 
   type Student {
@@ -122,23 +110,11 @@ module.exports = gql`
     classes: Classes!
   }
 
-  type Book {
+  type User {
     id: ID!
     name: String!
-    author: String!
-    volume: String!
-    category: Category!
-  }
-
-  type Copy {
-    id: ID!
-    code: String!
-    book: Book!
-    status: Status!
-  }
-
-  type mailResponse {
-    response: [String]!
+    login: String!
+    accessLevel: Int!
   }
 
   type PaginateBook {
@@ -146,10 +122,56 @@ module.exports = gql`
     pages: Int!
     total: Int!
   }
+
   type PaginateCategory {
     docs: [Category!]
     pages: Int!
     total: Int!
+  }
+
+  type PaginateClasses {
+    docs: [Classes!]
+    pages: Int!
+    total: Int!
+  }
+
+  type PaginateCourse {
+    docs: [Course!]
+    pages: Int!
+    total: Int!
+  }
+
+  type PaginateLoans {
+    docs: [Loan!]
+    pages: Int!
+    total: Int!
+  }
+
+  type PaginatePeriods {
+    docs: [Period!]
+    pages: Int!
+    total: Int!
+  }
+
+  type PaginateStudents {
+    docs: [Student!]
+    pages: Int!
+    total: Int!
+  }
+
+  type PaginateUser {
+    docs: [User!]
+    pages: Int!
+    total: Int!
+  }
+
+  type mailResponse {
+    response: [String]!
+  }
+
+  input AuthInput {
+    login: String!
+    password: String!
   }
 
   input BookInput {
@@ -157,22 +179,6 @@ module.exports = gql`
     author: String
     volume: String
     categoryId: Int
-  }
-
-  input CopyInput {
-    status: Status!
-    bookId: Int
-  }
-
-  input UserInput {
-    name: String!
-    login: String!
-    password: String!
-    accessLevel: Int!
-  }
-
-  input CourseInput {
-    name: String!
   }
 
   input CategoryInput {
@@ -184,12 +190,13 @@ module.exports = gql`
     courseId: Int!
   }
 
-  input StudentInput {
+  input CopyInput {
+    status: Status!
+    bookId: Int
+  }
+
+  input CourseInput {
     name: String!
-    email: String!
-    matriculation: String!
-    courseId: Int!
-    classId: Int!
   }
 
   input LoanInput {
@@ -204,10 +211,21 @@ module.exports = gql`
     end: Date!
   }
 
-  input AuthInput {
+  input StudentInput {
+    name: String!
+    email: String!
+    matriculation: String!
+    courseId: Int!
+    classId: Int!
+  }
+
+  input UserInput {
+    name: String!
     login: String!
     password: String!
+    accessLevel: Int!
   }
+
   input PaginateInput {
     page: Int!
     paginate: Int!
@@ -221,10 +239,6 @@ module.exports = gql`
   type Query {
     hello: String
 
-    paginateUsers(input: PaginateInput!): PaginateUser!
-    users: [User!]
-    user(id: ID!): User!
-
     paginateBooks(input: PaginateInput!): PaginateBook!
     books: [Book!]
     book(id: ID!): Book!
@@ -233,22 +247,18 @@ module.exports = gql`
     categories: [Category!]
     category(id: ID!): Category!
 
-    paginateCourses(input: PaginateInput!): PaginateCourse!
-    courses: [Course!]
-    course(id: ID!): Course!
+    paginateClasses(input: PaginateInput!): PaginateClasses!
+    classes: [Classes!]
+    classRoom(id: ID!): Classes!
 
     copies: [Copy!]!
     availableCopies: [Copy!]!
     copiesByBookId(bookId: Int!, search: String!): [Copy!]!
     copy(id: ID!): Copy!
 
-    paginateClasses(input: PaginateInput!): PaginateClasses!
-    classes: [Classes!]
-    classRoom(id: ID!): Classes!
-
-    paginateStudents(input: PaginateInput!): PaginateStudents!
-    students: [Student!]
-    student(id: ID!): Student!
+    paginateCourses(input: PaginateInput!): PaginateCourse!
+    courses: [Course!]
+    course(id: ID!): Course!
 
     paginateLoans(input: PaginateInput!, late: Boolean!): PaginateLoans!
     loans: [Loan!]
@@ -257,6 +267,14 @@ module.exports = gql`
     paginatePeriods(input: PaginateInput!): PaginatePeriods!
     periods: [Period!]
     period(id: ID!): Period!
+
+    paginateStudents(input: PaginateInput!): PaginateStudents!
+    students: [Student!]
+    student(id: ID!): Student!
+
+    paginateUsers(input: PaginateInput!): PaginateUser!
+    users: [User!]
+    user(id: ID!): User!
   }
 
   type Mutation {
@@ -274,27 +292,22 @@ module.exports = gql`
     updateBook(id: ID, input: BookInput): Book! @isAuthorized(roles: [1])
     deleteBook(id: ID!): Book! @isAuthorized(roles: [1])
 
-    createCopy(input: CopyInput): Copy! @isAuthorized(roles: [1])
-    updateCopy(id: ID, input: CopyInput): Copy! @isAuthorized(roles: [1])
-    deleteCopy(id: ID!): Copy! @isAuthorized(roles: [1])
-
     createCategory(input: CategoryInput): Category! @isAuthorized(roles: [1])
     updateCategory(id: ID, input: CategoryInput): Category!
       @isAuthorized(roles: [1])
     deleteCategory(id: ID!): Category! @isAuthorized(roles: [1])
 
-    createCourse(input: CourseInput): Course! @isAuthorized(roles: [1])
-    updateCourse(id: ID, input: CourseInput): Course! @isAuthorized(roles: [1])
-    deleteCourse(id: ID!): Course! @isAuthorized(roles: [1])
-
     createClass(input: ClassInput): Classes! @isAuthorized(roles: [1])
     updateClass(id: ID, input: ClassInput): Classes! @isAuthorized(roles: [1])
     deleteClass(id: ID!): Classes! @isAuthorized(roles: [1])
 
-    createStudent(input: StudentInput): Student! @isAuthorized(roles: [1])
-    updateStudent(id: ID, input: StudentInput): Student!
-      @isAuthorized(roles: [1])
-    deleteStudent(id: ID!): Student! @isAuthorized(roles: [1])
+    createCopy(input: CopyInput): Copy! @isAuthorized(roles: [1])
+    updateCopy(id: ID, input: CopyInput): Copy! @isAuthorized(roles: [1])
+    deleteCopy(id: ID!): Copy! @isAuthorized(roles: [1])
+
+    createCourse(input: CourseInput): Course! @isAuthorized(roles: [1])
+    updateCourse(id: ID, input: CourseInput): Course! @isAuthorized(roles: [1])
+    deleteCourse(id: ID!): Course! @isAuthorized(roles: [1])
 
     createLoan(input: LoanInput): Loan! @isAuthorized(roles: [1])
     updateLoan(id: ID!, input: LoanInput): Loan! @isAuthorized(roles: [1])
@@ -306,5 +319,10 @@ module.exports = gql`
     createPeriod(input: PeriodInput): Period! @isAuthorized(roles: [1])
     updatePeriod(id: ID, input: PeriodInput): Period! @isAuthorized(roles: [1])
     deletePeriod(id: ID!): Period! @isAuthorized(roles: [1])
+
+    createStudent(input: StudentInput): Student! @isAuthorized(roles: [1])
+    updateStudent(id: ID, input: StudentInput): Student!
+      @isAuthorized(roles: [1])
+    deleteStudent(id: ID!): Student! @isAuthorized(roles: [1])
   }
 `;

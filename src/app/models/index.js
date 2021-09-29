@@ -15,22 +15,22 @@
  */
 
 const Sequelize = require("sequelize");
-const config = require("../../database");
+
+import config from "../../database/config";
 
 const sequelize = new Sequelize(config);
 
 const models = {};
-
 const modules = [
-  require("./User"),
-  require("./Category"),
-  require("./Course"),
-  require("./Classes"),
-  require("./Student"),
   require("./Book"),
+  require("./Category"),
+  require("./Classes"),
   require("./Copy"),
+  require("./Course"),
   require("./Loan"),
   require("./Period"),
+  require("./Student"),
+  require("./User"),
 ];
 
 modules.forEach((module) => {
@@ -44,4 +44,5 @@ Object.keys(models).forEach((modelName) => {
 
 models.sequelize = sequelize;
 models.Sequelize = Sequelize;
-module.exports = models;
+
+export default models;

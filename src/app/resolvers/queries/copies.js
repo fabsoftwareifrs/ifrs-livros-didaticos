@@ -14,8 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Book, Category, Copy } = require("@models");
-const { Op } = require("sequelize");
+import { UserInputError } from "apollo-server-express";
+
+import { Book, Category, Copy } from "@models";
+import { Op } from "sequelize";
 
 const copies = async () => {
   const copies = await Copy.findAll({
@@ -47,11 +49,15 @@ const copiesByBookId = async (_, { bookId, search }) => {
   const copies = await Copy.findAll(options);
   return copies;
 };
+
 const copy = async (_, { id }) => {
   const copy = await Copy.findByPk(id, {
     include: [{ model: Book, include: { model: Category } }],
   });
+
+  if (!copy) throw new UserInputError("Registro não encontrado!");
+
   return copy;
 };
 
-module.exports = { availableCopies, copies, copiesByBookId, copy };
+export default { availableCopies, copies, copiesByBookId, copy };

@@ -14,10 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { sendMessage } = require("./contacts");
-const { Loan, Student, Copy, Period, Book } = require("@models");
-const { formatDate } = require("../../utils/formatters");
-//Mail
+import { sendMessage } from "./contacts";
+import { Loan, Student, Copy, Period, Book } from "@models";
+import { formatDate } from "../../utils/formatters";
+
 const warnMail = async (_, { loans }) => {
   const subject = "Lembrete de devolução.";
   var errors = [];
@@ -76,4 +76,4 @@ const lateMail = async (_, { loans }) => {
   return { response: errors };
 };
 
-module.exports = { warnMail, lateMail };
+export default { warnMail, lateMail };

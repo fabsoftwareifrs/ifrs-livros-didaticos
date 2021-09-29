@@ -16,4 +16,4 @@
 
 const course = ({ Course }) => Course;
 
-module.exports = { course };
+export default { course };

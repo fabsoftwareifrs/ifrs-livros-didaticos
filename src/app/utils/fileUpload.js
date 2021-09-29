@@ -14,29 +14,19 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const fs = require("fs");
+import fs from "fs";
 
-module.exports = ({ stream, filename, mimetype, types = [] }) => {
-  if (!types.includes(mimetype)) {
+export default ({ stream, filename, mimetype, types = [] }) => {
+  if (!types.includes(mimetype))
     throw new Error("Formato de imagem não permitido!");
-  }
 
   const pathFile = `uploads/${filename}`;
 
+  fs.createWriteStream(pathFile);
   return new Promise((resolve, reject) => {
     stream
-      .on("open", () => {
-        stream
-          .pipe(fs.createWriteStream(pathFile))
-          .on("error", (error) => reject(error))
-          .on("finish", () => resolve({ pathFile }));
-      })
-      .on("error", (error) => {
-        if (stream.truncated) {
-          fs.unlinkSync(pathFile);
-          reject(new Error("Tamanho do arquivo excedeu o limite!"));
-        }
-        reject(error);
-      });
+      .pipe(fs.createWriteStream(pathFile))
+      .on("error", (error) => reject(error))
+      .on("finish", () => resolve({ pathFile }));
   });
 };

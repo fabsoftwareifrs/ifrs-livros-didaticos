@@ -14,10 +14,10 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const path = require("path");
-const { unlink } = require("fs");
+import path from "path";
+import { unlink } from "fs";
 
-module.exports = (file) => {
+export default (file) => {
   return new Promise((resolve) => {
     if (!file) resolve(false);
     const pathname = path.resolve("uploads", file);

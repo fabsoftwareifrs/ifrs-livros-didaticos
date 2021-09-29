@@ -18,4 +18,4 @@ const formatDate = (d) => {
   let date = d.substr(8, 2) + "/" + d.substr(5, 2) + "/" + d.substr(0, 4);
   return date;
 };
-module.exports = { formatDate };
+export default { formatDate };

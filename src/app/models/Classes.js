@@ -15,17 +15,11 @@
  */
 
 "use strict";
-require("dotenv").config();
-const { Model } = require("sequelize");
-const sequelizePaginate = require("sequelize-paginate");
+import { Model } from "sequelize";
+import sequelizePaginate from "sequelize-paginate";
 
 module.exports = (sequelize, DataTypes) => {
   class Classes extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       Classes.belongsTo(models.Course, { foreignKey: "courseId" });
       Classes.hasMany(models.Student, { foreignKey: "classId" });
@@ -41,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
+
   sequelizePaginate.paginate(Classes);
   return Classes;
 };

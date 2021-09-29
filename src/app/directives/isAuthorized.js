@@ -30,36 +30,4 @@ function isAuthorizedDirectiveTransformer(schema) {
   });
 }
 
-// function isAuthorizedDirective(directiveName) {
-// 	return {
-// 		isAuthorizedDirectiveTypeDefs: `
-// 			directive @${directiveName}(roles:[String!]) on FIELD_DEFINITION
-// 		`,
-// 		isAuthorizedDirectiveTransformer,
-// 	};
-// }
-
-// class IsAuthorizedDirective extends SchemaDirectiveVisitor {
-// 	visitFieldDefinition(field) {
-// 		const { resolve = defaultFieldResolver } = field;
-// 		const { roles } = this.args;
-
-// 		field.resolve = async function (...args) {
-// 			const [, , { authenticatedUser }] = args;
-
-// 			if (authenticatedUser === undefined)
-// 				throw new AuthenticationError("You are not authenticated!");
-
-// 			//console.log("Role: ", authenticatedUser);
-// 			if (!roles.includes(authenticatedUser.role)) {
-// 				throw new AuthenticationError("You are not authorized!");
-// 			}
-
-// 			const result = await resolve.apply(this, args);
-
-// 			return result;
-// 		};
-// 	}
-// }
-
 export default isAuthorizedDirectiveTransformer;

@@ -14,7 +14,8 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { User } = require("@models");
+import { UserInputError } from "apollo-server-express";
+import { User } from "@models";
 
 const createUser = async (_, { input }) => {
   const user = await User.create(input);
@@ -23,16 +24,21 @@ const createUser = async (_, { input }) => {
 
 const updateUser = async (_, { id, input }) => {
   const user = await User.findByPk(id);
-  if (input.password !== "") {
-    await user.update(input);
-  }
+
+  if (!user) throw new UserInputError("Registro não encontrado!");
+
+  await user.update(input);
+
   return user;
 };
 
 const deleteUser = async (_, { id }) => {
   const user = await User.findByPk(id);
+
+  if (!user) throw new UserInputError("Registro não encontrado!");
+
   await user.destroy();
   return user;
 };
 
-module.exports = { createUser, updateUser, deleteUser };
+export default { createUser, updateUser, deleteUser };

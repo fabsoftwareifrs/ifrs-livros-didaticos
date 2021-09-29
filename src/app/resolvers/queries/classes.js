@@ -14,8 +14,9 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-const { Classes, Course } = require("@models");
-const { Op } = require("sequelize");
+import { UserInputError } from "apollo-server-express";
+import { Classes, Course } from "@models";
+import { Op } from "sequelize";
 
 const paginateClasses = async (_, { input }) => {
   const options = {
@@ -36,9 +37,18 @@ const paginateClasses = async (_, { input }) => {
   const classes = await Classes.findAndCountAll(options);
   return { docs: classes.rows, total: classes.count };
 };
-const classes = async () =>
-  await Classes.findAll({ include: { model: Course } });
-const classRoom = async (_, { id }) =>
-  await Classes.findByPk(id, { include: { model: Course } });
 
-module.exports = { classes, classRoom, paginateClasses };
+const classes = async () => {
+  const classes = await Classes.findAll({ include: { model: Course } });
+  return classes;
+};
+
+const classRoom = async (_, { id }) => {
+  const classRoom = await Classes.findByPk(id, { include: { model: Course } });
+
+  if (!classRoom) throw new UserInputError("Registro não encontrado!");
+
+  return classRoom;
+};
+
+export default { classes, classRoom, paginateClasses };
