@@ -12,6 +12,9 @@
     "lint": "eslint --fix main.js",
     "format": "prettier -w ."
   },
+  "engines": {
+    "node": "14.17.6"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.15.4",
