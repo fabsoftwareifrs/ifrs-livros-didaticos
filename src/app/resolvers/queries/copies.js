@@ -51,13 +51,15 @@ const copiesByBookId = async (_, { bookId, search }) => {
 };
 
 const copy = async (_, { id }) => {
-  const copy = await Copy.findByPk(id, {
-    include: [{ model: Book, include: { model: Category } }],
-  });
+  if (id) {
+    const copy = await Copy.findByPk(id, {
+      include: [{ model: Book, include: { model: Category } }],
+    });
 
-  if (!copy) throw new UserInputError("Registro não encontrado!");
+    if (!copy) throw new UserInputError("Registro não encontrado!");
 
-  return copy;
+    return copy;
+  }
 };
 
 export default { availableCopies, copies, copiesByBookId, copy };

@@ -16,13 +16,17 @@
 
 import { UserInputError } from "apollo-server-express";
 
-import { Loan, Student, Copy, Period } from "@models";
+import { Loan, Student, Copy, Period, Book } from "@models";
 import sequelize from "sequelize";
 import { Op } from "sequelize";
 
 const paginateLoans = async (_, { input, late }) => {
   const options = {
-    include: [{ model: Student }, { model: Copy }, { model: Period }],
+    include: [
+      { model: Student },
+      { model: Copy, include: { model: Book } },
+      { model: Period },
+    ],
     limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
   };
   let where = {};
@@ -61,6 +65,7 @@ const paginateLoans = async (_, { input, late }) => {
 
   options.where = allWhere;
   const loan = await Loan.findAndCountAll(options);
+  console.log(loan);
   return { docs: loan.rows, total: loan.count };
 };
 
