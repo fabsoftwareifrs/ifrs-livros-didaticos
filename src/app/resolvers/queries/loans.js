@@ -65,7 +65,6 @@ const paginateLoans = async (_, { input, late }) => {
 
   options.where = allWhere;
   const loan = await Loan.findAndCountAll(options);
-  console.log(loan);
   return { docs: loan.rows, total: loan.count };
 };
 

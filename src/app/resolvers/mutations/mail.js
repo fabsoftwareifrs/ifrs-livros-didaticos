@@ -21,9 +21,7 @@ import { formatDate } from "../../utils/formatters";
 const warnMail = async (_, { loans }) => {
   const subject = "Lembrete de devolução.";
   var errors = [];
-  console.log(loans);
   loans.map(async function (loanId) {
-    console.log(loanId);
     let loan = await Loan.findByPk(loanId, {
       include: [
         { model: Student },

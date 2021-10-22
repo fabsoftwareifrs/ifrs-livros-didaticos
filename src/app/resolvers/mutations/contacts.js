@@ -20,7 +20,6 @@ import template from "../../templates/email";
 const sendMessage = async (_, to, subject, message) => {
   const mailtext = message;
   const mailhmtl = `<p><b>${message}</b></p>`;
-
   const mailMessage = {
     from: "edufaggion@gmail.com",
     to,

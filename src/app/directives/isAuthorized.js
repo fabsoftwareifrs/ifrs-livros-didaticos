@@ -14,8 +14,6 @@ function isAuthorizedDirectiveTransformer(schema) {
         fieldConfig.resolve = async function (source, args, context, info) {
           const { authenticatedUser } = context;
           const { roles } = isAuthorizedDirective;
-          console.log(authenticatedUser);
-          console.log(roles);
           if (authenticatedUser === undefined)
             throw new AuthenticationError("You are not authenticated!");
 
