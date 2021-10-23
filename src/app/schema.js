@@ -249,6 +249,7 @@ export default gql`
 
     paginateClasses(input: PaginateInput!): PaginateClasses!
     classes: [Classes!]
+    classesByCourseId(courseId: Int!): [Classes!]!
     classRoom(id: ID!): Classes!
 
     copies: [Copy!]!

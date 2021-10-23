@@ -51,4 +51,13 @@ const classRoom = async (_, { id }) => {
   return classRoom;
 };
 
-export default { classes, classRoom, paginateClasses };
+const classesByCourseId = async (_, { courseId }) => {
+  const classes = await Classes.findAll({
+    include: { model: Course },
+    where: { courseId },
+  });
+
+  return classes;
+};
+
+export default { classes, classRoom, paginateClasses, classesByCourseId };
