@@ -14,10 +14,12 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
+import { GraphQLUpload } from "graphql-upload";
 import mutations from "./mutations";
 import queries from "./queries";
 
-let others = {};
+let others = { Upload: GraphQLUpload };
+
 const modules = {
   Book: require("./Book"),
   Classes: require("./Classes"),

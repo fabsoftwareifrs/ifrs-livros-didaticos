@@ -82,7 +82,21 @@ async function startApolloServer(typeDefs, resolvers) {
     debug: false,
     formatError: (error) => {
       const e = JSON.stringify(error);
-      console.log("Error: " + e);
+
+      console.log(e);
+
+      if (error.message === "Validation Error") {
+        const {
+          extensions: {
+            exception: {
+              parent: { sqlMessage },
+            },
+          },
+        } = error;
+
+        if (/Duplicate entry \'(.*)\' for key \'(.*)\'/.test(sqlMessage))
+          return { message: sqlMessage };
+      }
 
       return { message: error.message };
     },

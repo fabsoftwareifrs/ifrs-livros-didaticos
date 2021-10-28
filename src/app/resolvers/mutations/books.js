@@ -15,15 +15,68 @@
  */
 
 import { UserInputError } from "apollo-server-express";
-import { Book } from "@models";
+import csvParser from "csv-parser";
 
-const createBook = async (_, { input }) => {
+import { Book, Category, sequelize } from "@models";
+
+export const createBook = async (_, { input }) => {
   const book = await Book.create(input);
   book.Category = await book.getCategory();
   return book;
 };
 
-const updateBook = async (_, { id, input }) => {
+export const importBooks = async (_, { input }) => {
+  const { file } = input;
+  const { createReadStream, mimetype } = await file;
+
+  if (!["application/vnd.ms-excel", "text/csv"].includes(mimetype))
+    throw new UserInputError("Formato de arquivo inválido!");
+
+  const books = await new Promise((resolve, reject) => {
+    const books = [];
+    const stream = createReadStream();
+    stream
+      .pipe(
+        csvParser({
+          headers: ["name", "author", "volume", "category"],
+          skipLines: 1,
+          separator: ",",
+        })
+      )
+      .on("error", (error) => reject(error))
+      .on("data", (row) => books.push(row))
+      .on("end", () => resolve(books));
+  });
+
+  return await sequelize.transaction(async (t) => {
+    for (const book of books) {
+      const { category: categoryName, ...rest } = book;
+
+      const category = await Category.findOne({
+        where: {
+          name: categoryName.trim().toUpperCase(),
+        },
+      });
+
+      if (!category) throw new Error("Categoria não encontrada!");
+
+      console.log({
+        ...rest,
+        categoryId: category.id,
+      });
+      await Book.create(
+        {
+          ...rest,
+          categoryId: category.id,
+        },
+        { transaction: t }
+      );
+    }
+    return true;
+  });
+};
+
+export const updateBook = async (_, { id, input }) => {
   const book = await Book.findByPk(id);
 
   if (!book) throw new UserInputError("Registro não encontrado!");
@@ -34,7 +87,7 @@ const updateBook = async (_, { id, input }) => {
   return book;
 };
 
-const deleteBook = async (_, { id }) => {
+export const deleteBook = async (_, { id }) => {
   const book = await Book.findByPk(id);
 
   if (!book) throw new UserInputError("Registro não encontrado!");
@@ -42,5 +95,3 @@ const deleteBook = async (_, { id }) => {
   await book.destroy();
   return book;
 };
-
-export default { createBook, updateBook, deleteBook };

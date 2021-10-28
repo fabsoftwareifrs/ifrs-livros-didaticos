@@ -18,6 +18,7 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   scalar Date
+  scalar Upload
 
   directive @isAuthorized(roles: [Int!]!) on FIELD_DEFINITION
 
@@ -181,6 +182,10 @@ export default gql`
     categoryId: Int
   }
 
+  input BookImportInput {
+    file: Upload!
+  }
+
   input CategoryInput {
     name: String!
   }
@@ -217,6 +222,10 @@ export default gql`
     matriculation: String!
     courseId: Int!
     classId: Int!
+  }
+
+  input StudentImportInput {
+    file: Upload!
   }
 
   input UserInput {
@@ -290,6 +299,7 @@ export default gql`
     deleteUser(id: ID!): User! @isAuthorized(roles: [1])
 
     createBook(input: BookInput): Book! @isAuthorized(roles: [1])
+    importBooks(input: BookImportInput): Boolean! @isAuthorized(roles: [1])
     updateBook(id: ID, input: BookInput): Book! @isAuthorized(roles: [1])
     deleteBook(id: ID!): Book! @isAuthorized(roles: [1])
 
@@ -322,6 +332,8 @@ export default gql`
     deletePeriod(id: ID!): Period! @isAuthorized(roles: [1])
 
     createStudent(input: StudentInput): Student! @isAuthorized(roles: [1])
+    importStudents(input: StudentImportInput): Boolean!
+      @isAuthorized(roles: [1])
     updateStudent(id: ID, input: StudentInput): Student!
       @isAuthorized(roles: [1])
     deleteStudent(id: ID!): Student! @isAuthorized(roles: [1])
