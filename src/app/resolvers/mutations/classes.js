@@ -18,14 +18,13 @@ import { UserInputError } from "apollo-server-express";
 
 import { Classes } from "@models";
 
-// Classes
-const createClass = async (_, { input }) => {
+export const createClass = async (_, { input }) => {
   var classe = await Classes.create(input);
   classe.Course = await classe.getCourse();
   return classe;
 };
 
-const updateClass = async (_, { id, input }) => {
+export const updateClass = async (_, { id, input }) => {
   const classe = await Classes.findByPk(id);
 
   if (!classe) throw new UserInputError("Registro não encontrado!");
@@ -35,7 +34,7 @@ const updateClass = async (_, { id, input }) => {
   return classe;
 };
 
-const deleteClass = async (_, { id }) => {
+export const deleteClass = async (_, { id }) => {
   const classe = await Classes.findByPk(id);
 
   if (!classe) throw new UserInputError("Registro não encontrado!");
@@ -43,5 +42,3 @@ const deleteClass = async (_, { id }) => {
   await classe.destroy();
   return classe;
 };
-
-export default { createClass, updateClass, deleteClass };

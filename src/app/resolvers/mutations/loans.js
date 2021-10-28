@@ -17,17 +17,18 @@
 import { UserInputError } from "apollo-server-express";
 
 import { Loan, Sequelize } from "@models";
+import { Status } from "@utils";
 
-const createLoan = async (_, { input }) => {
+export const createLoan = async (_, { input }) => {
   const loan = await Loan.create(input);
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: "LOANED" });
+  await loan.Copy.update({ status: Status.LOANED });
   loan.Period = await loan.getPeriod();
   return loan;
 };
 
-const updateLoan = async (_, { id, input }) => {
+export const updateLoan = async (_, { id, input }) => {
   const loan = await Loan.findByPk(id);
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
@@ -39,18 +40,18 @@ const updateLoan = async (_, { id, input }) => {
   return loan;
 };
 
-const deleteLoan = async (_, { id }) => {
+export const deleteLoan = async (_, { id }) => {
   const loan = await Loan.findByPk(id);
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
 
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: "AVAILABLE" });
+  await loan.Copy.update({ status: Status.AVAILABLE });
   await loan.destroy();
   return loan;
 };
 
-const terminateLoan = async (_, { id, input }) => {
+export const terminateLoan = async (_, { id, input }) => {
   const loan = await Loan.findByPk(id);
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
@@ -58,12 +59,12 @@ const terminateLoan = async (_, { id, input }) => {
   await loan.update({ end: input.end || Sequelize.NOW() });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: "AVAILABLE" });
+  await loan.Copy.update({ status: Status.AVAILABLE });
   loan.Period = await loan.getPeriod();
   return loan;
 };
 
-const cancelTerminateLoan = async (_, { id }) => {
+export const cancelTerminateLoan = async (_, { id }) => {
   const loan = await Loan.findByPk(id);
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
@@ -71,15 +72,7 @@ const cancelTerminateLoan = async (_, { id }) => {
   await loan.update({ end: null });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: "LOANED" });
+  await loan.Copy.update({ status: Status.LOANED });
   loan.Period = await loan.getPeriod();
   return loan;
-};
-
-export default {
-  createLoan,
-  updateLoan,
-  deleteLoan,
-  terminateLoan,
-  cancelTerminateLoan,
 };

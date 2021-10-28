@@ -15,11 +15,12 @@
  */
 
 import { UserInputError } from "apollo-server-express";
-
-import { Book, Category, Copy } from "@models";
 import { Op } from "sequelize";
 
-const copies = async () => {
+import { Book, Category, Copy } from "@models";
+import { Status } from "@utils";
+
+export const copies = async () => {
   const copies = await Copy.findAll({
     include: [{ model: Book, include: { model: Category } }],
   });
@@ -27,16 +28,16 @@ const copies = async () => {
   return copies;
 };
 
-const availableCopies = async () => {
+export const availableCopies = async () => {
   const copies = await Copy.findAll({
     include: [{ model: Book, include: { model: Category } }],
-    where: { status: "AVAILABLE" },
+    where: { status: Status.AVAILABLE },
   });
 
   return copies;
 };
 
-const copiesByBookId = async (_, { bookId, search }) => {
+export const copiesByBookId = async (_, { bookId, search }) => {
   const options = {
     include: [{ model: Book, include: { model: Category } }],
     where: { bookId },
@@ -50,7 +51,7 @@ const copiesByBookId = async (_, { bookId, search }) => {
   return copies;
 };
 
-const copy = async (_, { id }) => {
+export const copy = async (_, { id }) => {
   if (id) {
     const copy = await Copy.findByPk(id, {
       include: [{ model: Book, include: { model: Category } }],
@@ -61,5 +62,3 @@ const copy = async (_, { id }) => {
     return copy;
   }
 };
-
-export default { availableCopies, copies, copiesByBookId, copy };
