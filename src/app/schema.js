@@ -262,7 +262,7 @@ export default gql`
     classRoom(id: ID!): Classes!
 
     copies: [Copy!]!
-    availableCopies: [Copy!]!
+    availableCopies(idCopyInclude: Int): [Copy!]!
     copiesByBookId(bookId: Int!, search: String!): [Copy!]!
     copy(id: ID!): Copy!
 

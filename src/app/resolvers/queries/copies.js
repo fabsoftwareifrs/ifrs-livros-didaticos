@@ -28,10 +28,12 @@ export const copies = async () => {
   return copies;
 };
 
-export const availableCopies = async () => {
+export const availableCopies = async (_, { idCopyInclude }) => {
   const copies = await Copy.findAll({
     include: [{ model: Book, include: { model: Category } }],
-    where: { status: Status.AVAILABLE },
+    where: {
+      [Op.or]: [{ status: Status.AVAILABLE }, { id: idCopyInclude || 0 }],
+    },
   });
 
   return copies;
