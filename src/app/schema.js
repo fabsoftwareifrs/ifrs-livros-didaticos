@@ -180,6 +180,7 @@ export default gql`
     author: String
     volume: String
     categoryId: Int
+    quantity: Int
   }
 
   input BookImportInput {

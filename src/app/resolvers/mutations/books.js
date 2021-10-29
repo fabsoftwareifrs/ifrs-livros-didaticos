@@ -17,10 +17,22 @@
 import { UserInputError } from "apollo-server-express";
 import csvParser from "csv-parser";
 
-import { Book, Category, sequelize } from "@models";
+import { Book, Category, Copy, sequelize } from "@models";
+import { Status } from "@utils";
 
 export const createBook = async (_, { input }) => {
-  const book = await Book.create(input);
+  const { quantity, ...rest } = input;
+  const book = await Book.create(rest);
+
+  if (quantity && quantity > 0) {
+    for (let i = 0; i < quantity; i++) {
+      await Copy.create({
+        status: Status.AVAILABLE,
+        bookId: book.id,
+      });
+    }
+  }
+
   book.Category = await book.getCategory();
   return book;
 };
