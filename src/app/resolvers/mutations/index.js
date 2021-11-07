@@ -24,6 +24,7 @@ const modules = [
   require("./classes"),
   require("./courses"),
   require("./mail"),
+  require("./statuses"),
   require("./students"),
   require("./users"),
   require("./periods"),

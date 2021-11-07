@@ -16,10 +16,13 @@
 
 import { UserInputError } from "apollo-server-express";
 
-import { Copy } from "@models";
+import { Copy, Status } from "@models";
 
 const createCopy = async (_, { input }) => {
-  const copy = await Copy.create(input);
+  const status = await Status.findOne({ where: { isDefault: true } });
+  if (!status) throw new Error("É necessário cadastrar uma situação padrão!");
+
+  const copy = await Copy.create({ ...input, statusId: status.id });
   return copy;
 };
 

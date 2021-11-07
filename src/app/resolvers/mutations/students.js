@@ -18,9 +18,7 @@ import { UserInputError } from "apollo-server-express";
 import csvParser from "csv-parser";
 
 import { Classes, Course, Student, sequelize } from "@models";
-import students from "../queries/students";
 
-// Students
 export const createStudent = async (_, { input }) => {
   var student = await Student.create(input);
 
@@ -52,8 +50,6 @@ export const importStudents = async (_, { input }) => {
       .on("data", (row) => students.push(row))
       .on("end", () => resolve(students));
   });
-
-  console.log(students);
 
   return await sequelize.transaction(async (t) => {
     for (const student of students) {

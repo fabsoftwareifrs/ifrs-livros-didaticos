@@ -29,6 +29,7 @@ const modules = [
   require("./Course"),
   require("./Loan"),
   require("./Period"),
+  require("./Status"),
   require("./Student"),
   require("./User"),
 ];

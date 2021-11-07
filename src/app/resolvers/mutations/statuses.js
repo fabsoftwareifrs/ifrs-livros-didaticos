@@ -14,23 +14,31 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>
  */
 
-let queries = {};
+import { UserInputError } from "apollo-server-express";
 
-const modules = [
-  require("./books"),
-  require("./categories"),
-  require("./classes"),
-  require("./copies"),
-  require("./courses"),
-  require("./loans"),
-  require("./periods"),
-  require("./statuses"),
-  require("./students"),
-  require("./users"),
-];
+import { Status } from "@models";
 
-modules.forEach((module) => {
-  queries = { ...queries, ...module };
-});
+// Statuses
+export const createStatus = async (_, { input }) => {
+  console.log(input);
+  const status = await Status.create(input);
+  return status;
+};
 
-export default { ...queries };
+export const updateStatus = async (_, { id, input }) => {
+  const status = await Status.findByPk(id);
+
+  if (!status) throw new UserInputError("Registro não encontrado!");
+
+  await status.update(input);
+  return status;
+};
+
+export const deleteStatus = async (_, { id }) => {
+  const status = await Status.findByPk(id);
+
+  if (!status) throw new UserInputError("Registro não encontrado!");
+
+  await status.destroy();
+  return status;
+};

@@ -16,15 +16,15 @@
 
 import { UserInputError } from "apollo-server-express";
 
-import { Loan, Student, Copy, Period, Book } from "@models";
+import { Book, Copy, Loan, Period, Status, Student } from "@models";
 import sequelize from "sequelize";
 import { Op } from "sequelize";
 
-const paginateLoans = async (_, { input, late }) => {
+export const paginateLoans = async (_, { input, late }) => {
   const options = {
     include: [
       { model: Student },
-      { model: Copy, include: { model: Book } },
+      { model: Copy, include: [{ model: Book }, { model: Status }] },
       { model: Period },
     ],
     limit: [0 + (input.page - 1) * input.paginate, input.paginate * input.page],
@@ -68,7 +68,7 @@ const paginateLoans = async (_, { input, late }) => {
   return { docs: loan.rows, total: loan.count };
 };
 
-const loans = async () => {
+export const loans = async () => {
   const loans = await Loan.findAll({
     include: [{ model: Student }, { model: Copy }, { model: Period }],
   });
@@ -76,9 +76,13 @@ const loans = async () => {
   return loans;
 };
 
-const loan = async (_, { id }) => {
+export const loan = async (_, { id }) => {
   const loan = await Loan.findByPk(id, {
-    include: [{ model: Student }, { model: Copy }, { model: Period }],
+    include: [
+      { model: Student },
+      { model: Period },
+      { model: Copy, include: { model: Status } },
+    ],
   });
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
@@ -86,4 +90,18 @@ const loan = async (_, { id }) => {
   return loan;
 };
 
-export default { loan, loans, paginateLoans };
+export const getAllLoansByPeriodId = async (_, { periodId, pagination }) => {
+  const { paginate, page } = pagination;
+  const loan = await Loan.findAndCountAll({
+    include: [
+      { model: Student },
+      { model: Copy, include: [{ model: Book }, { model: Status }] },
+      { model: Period },
+    ],
+    limit: [0 + (page - 1) * paginate, paginate * page],
+    where: {
+      periodId,
+    },
+  });
+  return { docs: loan.rows, total: loan.count };
+};

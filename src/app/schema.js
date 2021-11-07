@@ -75,7 +75,8 @@ export default gql`
     id: ID!
     code: String!
     book: Book!
-    status: Status!
+    Status: Status!
+    isLoaned: Boolean!
   }
 
   type Course {
@@ -100,6 +101,13 @@ export default gql`
     name: String!
     start: Date!
     end: Date!
+  }
+
+  type Status {
+    id: ID!
+    name: String!
+    description: String
+    isAvailable: Boolean
   }
 
   type Student {
@@ -154,6 +162,12 @@ export default gql`
     total: Int!
   }
 
+  type PaginateStatuses {
+    docs: [Status!]
+    pages: Int!
+    total: Int!
+  }
+
   type PaginateStudents {
     docs: [Student!]
     pages: Int!
@@ -197,8 +211,8 @@ export default gql`
   }
 
   input CopyInput {
-    status: Status!
-    bookId: Int
+    bookId: Int!
+    statusId: Int
   }
 
   input CourseInput {
@@ -215,6 +229,12 @@ export default gql`
     name: String!
     start: Date!
     end: Date!
+  }
+
+  input StatusInput {
+    name: String!
+    description: String
+    isAvailable: Boolean!
   }
 
   input StudentInput {
@@ -274,10 +294,18 @@ export default gql`
     paginateLoans(input: PaginateInput!, late: Boolean!): PaginateLoans!
     loans: [Loan!]
     loan(id: ID!): Loan!
+    getAllLoansByPeriodId(
+      periodId: Int!
+      pagination: PaginateInput!
+    ): PaginateLoans!
 
     paginatePeriods(input: PaginateInput!): PaginatePeriods!
     periods: [Period!]
     period(id: ID!): Period!
+
+    paginateStatuses(input: PaginateInput!): PaginateStatuses!
+    getAllStatuses: [Status!]!
+    getStatusById(id: ID!): Status!
 
     paginateStudents(input: PaginateInput!): PaginateStudents!
     students: [Student!]
@@ -331,6 +359,10 @@ export default gql`
     createPeriod(input: PeriodInput): Period! @isAuthorized(roles: [1])
     updatePeriod(id: ID, input: PeriodInput): Period! @isAuthorized(roles: [1])
     deletePeriod(id: ID!): Period! @isAuthorized(roles: [1])
+
+    createStatus(input: StatusInput): Status! @isAuthorized(roles: [1])
+    updateStatus(id: ID, input: StatusInput): Status! @isAuthorized(roles: [1])
+    deleteStatus(id: ID!): Status! @isAuthorized(roles: [1])
 
     createStudent(input: StudentInput): Student! @isAuthorized(roles: [1])
     importStudents(input: StudentImportInput): Boolean!

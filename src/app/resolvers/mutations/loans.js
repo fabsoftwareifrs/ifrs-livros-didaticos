@@ -15,16 +15,25 @@
  */
 
 import { UserInputError } from "apollo-server-express";
-
-import { Loan, Sequelize } from "@models";
-import { Status } from "@utils";
+import { Copy, Loan, Status, Sequelize } from "@models";
 
 export const createLoan = async (_, { input }) => {
+  const { copyId } = input;
+
+  const copy = await Copy.findByPk(copyId, {
+    include: [{ model: Status }],
+  });
+
+  if (copy.isLoaned) throw new Error("Esse exemplar já está emprestado!");
+
+  if (!copy.Status.isAvailable)
+    throw new Error("Esse exemplar não pode ser emprestado!");
+
   const loan = await Loan.create(input);
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: Status.LOANED });
   loan.Period = await loan.getPeriod();
+
   return loan;
 };
 
@@ -45,8 +54,8 @@ export const deleteLoan = async (_, { id }) => {
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
 
-  loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: Status.AVAILABLE });
+  //loan.Copy = await loan.getCopy();
+  //await loan.Copy.update({ status: Status.AVAILABLE });
   await loan.destroy();
   return loan;
 };
@@ -59,7 +68,7 @@ export const terminateLoan = async (_, { id, input }) => {
   await loan.update({ end: input.end || Sequelize.NOW() });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: Status.AVAILABLE });
+  // await loan.Copy.update({ status: Status.AVAILABLE });
   loan.Period = await loan.getPeriod();
   return loan;
 };
@@ -72,7 +81,7 @@ export const cancelTerminateLoan = async (_, { id }) => {
   await loan.update({ end: null });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  await loan.Copy.update({ status: Status.LOANED });
+  //await loan.Copy.update({ status: Status.LOANED });
   loan.Period = await loan.getPeriod();
   return loan;
 };

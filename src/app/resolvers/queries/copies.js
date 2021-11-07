@@ -17,12 +17,11 @@
 import { UserInputError } from "apollo-server-express";
 import { Op } from "sequelize";
 
-import { Book, Category, Copy } from "@models";
-import { Status } from "@utils";
+import { Book, Category, Copy, Status, Sequelize } from "@models";
 
 export const copies = async () => {
   const copies = await Copy.findAll({
-    include: [{ model: Book, include: { model: Category } }],
+    include: [{ model: Book, include: { model: Category } }, { model: Status }],
   });
 
   return copies;
@@ -30,9 +29,23 @@ export const copies = async () => {
 
 export const availableCopies = async (_, { idCopyInclude }) => {
   const copies = await Copy.findAll({
-    include: [{ model: Book, include: { model: Category } }],
+    include: [
+      { model: Book, include: { model: Category } },
+      { model: Status, required: true, where: { isAvailable: true } },
+    ],
     where: {
-      [Op.or]: [{ status: Status.AVAILABLE }, { id: idCopyInclude || 0 }],
+      [Op.or]: [
+        {
+          id: {
+            [Op.notIn]: Sequelize.literal(
+              `(SELECT copy_id from loans where end is null)`
+            ),
+          },
+        },
+        {
+          id: idCopyInclude,
+        },
+      ],
     },
   });
 
@@ -41,7 +54,7 @@ export const availableCopies = async (_, { idCopyInclude }) => {
 
 export const copiesByBookId = async (_, { bookId, search }) => {
   const options = {
-    include: [{ model: Book, include: { model: Category } }],
+    include: [{ model: Book, include: { model: Category } }, { model: Status }],
     where: { bookId },
   };
   if (search !== "") {
@@ -56,7 +69,10 @@ export const copiesByBookId = async (_, { bookId, search }) => {
 export const copy = async (_, { id }) => {
   if (id) {
     const copy = await Copy.findByPk(id, {
-      include: [{ model: Book, include: { model: Category } }],
+      include: [
+        { model: Book, include: { model: Category } },
+        { model: Status },
+      ],
     });
 
     if (!copy) throw new UserInputError("Registro não encontrado!");

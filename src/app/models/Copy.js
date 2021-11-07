@@ -15,24 +15,37 @@
  */
 
 "use strict";
-import { Model } from "sequelize";
+import { Model, Sequelize } from "sequelize";
 import { nanoid } from "nanoid";
 
 module.exports = (sequelize, DataTypes) => {
   class Copy extends Model {
     static associate(models) {
+      Copy.hasMany(models.Loan, { foreignKey: "copyId" });
       Copy.belongsTo(models.Book, { foreignKey: "bookId" });
-      Copy.hasOne(models.Loan, { foreignKey: "copyId" });
+      Copy.belongsTo(models.Status, { foreignKey: "statusId" });
     }
   }
   Copy.init(
     {
       code: DataTypes.STRING,
-      status: DataTypes.STRING,
+      isLoaned: DataTypes.VIRTUAL(DataTypes.BOOLEAN),
     },
     {
       sequelize,
       modelName: "Copy",
+      defaultScope: {
+        attributes: {
+          include: [
+            [
+              Sequelize.literal(
+                `(SELECT CASE WHEN count(*) > 0 THEN true ELSE false END from loans where loans.copy_id = Copy.id and end is null)`
+              ),
+              "isLoaned",
+            ],
+          ],
+        },
+      },
     }
   );
 
