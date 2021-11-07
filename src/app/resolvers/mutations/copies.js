@@ -20,7 +20,8 @@ import { Copy, Status } from "@models";
 
 const createCopy = async (_, { input }) => {
   const status = await Status.findOne({ where: { isDefault: true } });
-  if (!status) throw new Error("É necessário cadastrar uma situação padrão!");
+  if (!status)
+    throw new Error("É necessário cadastrar um estado padrão para o exemplar!");
 
   const copy = await Copy.create({ ...input, statusId: status.id });
   return copy;

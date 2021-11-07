@@ -17,18 +17,37 @@
 import { UserInputError } from "apollo-server-express";
 
 import { Status } from "@models";
+import { Op } from "sequelize";
 
 // Statuses
 export const createStatus = async (_, { input }) => {
-  console.log(input);
+  const { isDefault } = input;
+
+  if (isDefault) {
+    const found = await Status.findOne({
+      where: { isDefault: true },
+    });
+
+    if (found) await found.update({ isDefault: false });
+  }
+
   const status = await Status.create(input);
   return status;
 };
 
 export const updateStatus = async (_, { id, input }) => {
-  const status = await Status.findByPk(id);
+  const { isDefault } = input;
 
+  const status = await Status.findByPk(id);
   if (!status) throw new UserInputError("Registro não encontrado!");
+
+  if (isDefault) {
+    const found = await Status.findOne({
+      where: { isDefault: true, id: { [Op.not]: id } },
+    });
+
+    if (found) await found.update({ isDefault: false });
+  }
 
   await status.update(input);
   return status;
@@ -38,6 +57,11 @@ export const deleteStatus = async (_, { id }) => {
   const status = await Status.findByPk(id);
 
   if (!status) throw new UserInputError("Registro não encontrado!");
+
+  if (status.isDefault)
+    throw new UserInputError(
+      "Você não pode remover o estado padrão! Defina outro estado como padrão!"
+    );
 
   await status.destroy();
   return status;

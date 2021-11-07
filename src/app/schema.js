@@ -63,12 +63,14 @@ export default gql`
   type Category {
     id: ID!
     name: String!
+    externalCode: String
   }
 
   type Classes {
     id: ID!
     name: String!
     course: Course!
+    externalCode: String
   }
 
   type Copy {
@@ -82,6 +84,7 @@ export default gql`
   type Course {
     id: ID!
     name: String!
+    externalCode: String
   }
 
   type Loan {
@@ -107,7 +110,8 @@ export default gql`
     id: ID!
     name: String!
     description: String
-    isAvailable: Boolean
+    isAvailable: Boolean!
+    isDefault: Boolean!
   }
 
   type Student {
@@ -203,11 +207,13 @@ export default gql`
 
   input CategoryInput {
     name: String!
+    externalCode: String
   }
 
   input ClassInput {
     name: String!
     courseId: Int!
+    externalCode: String
   }
 
   input CopyInput {
@@ -217,6 +223,7 @@ export default gql`
 
   input CourseInput {
     name: String!
+    externalCode: String
   }
 
   input LoanInput {
@@ -235,6 +242,7 @@ export default gql`
     name: String!
     description: String
     isAvailable: Boolean!
+    isDefault: Boolean!
   }
 
   input StudentInput {
