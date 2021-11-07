@@ -18,16 +18,19 @@ import { UserInputError } from "apollo-server-express";
 import csvParser from "csv-parser";
 
 import { Book, Category, Copy, sequelize } from "@models";
-import { Status } from "@utils";
 
 export const createBook = async (_, { input }) => {
   const { quantity, ...rest } = input;
   const book = await Book.create(rest);
 
+  const status = await Status.findOne({ where: { isDefault: true } });
+  if (!status)
+    throw new Error("É necessário cadastrar um estado padrão para o exemplar!");
+
   if (quantity && quantity > 0) {
     for (let i = 0; i < quantity; i++) {
       await Copy.create({
-        status: Status.AVAILABLE,
+        statusId: status.id,
         bookId: book.id,
       });
     }
@@ -72,10 +75,6 @@ export const importBooks = async (_, { input }) => {
 
       if (!category) throw new Error("Categoria não encontrada!");
 
-      console.log({
-        ...rest,
-        categoryId: category.id,
-      });
       await Book.create(
         {
           ...rest,
