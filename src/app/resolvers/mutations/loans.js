@@ -37,25 +37,11 @@ export const createLoan = async (_, { input }) => {
   return loan;
 };
 
-export const updateLoan = async (_, { id, input }) => {
-  const loan = await Loan.findByPk(id);
-
-  if (!loan) throw new UserInputError("Registro não encontrado!");
-
-  await loan.update(input);
-  loan.Student = await loan.getStudent();
-  loan.Copy = await loan.getCopy();
-  loan.Period = await loan.getPeriod();
-  return loan;
-};
-
 export const deleteLoan = async (_, { id }) => {
   const loan = await Loan.findByPk(id);
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
 
-  //loan.Copy = await loan.getCopy();
-  //await loan.Copy.update({ status: Status.AVAILABLE });
   await loan.destroy();
   return loan;
 };
@@ -65,11 +51,14 @@ export const terminateLoan = async (_, { id, input }) => {
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
 
-  await loan.update({ end: input.end || Sequelize.NOW() });
+  await loan.update({
+    end: input.end || Sequelize.NOW(),
+    observation: input.observation,
+  });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  // await loan.Copy.update({ status: Status.AVAILABLE });
   loan.Period = await loan.getPeriod();
+
   return loan;
 };
 

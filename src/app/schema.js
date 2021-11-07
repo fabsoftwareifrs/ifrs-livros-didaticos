@@ -272,6 +272,7 @@ export default gql`
 
   input TerminateLoanInput {
     end: Date
+    observation: String
   }
 
   type Query {
@@ -358,11 +359,10 @@ export default gql`
     deleteCourse(id: ID!): Course! @isAuthorized(roles: [1])
 
     createLoan(input: LoanInput): Loan! @isAuthorized(roles: [1])
-    updateLoan(id: ID!, input: LoanInput): Loan! @isAuthorized(roles: [1])
     deleteLoan(id: ID!): Loan! @isAuthorized(roles: [1])
-
     terminateLoan(id: ID!, input: TerminateLoanInput): Loan!
-    cancelTerminateLoan(id: ID!): Loan!
+      @isAuthorized(roles: [1])
+    cancelTerminateLoan(id: ID!): Loan! @isAuthorized(roles: [1])
 
     createPeriod(input: PeriodInput): Period! @isAuthorized(roles: [1])
     updatePeriod(id: ID, input: PeriodInput): Period! @isAuthorized(roles: [1])
