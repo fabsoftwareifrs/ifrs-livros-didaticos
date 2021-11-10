@@ -35,6 +35,7 @@ export const createLoan = async (_, { input }) => {
       let loan = await Loan.create({ ...input, copyId }, { transaction: t });
       loan.Student = await loan.getStudent();
       loan.Copy = await loan.getCopy();
+
       loan.Period = await loan.getPeriod();
       loans.push(loan);
     });
