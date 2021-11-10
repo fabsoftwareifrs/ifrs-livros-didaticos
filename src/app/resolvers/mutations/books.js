@@ -53,7 +53,7 @@ export const importBooks = async (_, { input }) => {
     stream
       .pipe(
         csvParser({
-          headers: ["name", "author", "volume", "category"],
+          headers: ["name", "author", "volume", "category", "year", "isbn"],
           skipLines: 1,
           separator: ",",
         })

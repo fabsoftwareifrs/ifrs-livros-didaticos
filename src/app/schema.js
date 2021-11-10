@@ -57,6 +57,8 @@ export default gql`
     name: String!
     author: String!
     volume: String!
+    year: Int
+    isbn: String
     category: Category!
   }
 
@@ -197,6 +199,8 @@ export default gql`
     name: String
     author: String
     volume: String
+    year: Int
+    isbn: String
     categoryId: Int
     quantity: Int
   }
