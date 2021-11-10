@@ -90,8 +90,22 @@ export const loan = async (_, { id }) => {
   return loan;
 };
 
-export const getAllLoansByPeriodId = async (_, { periodId, pagination }) => {
+export const getAllLoansByPeriodId = async (
+  _,
+  { periodId, pagination, late }
+) => {
   const { paginate, page } = pagination;
+
+  let where = {};
+  if (late) {
+    where = {
+      [Op.and]: [
+        { end: null },
+        { "$Period.end$": { [Op.lt]: sequelize.fn("CURRENT_DATE") } },
+      ],
+    };
+  }
+
   const loan = await Loan.findAndCountAll({
     include: [
       { model: Student },
@@ -101,6 +115,7 @@ export const getAllLoansByPeriodId = async (_, { periodId, pagination }) => {
     limit: [0 + (page - 1) * paginate, paginate * page],
     where: {
       periodId,
+      ...where,
     },
   });
   return { docs: loan.rows, total: loan.count };

@@ -205,9 +205,14 @@ export default gql`
     file: Upload!
   }
 
+  input TesteInput {
+    code: String
+  }
+
   input CategoryInput {
     name: String!
     externalCode: String
+    teste: [TesteInput]
   }
 
   input ClassInput {
@@ -306,6 +311,7 @@ export default gql`
     getAllLoansByPeriodId(
       periodId: Int!
       pagination: PaginateInput!
+      late: Boolean = false
     ): PaginateLoans!
 
     paginatePeriods(input: PaginateInput!): PaginatePeriods!
