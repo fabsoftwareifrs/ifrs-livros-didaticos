@@ -15,30 +15,32 @@
  */
 
 import { UserInputError } from "apollo-server-express";
-import { Copy, Loan, Status, Sequelize } from "@models";
+import { Copy, Loan, Status, Sequelize, sequelize } from "@models";
 
 export const createLoan = async (_, { input }) => {
   const { copiesIds } = input;
   let loans = [];
 
-  copiesIds.forEach(async (copyId) => {
-    let copy = await Copy.findByPk(copyId, {
-      include: [{ model: Status }],
+  return await sequelize.transaction(async (t) => {
+    copiesIds.forEach(async (copyId) => {
+      let copy = await Copy.findByPk(copyId, {
+        include: [{ model: Status }],
+      });
+
+      if (copy.isLoaned) throw new Error("Esse exemplar já está emprestado!");
+
+      if (!copy.Status.isAvailable)
+        throw new Error("Esse exemplar não pode ser emprestado!");
+
+      let loan = await Loan.create({ ...input, copyId }, { transaction: t });
+      loan.Student = await loan.getStudent();
+      loan.Copy = await loan.getCopy();
+      loan.Period = await loan.getPeriod();
+      loans.push(loan);
     });
 
-    if (copy.isLoaned) throw new Error("Esse exemplar já está emprestado!");
-
-    if (!copy.Status.isAvailable)
-      throw new Error("Esse exemplar não pode ser emprestado!");
-
-    let loan = await Loan.create({ ...input, copyId });
-    loan.Student = await loan.getStudent();
-    loan.Copy = await loan.getCopy();
-    loan.Period = await loan.getPeriod();
-    loans.push(loan);
+    return loans;
   });
-
-  return loans;
 };
 
 export const deleteLoan = async (_, { id }) => {
