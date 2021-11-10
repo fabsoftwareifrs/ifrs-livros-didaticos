@@ -237,7 +237,7 @@ export default gql`
 
   input LoanInput {
     studentId: Int!
-    copyId: Int!
+    copiesIds: [String!]
     periodId: Int!
   }
 
@@ -301,7 +301,11 @@ export default gql`
     classRoom(id: ID!): Classes!
 
     copies: [Copy!]!
-    availableCopies(idCopyInclude: Int): [Copy!]!
+    availableCopies(
+      idCopyInclude: Int
+      search: String
+      selecteds: [String]
+    ): [Copy!]!
     copiesByBookId(bookId: Int!, search: String!): [Copy!]!
     copy(id: ID!): Copy!
 
@@ -368,7 +372,7 @@ export default gql`
     updateCourse(id: ID, input: CourseInput): Course! @isAuthorized(roles: [1])
     deleteCourse(id: ID!): Course! @isAuthorized(roles: [1])
 
-    createLoan(input: LoanInput): Loan! @isAuthorized(roles: [1])
+    createLoan(input: LoanInput): [Loan]! @isAuthorized(roles: [1])
     deleteLoan(id: ID!): Loan! @isAuthorized(roles: [1])
     terminateLoan(id: ID!, input: TerminateLoanInput): Loan!
       @isAuthorized(roles: [1])

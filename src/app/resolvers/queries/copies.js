@@ -27,28 +27,45 @@ export const copies = async () => {
   return copies;
 };
 
-export const availableCopies = async (_, { idCopyInclude }) => {
+export const availableCopies = async (
+  _,
+  { idCopyInclude, search, selecteds }
+) => {
   const copies = await Copy.findAll({
     include: [
       { model: Book, include: { model: Category } },
       { model: Status, required: true, where: { isAvailable: true } },
     ],
     where: {
-      [Op.or]: [
+      [Op.and]: [
         {
-          id: {
-            [Op.notIn]: Sequelize.literal(
-              `(SELECT copy_id from loans where end is null)`
-            ),
+          [Op.or]: [
+            {
+              id: {
+                [Op.notIn]: Sequelize.literal(
+                  `(SELECT copy_id from loans where end is null)`
+                ),
+              },
+            },
+            {
+              id: idCopyInclude,
+            },
+          ],
+        },
+        {
+          code: {
+            [Op.substring]: search,
           },
         },
         {
-          id: idCopyInclude,
+          id: {
+            [Op.notIn]: selecteds,
+          },
         },
       ],
     },
+    limit: 10,
   });
-
   return copies;
 };
 

@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Copy.beforeCreate(async (copy) => {
-    copy.code = nanoid(8);
+    copy.code = nanoid(8).toUpperCase();
   });
 
   return Copy;

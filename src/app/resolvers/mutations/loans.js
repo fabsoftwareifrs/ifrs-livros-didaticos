@@ -18,23 +18,27 @@ import { UserInputError } from "apollo-server-express";
 import { Copy, Loan, Status, Sequelize } from "@models";
 
 export const createLoan = async (_, { input }) => {
-  const { copyId } = input;
+  const { copiesIds } = input;
+  let loans = [];
 
-  const copy = await Copy.findByPk(copyId, {
-    include: [{ model: Status }],
+  copiesIds.forEach(async (copyId) => {
+    let copy = await Copy.findByPk(copyId, {
+      include: [{ model: Status }],
+    });
+
+    if (copy.isLoaned) throw new Error("Esse exemplar já está emprestado!");
+
+    if (!copy.Status.isAvailable)
+      throw new Error("Esse exemplar não pode ser emprestado!");
+
+    let loan = await Loan.create({ ...input, copyId });
+    loan.Student = await loan.getStudent();
+    loan.Copy = await loan.getCopy();
+    loan.Period = await loan.getPeriod();
+    loans.push(loan);
   });
 
-  if (copy.isLoaned) throw new Error("Esse exemplar já está emprestado!");
-
-  if (!copy.Status.isAvailable)
-    throw new Error("Esse exemplar não pode ser emprestado!");
-
-  const loan = await Loan.create(input);
-  loan.Student = await loan.getStudent();
-  loan.Copy = await loan.getCopy();
-  loan.Period = await loan.getPeriod();
-
-  return loan;
+  return loans;
 };
 
 export const deleteLoan = async (_, { id }) => {
