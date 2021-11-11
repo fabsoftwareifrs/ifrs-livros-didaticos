@@ -18,11 +18,10 @@ import { UserInputError } from "apollo-server-express";
 import { Copy, Loan, Status, Sequelize, sequelize } from "@models";
 
 export const createLoan = async (_, { input }) => {
-  const { copiesIds } = input;
-  let loans = [];
-
   return await sequelize.transaction(async (t) => {
-    copiesIds.forEach(async (copyId) => {
+    const { copiesIds } = input;
+    let loans = [];
+    for (const copyId of copiesIds) {
       let copy = await Copy.findByPk(copyId, {
         include: [{ model: Status }],
       });
@@ -37,7 +36,7 @@ export const createLoan = async (_, { input }) => {
       loan.Copy = await loan.getCopy();
       loan.Period = await loan.getPeriod();
       loans.push(loan);
-    });
+    }
 
     return loans;
   });

@@ -37,35 +37,40 @@ export const availableCopies = async (
       { model: Status, required: true, where: { isAvailable: true } },
     ],
     where: {
-      [Op.and]: [
+      [Op.or]: [
         {
-          [Op.or]: [
+          [Op.and]: [
             {
-              id: {
-                [Op.notIn]: Sequelize.literal(
-                  `(SELECT copy_id from loans where end is null)`
-                ),
-              },
+              [Op.or]: [
+                {
+                  id: {
+                    [Op.notIn]: Sequelize.literal(
+                      `(SELECT copy_id from loans where end is null)`
+                    ),
+                  },
+                },
+                {
+                  id: idCopyInclude,
+                },
+              ],
             },
             {
-              id: idCopyInclude,
+              code: {
+                [Op.substring]: search,
+              },
             },
           ],
         },
         {
-          code: {
-            [Op.substring]: search,
-          },
-        },
-        {
           id: {
-            [Op.notIn]: selecteds,
+            [Op.in]: selecteds,
           },
         },
       ],
     },
-    limit: 10,
+    limit: 10 + selecteds.length,
   });
+
   return copies;
 };
 
