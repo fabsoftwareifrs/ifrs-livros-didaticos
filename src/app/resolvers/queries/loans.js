@@ -122,11 +122,7 @@ export const getAllLoansByPeriodId = async (
 };
 
 export const getLoanByCode = async (_, { code }) => {
-  const copy = await Copy.findOne({
-    where: {
-      code,
-    },
-  });
+  const copy = await Copy.findOne({ where: { code } });
 
   if (!copy) throw new UserInputError("Registro não encontrado!");
 
