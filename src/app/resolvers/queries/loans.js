@@ -120,3 +120,26 @@ export const getAllLoansByPeriodId = async (
   });
   return { docs: loan.rows, total: loan.count };
 };
+
+export const getLoanByCode = async (_, { code }) => {
+  const copy = await Copy.findOne({
+    where: {
+      code,
+    },
+  });
+
+  if (!copy) throw new UserInputError("Registro não encontrado!");
+
+  const loan = await Loan.findOne({
+    include: [
+      { model: Student },
+      { model: Period },
+      { model: Copy, include: [{ model: Status }, { model: Book }] },
+    ],
+    where: { copyId: copy.id, end: null },
+  });
+
+  if (!loan) throw new UserInputError("Este exemplar já foi devolvido!");
+
+  return loan;
+};

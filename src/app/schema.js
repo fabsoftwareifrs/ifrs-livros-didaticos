@@ -281,6 +281,7 @@ export default gql`
 
   input TerminateLoanInput {
     end: Date
+    statusId: Int!
     observation: String
   }
 
@@ -321,6 +322,8 @@ export default gql`
       pagination: PaginateInput!
       late: Boolean = false
     ): PaginateLoans!
+
+    getLoanByCode(code: String!): Loan!
 
     paginatePeriods(input: PaginateInput!): PaginatePeriods!
     periods: [Period!]

@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: new Date(),
       },
       end: DataTypes.DATEONLY,
+      observation: DataTypes.STRING,
     },
     {
       sequelize,

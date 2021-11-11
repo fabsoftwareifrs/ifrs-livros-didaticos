@@ -53,16 +53,21 @@ export const deleteLoan = async (_, { id }) => {
 };
 
 export const terminateLoan = async (_, { id, input }) => {
+  const { statusId, end, observation } = input;
   const loan = await Loan.findByPk(id);
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
 
+  if (loan.end !== null)
+    throw new UserInputError("Este exemplar já foi devolvido!");
+
   await loan.update({
-    end: input.end || Sequelize.NOW(),
-    observation: input.observation,
+    end: end || Sequelize.NOW(),
+    observation: observation,
   });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
+  loan.Copy.update({ statusId: statusId });
   loan.Period = await loan.getPeriod();
 
   return loan;
@@ -73,10 +78,9 @@ export const cancelTerminateLoan = async (_, { id }) => {
 
   if (!loan) throw new UserInputError("Registro não encontrado!");
 
-  await loan.update({ end: null });
+  await loan.update({ end: null, observation: null });
   loan.Student = await loan.getStudent();
   loan.Copy = await loan.getCopy();
-  //await loan.Copy.update({ status: Status.LOANED });
   loan.Period = await loan.getPeriod();
   return loan;
 };
