@@ -25,12 +25,14 @@ const sendNodeMail = async ({
   html,
   attachments = [],
 }) => {
-  try {
-    if (!from) return { success: false };
-    if (!to) return { success: false };
+  return new Promise((resolve, reject) => {
+    if (!from) resolve(false);
+    if (!to) resolve(false);
 
     let transport = nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE,
+      host: process.env.EMAIL_SERVICE,
+      port: 465,
+      secure: true, // use SSL
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
@@ -42,7 +44,7 @@ const sendNodeMail = async ({
     const defaultAttachments = [
       {
         filename: "ifrsbg.png",
-        path: `${__dirname}/${logoIFRSBG.default}`,
+        path: `${__dirname}/${logoIFRSBG}`,
         cid: "ifrsbg@maisbento.com",
       },
       ...attachments,
@@ -57,19 +59,15 @@ const sendNodeMail = async ({
       html,
       attachments: html ? defaultAttachments : null,
     };
-
     transport.sendMail(message, function (err, info) {
-      if (err) return { success: false };
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        resolve(true);
+      }
     });
-
-    return {
-      success: true,
-    };
-  } catch (e) {
-    return {
-      success: false,
-    };
-  }
+  });
 };
 
 export default sendNodeMail;

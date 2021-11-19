@@ -25,7 +25,9 @@ export const createBook = async (_, { input }) => {
 
   const status = await Status.findOne({ where: { isDefault: true } });
   if (!status)
-    throw new Error("É necessário cadastrar um estado padrão para o exemplar!");
+    throw new UserInputError(
+      "É necessário cadastrar um estado padrão para o exemplar!"
+    );
 
   if (quantity && quantity > 0) {
     for (let i = 0; i < quantity; i++) {

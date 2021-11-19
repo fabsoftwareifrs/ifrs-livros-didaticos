@@ -187,7 +187,7 @@ export default gql`
   }
 
   type mailResponse {
-    response: [String]!
+    response: String!
   }
 
   input AuthInput {

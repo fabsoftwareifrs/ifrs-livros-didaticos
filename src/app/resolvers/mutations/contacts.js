@@ -29,7 +29,7 @@ const sendMessage = async (_, to, subject, message) => {
   };
 
   const mail = await sendNodeMail(mailMessage);
-  return mail.success;
+  return mail;
 };
 
 export default { sendMessage };
