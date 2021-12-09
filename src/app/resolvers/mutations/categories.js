@@ -20,8 +20,7 @@ import { Category } from "@models";
 
 // Categories
 const createCategory = async (_, { input }) => {
-  const { teste, ...rest } = input;
-  console.log(teste);
+  const { ...rest } = input;
   const category = await Category.create(rest);
   return category;
 };
