@@ -20,7 +20,7 @@ import { Book, Copy, Loan, Period, Status, Student } from "@models";
 import sequelize from "sequelize";
 import { Op } from "sequelize";
 
-export const paginateLoans = async (_, { input, late }) => {
+export const paginateLoans = async (_, { input, late, periodId }) => {
   const options = {
     include: [
       { model: Student },
@@ -35,6 +35,7 @@ export const paginateLoans = async (_, { input, late }) => {
     where = {
       [Op.and]: [
         { end: null },
+        { periodId },
         { "$Period.end$": { [Op.lt]: sequelize.fn("CURRENT_DATE") } },
       ],
     };
@@ -42,6 +43,7 @@ export const paginateLoans = async (_, { input, late }) => {
     where = {
       [Op.or]: [
         { end: { [Op.ne]: null } },
+        { periodId },
         { "$Period.end$": { [Op.gt]: sequelize.fn("CURRENT_DATE") } },
       ],
     };

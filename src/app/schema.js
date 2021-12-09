@@ -314,7 +314,11 @@ export default gql`
     courses: [Course!]
     course(id: ID!): Course!
 
-    paginateLoans(input: PaginateInput!, late: Boolean!): PaginateLoans!
+    paginateLoans(
+      periodId: Int!
+      input: PaginateInput!
+      late: Boolean!
+    ): PaginateLoans!
     loans: [Loan!]
     loan(id: ID!): Loan!
     getAllLoansByPeriodId(
