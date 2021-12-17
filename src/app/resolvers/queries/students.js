@@ -45,6 +45,7 @@ const paginateStudents = async (_, { input }) => {
 const students = async () => {
   const students = await Student.findAll({
     include: [{ model: Course }, { model: Classes }],
+    order: [["name", "ASC"]],
   });
   return students;
 };

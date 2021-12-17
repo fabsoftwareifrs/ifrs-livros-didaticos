@@ -23,6 +23,7 @@ const paginatePeriods = async (_, { input }) => {
   const options = {
     page: input.page,
     paginate: input.paginate,
+    order: [["name", "ASC"]],
   };
   if (input.search !== "") {
     options.where = { name: { [Op.like]: "%" + input.search + "%" } };
@@ -31,7 +32,9 @@ const paginatePeriods = async (_, { input }) => {
   return period;
 };
 const periods = async () => {
-  const periods = await Period.findAll();
+  const periods = await Period.findAll({
+    order: [["name", "ASC"]],
+  });
   return periods;
 };
 
