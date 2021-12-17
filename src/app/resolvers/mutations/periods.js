@@ -19,11 +19,17 @@ import { UserInputError } from "apollo-server-express";
 import { Period } from "@models";
 
 const createPeriod = async (_, { input }) => {
+  if (input.start > input.end) {
+    throw new UserInputError("Data de início maior que data final.");
+  }
   const period = await Period.create(input);
   return period;
 };
 
 const updatePeriod = async (_, { id, input }) => {
+  if (input.start > input.end) {
+    throw new UserInputError("Data de início maior que data final.");
+  }
   const period = await Period.findByPk(id);
 
   if (!period) throw new UserInputError("Registro não encontrado!");
