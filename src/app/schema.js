@@ -99,6 +99,7 @@ export default gql`
     copy: Copy!
     user: User!
     period: Period!
+    observation: String
   }
 
   type Period {
