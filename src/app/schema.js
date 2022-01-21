@@ -303,11 +303,7 @@ export default gql`
     classRoom(id: ID!): Classes!
 
     copies: [Copy!]!
-    availableCopies(
-      idCopyInclude: Int
-      search: String
-      selecteds: [String]
-    ): [Copy!]!
+    availableCopies(search: String, selecteds: [String]): [Copy!]!
     copiesByBookId(bookId: Int!, search: String!): [Copy!]!
     copy(id: ID!): Copy!
 
@@ -339,6 +335,7 @@ export default gql`
     getStatusById(id: ID!): Status!
 
     paginateStudents(input: PaginateInput!): PaginateStudents!
+    searchStudents(search: String, selected: String): [Student!]!
     students: [Student!]
     student(id: ID!): Student!
 

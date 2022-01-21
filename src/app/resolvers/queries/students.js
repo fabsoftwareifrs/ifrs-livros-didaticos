@@ -42,6 +42,27 @@ const paginateStudents = async (_, { input }) => {
   return { docs: student.rows, total: student.count };
 };
 
+const searchStudents = async (_, { search, selected }) => {
+  const students = await Student.findAll({
+    order: [["name", "ASC"]],
+    include: [{ model: Course }, { model: Classes }],
+    where: {
+      [Op.or]: [
+        { name: { [Op.like]: "%" + search + "%" } },
+        { email: { [Op.like]: "%" + search + "%" } },
+        { matriculation: { [Op.like]: "%" + search + "%" } },
+        { "$Course.name$": { [Op.like]: "%" + search + "%" } },
+        { "$Class.name$": { [Op.like]: "%" + search + "%" } },
+        {
+          id: selected,
+        },
+      ],
+    },
+    limit: 10 + (selected ? 1 : 0),
+  });
+  return students;
+};
+
 const students = async () => {
   const students = await Student.findAll({
     include: [{ model: Course }, { model: Classes }],
@@ -60,4 +81,4 @@ const student = async (_, { id }) => {
   return student;
 };
 
-export default { students, student, paginateStudents };
+export default { students, student, paginateStudents, searchStudents };

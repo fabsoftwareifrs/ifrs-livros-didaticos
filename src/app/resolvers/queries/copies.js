@@ -27,10 +27,7 @@ export const copies = async () => {
   return copies;
 };
 
-export const availableCopies = async (
-  _,
-  { idCopyInclude, search, selecteds }
-) => {
+export const availableCopies = async (_, { search, selecteds }) => {
   const copies = await Copy.findAll({
     include: [
       { model: Book, include: { model: Category } },
@@ -41,18 +38,11 @@ export const availableCopies = async (
         {
           [Op.and]: [
             {
-              [Op.or]: [
-                {
-                  id: {
-                    [Op.notIn]: Sequelize.literal(
-                      `(SELECT copy_id from loans where end is null)`
-                    ),
-                  },
-                },
-                {
-                  id: idCopyInclude,
-                },
-              ],
+              id: {
+                [Op.notIn]: Sequelize.literal(
+                  `(SELECT copy_id from loans where end is null)`
+                ),
+              },
             },
             {
               code: {
