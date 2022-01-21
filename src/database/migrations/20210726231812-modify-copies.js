@@ -26,8 +26,6 @@ module.exports = {
         model: "books",
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
   },
 
@@ -40,8 +38,6 @@ module.exports = {
         model: "books",
         key: "id",
       },
-      onUpdate: "RESTRICT",
-      onDelete: "RESTRICT",
     });
   },
 };

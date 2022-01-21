@@ -15,8 +15,6 @@ module.exports = {
         key: "id",
       },
       after: "external_code",
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
   },
 

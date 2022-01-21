@@ -26,8 +26,6 @@ module.exports = {
         model: "categories",
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
       after: "volume",
     });
   },
@@ -41,8 +39,6 @@ module.exports = {
         model: "categories",
         key: "id",
       },
-      onUpdate: "RESTRICT",
-      onDelete: "RESTRICT",
       after: "volume",
     });
   },

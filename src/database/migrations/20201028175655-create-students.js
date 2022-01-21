@@ -40,15 +40,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: { model: "courses", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       class_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: { model: "classes", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       created_At: {
         allowNull: false,

@@ -55,15 +55,11 @@ module.exports = {
       allowNull: false,
       type: Sequelize.INTEGER,
       references: { model: "books", key: "id" },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
     await queryInterface.addColumn("loans", "user_id", {
       allowNull: false,
       type: Sequelize.INTEGER,
       references: { model: "users", key: "id" },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     });
   },
 };
